@@ -525,41 +525,78 @@ function TrustBar() {
 /* ------------------------------- GALLERY --------------------------------- */
 
 function Gallery() {
+  const [active, setActive] = useState(0);
   return (
     <Section id="gallery" eyebrow="The Portfolio" title="Brides, composed like editorials.">
-      <div className="mt-16 grid grid-cols-12 gap-3 md:gap-5">
-        <GalleryImg src={brides[0]} className="col-span-8 aspect-[4/5]" />
-        <div className="col-span-4 flex flex-col gap-3 md:gap-5">
-          <GalleryImg src={brides[1]} className="aspect-square" />
-          <GalleryImg src={brides[2]} className="flex-1" />
+      <div className="mt-14 grid gap-10 md:grid-cols-[1.1fr_1fr] md:items-center">
+        <div className="relative mx-auto aspect-[4/5] w-full max-w-md">
+          {brides.map((src, i) => {
+            const offset = (i - active + brides.length) % brides.length;
+            const isTop = offset === 0;
+            return (
+              <motion.button
+                key={i}
+                type="button"
+                onClick={() => setActive((active + 1) % brides.length)}
+                aria-label={`Show bride ${i + 1}`}
+                animate={{
+                  x: offset * 10,
+                  y: offset * 14,
+                  rotate: offset * 2.5,
+                  scale: 1 - offset * 0.04,
+                  opacity: offset > 3 ? 0 : 1 - offset * 0.15,
+                }}
+                transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+                style={{ zIndex: brides.length - offset }}
+                className="absolute inset-0 origin-bottom overflow-hidden rounded-2xl border border-white/[0.08] bg-surface shadow-2xl"
+              >
+                <img src={src} alt="Bride" className="h-full w-full object-cover" loading="lazy" />
+                {isTop && (
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/60 to-transparent p-5">
+                    <span className="text-[10px] tracking-[0.28em] uppercase text-ivory/90">
+                      Plate {String(i + 1).padStart(2, "0")} / {String(brides.length).padStart(2, "0")}
+                    </span>
+                    <span className="rounded-full bg-ivory/90 px-3 py-1 text-[10px] tracking-[0.22em] uppercase text-background">
+                      Tap →
+                    </span>
+                  </div>
+                )}
+              </motion.button>
+            );
+          })}
         </div>
-        <GalleryImg src={brides[3]} className="col-span-4 aspect-[4/5]" />
-        <GalleryImg src={brides[4]} className="col-span-4 aspect-[4/5]" />
-        <GalleryImg src={brides[5]} className="col-span-4 aspect-[4/5]" />
-        <GalleryImg src={brides[6]} className="col-span-6 aspect-[4/3]" />
-        <GalleryImg src={brides[7]} className="col-span-6 aspect-[4/3]" />
+
+        <div>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            A private book of recent brides — every plate hand-picked, every finish shot in natural
+            light. Tap the album to leaf through.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-2">
+            {brides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                aria-label={`Go to plate ${i + 1}`}
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  i === active ? "w-10 bg-gold" : "w-4 bg-foreground/20 hover:bg-foreground/40"
+                }`}
+              />
+            ))}
+          </div>
+          <div className="mt-10 flex gap-3">
+            <button
+              onClick={() => setActive((active - 1 + brides.length) % brides.length)}
+              className="btn-ghost-gold"
+            >
+              ← Prev
+            </button>
+            <button onClick={() => setActive((active + 1) % brides.length)} className="btn-cream">
+              Next Plate <span className="arrow">→</span>
+            </button>
+          </div>
+        </div>
       </div>
     </Section>
-  );
-}
-
-function GalleryImg({ src, className = "" }: { src: string; className?: string }) {
-  return (
-    <motion.figure
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1] }}
-      className={`group relative overflow-hidden rounded-xl bg-surface ${className}`}
-    >
-      <img
-        src={src}
-        alt="Bride portrait"
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06]"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
-    </motion.figure>
   );
 }
 
@@ -651,29 +688,78 @@ function Transformations() {
 
 function WhyUs() {
   const items = [
-    { t: "Premium products only", d: "Charlotte Tilbury, MAC, Bobbi Brown, Huda, Nars — sanitised, single-use for every bride." },
-    { t: "Certified bridal artists", d: "Trained under the Jawed Habib national academy with 8+ years bridal experience." },
-    { t: "Long-lasting finish", d: "Airbrush and HD techniques engineered to hold through 14 hours of ceremony and reception." },
-    { t: "Personalised looks", d: "A private consultation defines your complexion, jewellery and lehenga palette weeks before." },
-    { t: "Bridal specialists", d: "One senior artist per bride, undivided. No walk-ins, no shared calendar." },
+    { t: "Premium products only", d: "Charlotte Tilbury, MAC, Bobbi Brown, Huda, Nars — sanitised, single-use for every bride.", img: brides[1] },
+    { t: "Certified bridal artists", d: "Trained under the Jawed Habib national academy with 8+ years bridal experience.", img: brides[2] },
+    { t: "Long-lasting finish", d: "Airbrush and HD techniques engineered to hold through 14 hours of ceremony and reception.", img: brides[4] },
+    { t: "Personalised looks", d: "A private consultation defines your complexion, jewellery and lehenga palette weeks before.", img: brides[5] },
+    { t: "Bridal specialists", d: "One senior artist per bride, undivided. No walk-ins, no shared calendar.", img: brides[7] },
   ];
+  const [active, setActive] = useState(0);
   return (
     <Section id="bridal" eyebrow="The Craft" title="Why brides choose the atelier.">
-      <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {items.map((it, i) => (
-          <motion.div
-            key={it.t}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ delay: i * 0.06, duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
-            className="glass-card group rounded-2xl p-8 transition-transform duration-500 hover:-translate-y-1"
-          >
-            <span className="text-[11px] tracking-[0.24em] text-gold">0{i + 1}</span>
-            <h3 className="mt-6 font-serif text-2xl text-ivory">{it.t}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{it.d}</p>
-          </motion.div>
-        ))}
+      <div className="mt-14 grid gap-8 md:grid-cols-[1fr_1.1fr] md:items-stretch">
+        {/* Accordion list */}
+        <ul className="flex flex-col divide-y divide-foreground/10 border-y border-foreground/10">
+          {items.map((it, i) => {
+            const open = i === active;
+            return (
+              <li key={it.t}>
+                <button
+                  onClick={() => setActive(i)}
+                  className="group flex w-full items-center gap-6 py-6 text-left"
+                >
+                  <span className={`font-serif text-xl transition-colors duration-500 ${open ? "text-gold" : "text-muted-foreground"}`}>
+                    0{i + 1}
+                  </span>
+                  <span className="flex-1 min-w-0">
+                    <span className={`block font-serif text-2xl transition-colors duration-500 ${open ? "text-ivory" : "text-foreground/70 group-hover:text-ivory"}`}>
+                      {it.t}
+                    </span>
+                    <AnimatePresence initial={false}>
+                      {open && (
+                        <motion.span
+                          initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                          animate={{ height: "auto", opacity: 1, marginTop: 10 }}
+                          exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                          transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+                          className="block overflow-hidden text-sm leading-relaxed text-muted-foreground"
+                        >
+                          {it.d}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </span>
+                  <span
+                    className={`h-px w-8 shrink-0 origin-right bg-gold transition-transform duration-500 ${
+                      open ? "scale-x-100" : "scale-x-0"
+                    }`}
+                  />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* Rotating imagery */}
+        <div className="relative min-h-[420px] overflow-hidden rounded-2xl bg-surface md:min-h-full">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={active}
+              src={items[active].img}
+              alt={items[active].t}
+              initial={{ opacity: 0, scale: 1.06 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-6">
+            <span className="eyebrow text-ivory/80">The Craft · 0{active + 1}</span>
+            <h4 className="mt-1 font-serif text-2xl text-ivory">{items[active].t}</h4>
+          </div>
+        </div>
       </div>
     </Section>
   );
@@ -794,39 +880,45 @@ function Testimonials() {
     { n: "Ananya S.", w: "March 2025", q: "I have never felt more like myself on any other day. Every detail of my look — the base, the eyes, the drape — was exactly the bride I had imagined for years." , img: brides[0]},
     { n: "Priya M.", w: "December 2024", q: "The team held space for me on the most emotional day of my life. My makeup lasted from morning haldi till 2am reception without a single touch-up.", img: brides[3] },
     { n: "Rhea K.", w: "November 2024", q: "This is the only place in Patna that feels like a real bridal atelier. The consultation, the products, the calmness — worth every rupee.", img: brides[5] },
+    { n: "Sanvi R.", w: "October 2024", q: "Every artist knew exactly where to be and when. It felt choreographed, quiet, and completely about me.", img: brides[6] },
   ];
   return (
     <Section id="reviews" eyebrow="In Their Words" title="Trusted by the brides of Bihar.">
-      <div className="mt-14 grid gap-5 md:grid-cols-3">
-        {t.map((it, i) => (
-          <motion.figure
-            key={i}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ delay: i * 0.08, duration: 0.9 }}
-            className="glass-card flex flex-col justify-between rounded-2xl p-7"
-          >
-            <div>
-              <div className="flex text-gold">
-                {"★★★★★".split("").map((s, j) => <span key={j} className="text-xs">{s}</span>)}
+      <div className="mt-14 -mx-6 overflow-x-auto pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-5 px-6 snap-x snap-mandatory">
+          {t.map((it, i) => (
+            <motion.figure
+              key={i}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: i * 0.08, duration: 0.9 }}
+              className="glass-card group flex w-[86vw] shrink-0 snap-center overflow-hidden rounded-2xl md:w-[560px]"
+            >
+              <div className="relative w-40 shrink-0 overflow-hidden md:w-56">
+                <img src={it.img} alt="" className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-background/40" />
               </div>
-              <blockquote className="mt-6 font-serif text-xl leading-snug text-ivory">
-                “{it.q}”
-              </blockquote>
-            </div>
-            <figcaption className="mt-8 flex items-center gap-3 border-t border-white/[0.06] pt-5">
-              <img src={it.img} alt="" className="h-10 w-10 rounded-full object-cover" />
-              <div>
-                <div className="text-sm text-ivory">{it.n}</div>
-                <div className="text-[10px] tracking-[0.24em] uppercase text-muted-foreground">Bride · {it.w}</div>
+              <div className="flex min-w-0 flex-1 flex-col justify-between p-7">
+                <div>
+                  <div className="flex text-gold">
+                    {"★★★★★".split("").map((s, j) => <span key={j} className="text-xs">{s}</span>)}
+                  </div>
+                  <blockquote className="mt-5 font-serif text-lg leading-snug text-ivory md:text-xl">
+                    “{it.q}”
+                  </blockquote>
+                </div>
+                <figcaption className="mt-6 border-t border-white/[0.06] pt-4">
+                  <div className="text-sm text-ivory">{it.n}</div>
+                  <div className="text-[10px] tracking-[0.24em] uppercase text-muted-foreground">Bride · {it.w}</div>
+                </figcaption>
               </div>
-            </figcaption>
-          </motion.figure>
-        ))}
+            </motion.figure>
+          ))}
+        </div>
       </div>
-      <p className="mt-10 text-center text-[11px] tracking-[0.24em] uppercase text-muted-foreground">
-        Verified on Google · 1,200+ reviews
+      <p className="mt-6 text-center text-[11px] tracking-[0.24em] uppercase text-muted-foreground">
+        Verified on Google · 1,200+ reviews · Swipe →
       </p>
     </Section>
   );
@@ -835,37 +927,47 @@ function Testimonials() {
 /* --------------------------- SALON EXPERIENCE ---------------------------- */
 
 function SalonExperience() {
+  const rooms = [
+    { t: "Reception", d: "Champagne-lit reception with private consultation." },
+    { t: "Bridal Suite", d: "A private room for you, your mother and your closest." },
+    { t: "Hair Studio", d: "Dedicated stations with international styling tools." },
+    { t: "Lounge", d: "A quiet corner for your family, tea served throughout." },
+  ];
   return (
     <Section id="location" eyebrow="The Atelier" title="A private house of beauty, in the heart of Patna.">
-      <div className="mt-14 grid gap-5 md:grid-cols-2">
+      <div className="mt-14 grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-stretch">
         <motion.div
           initial={{ opacity: 0, scale: 1.02 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2 }}
-          className="relative aspect-[4/5] overflow-hidden rounded-2xl md:aspect-auto md:row-span-2"
+          className="relative aspect-[4/3] overflow-hidden rounded-2xl lg:aspect-auto"
         >
           <img src={salonInterior} alt="Salon interior" loading="lazy" className="h-full w-full object-cover" />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+            <span className="eyebrow text-ivory/80">Kurji · Patna</span>
+            <div className="mt-1 font-serif text-2xl text-ivory">1,800 sq ft of atelier</div>
+          </div>
         </motion.div>
-        {[
-          { t: "Reception", d: "Champagne-lit reception with private consultation." },
-          { t: "Bridal Suite", d: "A private room for you, your mother and your closest." },
-          { t: "Hair Studio", d: "Dedicated stations with international styling tools." },
-          { t: "Lounge", d: "A quiet corner for your family, tea served throughout." },
-        ].map((c, i) => (
-          <motion.div
-            key={c.t}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08, duration: 0.8 }}
-            className="glass-card rounded-2xl p-7"
-          >
-            <span className="eyebrow">0{i + 1}</span>
-            <h3 className="mt-4 font-serif text-2xl text-ivory">{c.t}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{c.d}</p>
-          </motion.div>
-        ))}
+
+        <div className="-mx-6 lg:mx-0">
+          <div className="flex gap-4 overflow-x-auto px-6 pb-4 lg:h-full lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {rooms.map((c, i) => (
+              <motion.div
+                key={c.t}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.8 }}
+                className="glass-card min-w-[240px] shrink-0 rounded-2xl p-6 lg:min-w-0 lg:flex-1"
+              >
+                <span className="eyebrow">0{i + 1}</span>
+                <h3 className="mt-3 font-serif text-xl text-ivory">{c.t}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{c.d}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </Section>
   );
@@ -901,21 +1003,25 @@ function HairServices() {
 /* -------------------------------- BRANDS --------------------------------- */
 
 function Brands() {
-  const brands = ["Charlotte Tilbury", "MAC", "Bobbi Brown", "Huda Beauty", "Nars", "Kérastase", "Olaplex", "Dyson"];
+  const brands = ["Charlotte Tilbury", "MAC", "Bobbi Brown", "Huda Beauty", "Nars", "Kérastase", "Olaplex", "Dyson", "Estée Lauder", "Chanel Beauty"];
+  const row = [...brands, ...brands];
   return (
-    <section className="border-y border-white/[0.06] bg-surface/40 py-16">
+    <section className="border-y border-white/[0.06] bg-surface/40 py-16 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6">
         <p className="eyebrow text-center">Only Premium Products</p>
-        <div className="mt-8 grid grid-cols-2 items-center gap-y-8 sm:grid-cols-4 md:grid-cols-8">
-          {brands.map((b, i) => (
-            <motion.div
-              key={b}
-              initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-              transition={{ delay: i * 0.04, duration: 0.6 }}
-              className="text-center font-serif text-lg text-ivory/70 italic"
+      </div>
+      <div className="relative mt-10">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
+        <div className="flex gap-14 whitespace-nowrap animate-[marquee_38s_linear_infinite]">
+          {row.map((b, i) => (
+            <span
+              key={i}
+              className="font-serif text-2xl italic text-ivory/70 md:text-3xl"
             >
               {b}
-            </motion.div>
+              <span className="mx-14 text-gold/40">✦</span>
+            </span>
           ))}
         </div>
       </div>
@@ -933,24 +1039,96 @@ function Process() {
     { t: "Confirmation", d: "Trial, drape rehearsal and final look approval." },
     { t: "Your Wedding Day", d: "Undivided attention from your artist, sunrise to reception." },
   ];
+  const [active, setActive] = useState(0);
   return (
     <Section eyebrow="How It Works" title="A calm, considered process.">
-      <ol className="mt-14 space-y-6 md:space-y-0">
-        {steps.map((s, i) => (
-          <motion.li
-            key={s.t}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ delay: i * 0.08, duration: 0.8 }}
-            className="grid grid-cols-[auto_1fr] items-start gap-6 border-t border-white/[0.06] py-8 md:grid-cols-[80px_1fr_2fr] md:gap-10"
-          >
-            <span className="font-serif text-3xl text-gold">0{i + 1}</span>
-            <h3 className="font-serif text-2xl text-ivory md:text-3xl">{s.t}</h3>
-            <p className="col-span-2 text-sm leading-relaxed text-muted-foreground md:col-span-1 md:text-base">{s.d}</p>
-          </motion.li>
-        ))}
-      </ol>
+      <div className="mt-14">
+        {/* Progress rail */}
+        <div className="relative hidden md:block">
+          <div className="absolute left-0 right-0 top-6 h-px bg-foreground/10" />
+          <motion.div
+            className="absolute left-0 top-6 h-px bg-gold"
+            initial={{ width: "0%" }}
+            animate={{ width: `${(active / (steps.length - 1)) * 100}%` }}
+            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+          />
+          <ol className="relative grid grid-cols-5 gap-4">
+            {steps.map((s, i) => {
+              const done = i <= active;
+              return (
+                <li key={s.t} className="flex flex-col items-center text-center">
+                  <button
+                    onClick={() => setActive(i)}
+                    className={`relative z-10 flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-500 ${
+                      done
+                        ? "border-gold bg-gold text-background scale-110"
+                        : "border-foreground/20 bg-background text-muted-foreground"
+                    }`}
+                  >
+                    <span className="font-serif text-lg">{i + 1}</span>
+                    {done && (
+                      <motion.span
+                        layoutId="pulse"
+                        className="absolute inset-0 rounded-full bg-gold/30"
+                        initial={{ scale: 1, opacity: 0.6 }}
+                        animate={{ scale: 1.6, opacity: 0 }}
+                        transition={{ duration: 1.4, repeat: Infinity }}
+                      />
+                    )}
+                  </button>
+                  <h3 className="mt-6 font-serif text-xl text-ivory">{s.t}</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{s.d}</p>
+                </li>
+              );
+            })}
+          </ol>
+          <div className="mt-10 flex justify-center gap-3">
+            <button
+              onClick={() => setActive(Math.max(0, active - 1))}
+              className="btn-ghost-gold"
+              disabled={active === 0}
+            >
+              ← Back
+            </button>
+            <button
+              onClick={() => setActive(Math.min(steps.length - 1, active + 1))}
+              className="btn-cream"
+            >
+              {active === steps.length - 1 ? "Restart" : "Next Step"} <span className="arrow">→</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile vertical rail */}
+        <ol className="relative md:hidden">
+          <div className="absolute left-6 top-0 bottom-0 w-px bg-foreground/10" />
+          <motion.div
+            className="absolute left-6 top-0 w-px bg-gold"
+            initial={{ height: "0%" }}
+            whileInView={{ height: "100%" }}
+            viewport={{ once: true, margin: "-40%" }}
+            transition={{ duration: 2, ease: [0.2, 0.8, 0.2, 1] }}
+          />
+          {steps.map((s, i) => (
+            <motion.li
+              key={s.t}
+              initial={{ opacity: 0, x: -12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: i * 0.15, duration: 0.7 }}
+              className="relative flex gap-6 pb-10 last:pb-0"
+            >
+              <span className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold bg-background font-serif text-gold">
+                {i + 1}
+              </span>
+              <div className="min-w-0 pt-2">
+                <h3 className="font-serif text-2xl text-ivory">{s.t}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
+              </div>
+            </motion.li>
+          ))}
+        </ol>
+      </div>
     </Section>
   );
 }
