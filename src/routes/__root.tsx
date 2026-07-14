@@ -81,18 +81,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Bihar's most trusted luxury bridal makeup atelier. Reserve your wedding date with Jawed Habib Kurji — HD, airbrush & reception looks by certified bridal specialists.",
+          "Reserve your wedding date at Patna's most refined bridal atelier. HD, airbrush and reception makeup by certified bridal specialists. Limited dates each season.",
       },
       { name: "author", content: "Jawed Habib Kurji" },
-      { property: "og:title", content: "Jawed Habib Kurji — Luxury Bridal Atelier" },
+      { property: "og:title", content: "Jawed Habib Kurji — Luxury Bridal Atelier, Patna" },
       {
         property: "og:description",
         content:
-          "Reserve your wedding date at Bihar's most refined bridal atelier. Limited dates each season.",
+          "Reserve your wedding date at Patna's most refined bridal atelier. HD, airbrush and reception makeup by certified bridal specialists. Limited dates each season.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0D0D0D" },
+      { name: "twitter:title", content: "Jawed Habib Kurji — Luxury Bridal Atelier, Patna" },
+      { name: "twitter:description", content: "Reserve your wedding date at Patna's most refined bridal atelier. HD, airbrush and reception makeup by certified bridal specialists. Limited dates each season." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8971c94f-80a4-419e-9e92-fc0951930c97/id-preview-541dcdd9--7c8642a3-6049-4625-a893-19b2b2f27b49.lovable.app-1784032442735.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8971c94f-80a4-419e-9e92-fc0951930c97/id-preview-541dcdd9--7c8642a3-6049-4625-a893-19b2b2f27b49.lovable.app-1784032442735.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

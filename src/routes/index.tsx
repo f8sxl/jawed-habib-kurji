@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
         content:
           "Reserve your wedding date at Patna's most refined bridal atelier. HD, airbrush and reception makeup by certified bridal specialists. Limited dates each season.",
       },
-      { property: "og:title", content: "Jawed Habib Kurji — Luxury Bridal Atelier" },
+      { property: "og:title", content: "Jawed Habib Kurji — Luxury Bridal Atelier, Patna" },
       { property: "og:image", content: heroBg },
     ],
   }),
