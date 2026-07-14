@@ -970,24 +970,96 @@ function Process() {
     { t: "Confirmation", d: "Trial, drape rehearsal and final look approval." },
     { t: "Your Wedding Day", d: "Undivided attention from your artist, sunrise to reception." },
   ];
+  const [active, setActive] = useState(0);
   return (
     <Section eyebrow="How It Works" title="A calm, considered process.">
-      <ol className="mt-14 space-y-6 md:space-y-0">
-        {steps.map((s, i) => (
-          <motion.li
-            key={s.t}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ delay: i * 0.08, duration: 0.8 }}
-            className="grid grid-cols-[auto_1fr] items-start gap-6 border-t border-white/[0.06] py-8 md:grid-cols-[80px_1fr_2fr] md:gap-10"
-          >
-            <span className="font-serif text-3xl text-gold">0{i + 1}</span>
-            <h3 className="font-serif text-2xl text-ivory md:text-3xl">{s.t}</h3>
-            <p className="col-span-2 text-sm leading-relaxed text-muted-foreground md:col-span-1 md:text-base">{s.d}</p>
-          </motion.li>
-        ))}
-      </ol>
+      <div className="mt-14">
+        {/* Progress rail */}
+        <div className="relative hidden md:block">
+          <div className="absolute left-0 right-0 top-6 h-px bg-foreground/10" />
+          <motion.div
+            className="absolute left-0 top-6 h-px bg-gold"
+            initial={{ width: "0%" }}
+            animate={{ width: `${(active / (steps.length - 1)) * 100}%` }}
+            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+          />
+          <ol className="relative grid grid-cols-5 gap-4">
+            {steps.map((s, i) => {
+              const done = i <= active;
+              return (
+                <li key={s.t} className="flex flex-col items-center text-center">
+                  <button
+                    onClick={() => setActive(i)}
+                    className={`relative z-10 flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-500 ${
+                      done
+                        ? "border-gold bg-gold text-background scale-110"
+                        : "border-foreground/20 bg-background text-muted-foreground"
+                    }`}
+                  >
+                    <span className="font-serif text-lg">{i + 1}</span>
+                    {done && (
+                      <motion.span
+                        layoutId="pulse"
+                        className="absolute inset-0 rounded-full bg-gold/30"
+                        initial={{ scale: 1, opacity: 0.6 }}
+                        animate={{ scale: 1.6, opacity: 0 }}
+                        transition={{ duration: 1.4, repeat: Infinity }}
+                      />
+                    )}
+                  </button>
+                  <h3 className="mt-6 font-serif text-xl text-ivory">{s.t}</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{s.d}</p>
+                </li>
+              );
+            })}
+          </ol>
+          <div className="mt-10 flex justify-center gap-3">
+            <button
+              onClick={() => setActive(Math.max(0, active - 1))}
+              className="btn-ghost-gold"
+              disabled={active === 0}
+            >
+              ← Back
+            </button>
+            <button
+              onClick={() => setActive(Math.min(steps.length - 1, active + 1))}
+              className="btn-cream"
+            >
+              {active === steps.length - 1 ? "Restart" : "Next Step"} <span className="arrow">→</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile vertical rail */}
+        <ol className="relative md:hidden">
+          <div className="absolute left-6 top-0 bottom-0 w-px bg-foreground/10" />
+          <motion.div
+            className="absolute left-6 top-0 w-px bg-gold"
+            initial={{ height: "0%" }}
+            whileInView={{ height: "100%" }}
+            viewport={{ once: true, margin: "-40%" }}
+            transition={{ duration: 2, ease: [0.2, 0.8, 0.2, 1] }}
+          />
+          {steps.map((s, i) => (
+            <motion.li
+              key={s.t}
+              initial={{ opacity: 0, x: -12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: i * 0.15, duration: 0.7 }}
+              className="relative flex gap-6 pb-10 last:pb-0"
+            >
+              <span className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold bg-background font-serif text-gold">
+                {i + 1}
+              </span>
+              <div className="min-w-0 pt-2">
+                <h3 className="font-serif text-2xl text-ivory">{s.t}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
+              </div>
+            </motion.li>
+          ))}
+        </ol>
+      </div>
     </Section>
   );
 }
