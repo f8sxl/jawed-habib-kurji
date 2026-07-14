@@ -872,37 +872,47 @@ function Testimonials() {
 /* --------------------------- SALON EXPERIENCE ---------------------------- */
 
 function SalonExperience() {
+  const rooms = [
+    { t: "Reception", d: "Champagne-lit reception with private consultation." },
+    { t: "Bridal Suite", d: "A private room for you, your mother and your closest." },
+    { t: "Hair Studio", d: "Dedicated stations with international styling tools." },
+    { t: "Lounge", d: "A quiet corner for your family, tea served throughout." },
+  ];
   return (
     <Section id="location" eyebrow="The Atelier" title="A private house of beauty, in the heart of Patna.">
-      <div className="mt-14 grid gap-5 md:grid-cols-2">
+      <div className="mt-14 grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-stretch">
         <motion.div
           initial={{ opacity: 0, scale: 1.02 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2 }}
-          className="relative aspect-[4/5] overflow-hidden rounded-2xl md:aspect-auto md:row-span-2"
+          className="relative aspect-[4/3] overflow-hidden rounded-2xl lg:aspect-auto"
         >
           <img src={salonInterior} alt="Salon interior" loading="lazy" className="h-full w-full object-cover" />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+            <span className="eyebrow text-ivory/80">Kurji · Patna</span>
+            <div className="mt-1 font-serif text-2xl text-ivory">1,800 sq ft of atelier</div>
+          </div>
         </motion.div>
-        {[
-          { t: "Reception", d: "Champagne-lit reception with private consultation." },
-          { t: "Bridal Suite", d: "A private room for you, your mother and your closest." },
-          { t: "Hair Studio", d: "Dedicated stations with international styling tools." },
-          { t: "Lounge", d: "A quiet corner for your family, tea served throughout." },
-        ].map((c, i) => (
-          <motion.div
-            key={c.t}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08, duration: 0.8 }}
-            className="glass-card rounded-2xl p-7"
-          >
-            <span className="eyebrow">0{i + 1}</span>
-            <h3 className="mt-4 font-serif text-2xl text-ivory">{c.t}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{c.d}</p>
-          </motion.div>
-        ))}
+
+        <div className="-mx-6 lg:mx-0">
+          <div className="flex gap-4 overflow-x-auto px-6 pb-4 lg:h-full lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {rooms.map((c, i) => (
+              <motion.div
+                key={c.t}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.8 }}
+                className="glass-card min-w-[240px] shrink-0 rounded-2xl p-6 lg:min-w-0 lg:flex-1"
+              >
+                <span className="eyebrow">0{i + 1}</span>
+                <h3 className="mt-3 font-serif text-xl text-ivory">{c.t}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{c.d}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </Section>
   );
