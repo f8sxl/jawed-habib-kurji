@@ -938,21 +938,25 @@ function HairServices() {
 /* -------------------------------- BRANDS --------------------------------- */
 
 function Brands() {
-  const brands = ["Charlotte Tilbury", "MAC", "Bobbi Brown", "Huda Beauty", "Nars", "Kérastase", "Olaplex", "Dyson"];
+  const brands = ["Charlotte Tilbury", "MAC", "Bobbi Brown", "Huda Beauty", "Nars", "Kérastase", "Olaplex", "Dyson", "Estée Lauder", "Chanel Beauty"];
+  const row = [...brands, ...brands];
   return (
-    <section className="border-y border-white/[0.06] bg-surface/40 py-16">
+    <section className="border-y border-white/[0.06] bg-surface/40 py-16 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6">
         <p className="eyebrow text-center">Only Premium Products</p>
-        <div className="mt-8 grid grid-cols-2 items-center gap-y-8 sm:grid-cols-4 md:grid-cols-8">
-          {brands.map((b, i) => (
-            <motion.div
-              key={b}
-              initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-              transition={{ delay: i * 0.04, duration: 0.6 }}
-              className="text-center font-serif text-lg text-ivory/70 italic"
+      </div>
+      <div className="relative mt-10">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
+        <div className="flex gap-14 whitespace-nowrap animate-[marquee_38s_linear_infinite]">
+          {row.map((b, i) => (
+            <span
+              key={i}
+              className="font-serif text-2xl italic text-ivory/70 md:text-3xl"
             >
               {b}
-            </motion.div>
+              <span className="mx-14 text-gold/40">✦</span>
+            </span>
           ))}
         </div>
       </div>
