@@ -831,39 +831,45 @@ function Testimonials() {
     { n: "Ananya S.", w: "March 2025", q: "I have never felt more like myself on any other day. Every detail of my look — the base, the eyes, the drape — was exactly the bride I had imagined for years." , img: brides[0]},
     { n: "Priya M.", w: "December 2024", q: "The team held space for me on the most emotional day of my life. My makeup lasted from morning haldi till 2am reception without a single touch-up.", img: brides[3] },
     { n: "Rhea K.", w: "November 2024", q: "This is the only place in Patna that feels like a real bridal atelier. The consultation, the products, the calmness — worth every rupee.", img: brides[5] },
+    { n: "Sanvi R.", w: "October 2024", q: "Every artist knew exactly where to be and when. It felt choreographed, quiet, and completely about me.", img: brides[6] },
   ];
   return (
     <Section id="reviews" eyebrow="In Their Words" title="Trusted by the brides of Bihar.">
-      <div className="mt-14 grid gap-5 md:grid-cols-3">
-        {t.map((it, i) => (
-          <motion.figure
-            key={i}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ delay: i * 0.08, duration: 0.9 }}
-            className="glass-card flex flex-col justify-between rounded-2xl p-7"
-          >
-            <div>
-              <div className="flex text-gold">
-                {"★★★★★".split("").map((s, j) => <span key={j} className="text-xs">{s}</span>)}
+      <div className="mt-14 -mx-6 overflow-x-auto pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-5 px-6 snap-x snap-mandatory">
+          {t.map((it, i) => (
+            <motion.figure
+              key={i}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: i * 0.08, duration: 0.9 }}
+              className="glass-card group flex w-[86vw] shrink-0 snap-center overflow-hidden rounded-2xl md:w-[560px]"
+            >
+              <div className="relative w-40 shrink-0 overflow-hidden md:w-56">
+                <img src={it.img} alt="" className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-background/40" />
               </div>
-              <blockquote className="mt-6 font-serif text-xl leading-snug text-ivory">
-                “{it.q}”
-              </blockquote>
-            </div>
-            <figcaption className="mt-8 flex items-center gap-3 border-t border-white/[0.06] pt-5">
-              <img src={it.img} alt="" className="h-10 w-10 rounded-full object-cover" />
-              <div>
-                <div className="text-sm text-ivory">{it.n}</div>
-                <div className="text-[10px] tracking-[0.24em] uppercase text-muted-foreground">Bride · {it.w}</div>
+              <div className="flex min-w-0 flex-1 flex-col justify-between p-7">
+                <div>
+                  <div className="flex text-gold">
+                    {"★★★★★".split("").map((s, j) => <span key={j} className="text-xs">{s}</span>)}
+                  </div>
+                  <blockquote className="mt-5 font-serif text-lg leading-snug text-ivory md:text-xl">
+                    “{it.q}”
+                  </blockquote>
+                </div>
+                <figcaption className="mt-6 border-t border-white/[0.06] pt-4">
+                  <div className="text-sm text-ivory">{it.n}</div>
+                  <div className="text-[10px] tracking-[0.24em] uppercase text-muted-foreground">Bride · {it.w}</div>
+                </figcaption>
               </div>
-            </figcaption>
-          </motion.figure>
-        ))}
+            </motion.figure>
+          ))}
+        </div>
       </div>
-      <p className="mt-10 text-center text-[11px] tracking-[0.24em] uppercase text-muted-foreground">
-        Verified on Google · 1,200+ reviews
+      <p className="mt-6 text-center text-[11px] tracking-[0.24em] uppercase text-muted-foreground">
+        Verified on Google · 1,200+ reviews · Swipe →
       </p>
     </Section>
   );
