@@ -137,6 +137,7 @@ function Nav() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <a href="#reserve" className="hidden md:inline-flex btn-cream !py-2.5 !px-5 !text-[11px]">
               Reserve <span className="arrow">→</span>
             </a>
@@ -150,6 +151,7 @@ function Nav() {
               </svg>
             </button>
           </div>
+
         </div>
       </motion.header>
 
