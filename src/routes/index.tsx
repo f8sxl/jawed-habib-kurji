@@ -688,29 +688,78 @@ function Transformations() {
 
 function WhyUs() {
   const items = [
-    { t: "Premium products only", d: "Charlotte Tilbury, MAC, Bobbi Brown, Huda, Nars — sanitised, single-use for every bride." },
-    { t: "Certified bridal artists", d: "Trained under the Jawed Habib national academy with 8+ years bridal experience." },
-    { t: "Long-lasting finish", d: "Airbrush and HD techniques engineered to hold through 14 hours of ceremony and reception." },
-    { t: "Personalised looks", d: "A private consultation defines your complexion, jewellery and lehenga palette weeks before." },
-    { t: "Bridal specialists", d: "One senior artist per bride, undivided. No walk-ins, no shared calendar." },
+    { t: "Premium products only", d: "Charlotte Tilbury, MAC, Bobbi Brown, Huda, Nars — sanitised, single-use for every bride.", img: brides[1] },
+    { t: "Certified bridal artists", d: "Trained under the Jawed Habib national academy with 8+ years bridal experience.", img: brides[2] },
+    { t: "Long-lasting finish", d: "Airbrush and HD techniques engineered to hold through 14 hours of ceremony and reception.", img: brides[4] },
+    { t: "Personalised looks", d: "A private consultation defines your complexion, jewellery and lehenga palette weeks before.", img: brides[5] },
+    { t: "Bridal specialists", d: "One senior artist per bride, undivided. No walk-ins, no shared calendar.", img: brides[7] },
   ];
+  const [active, setActive] = useState(0);
   return (
     <Section id="bridal" eyebrow="The Craft" title="Why brides choose the atelier.">
-      <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {items.map((it, i) => (
-          <motion.div
-            key={it.t}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ delay: i * 0.06, duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
-            className="glass-card group rounded-2xl p-8 transition-transform duration-500 hover:-translate-y-1"
-          >
-            <span className="text-[11px] tracking-[0.24em] text-gold">0{i + 1}</span>
-            <h3 className="mt-6 font-serif text-2xl text-ivory">{it.t}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{it.d}</p>
-          </motion.div>
-        ))}
+      <div className="mt-14 grid gap-8 md:grid-cols-[1fr_1.1fr] md:items-stretch">
+        {/* Accordion list */}
+        <ul className="flex flex-col divide-y divide-foreground/10 border-y border-foreground/10">
+          {items.map((it, i) => {
+            const open = i === active;
+            return (
+              <li key={it.t}>
+                <button
+                  onClick={() => setActive(i)}
+                  className="group flex w-full items-center gap-6 py-6 text-left"
+                >
+                  <span className={`font-serif text-xl transition-colors duration-500 ${open ? "text-gold" : "text-muted-foreground"}`}>
+                    0{i + 1}
+                  </span>
+                  <span className="flex-1 min-w-0">
+                    <span className={`block font-serif text-2xl transition-colors duration-500 ${open ? "text-ivory" : "text-foreground/70 group-hover:text-ivory"}`}>
+                      {it.t}
+                    </span>
+                    <AnimatePresence initial={false}>
+                      {open && (
+                        <motion.span
+                          initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                          animate={{ height: "auto", opacity: 1, marginTop: 10 }}
+                          exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                          transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+                          className="block overflow-hidden text-sm leading-relaxed text-muted-foreground"
+                        >
+                          {it.d}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </span>
+                  <span
+                    className={`h-px w-8 shrink-0 origin-right bg-gold transition-transform duration-500 ${
+                      open ? "scale-x-100" : "scale-x-0"
+                    }`}
+                  />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* Rotating imagery */}
+        <div className="relative min-h-[420px] overflow-hidden rounded-2xl bg-surface md:min-h-full">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={active}
+              src={items[active].img}
+              alt={items[active].t}
+              initial={{ opacity: 0, scale: 1.06 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-6">
+            <span className="eyebrow text-ivory/80">The Craft · 0{active + 1}</span>
+            <h4 className="mt-1 font-serif text-2xl text-ivory">{items[active].t}</h4>
+          </div>
+        </div>
       </div>
     </Section>
   );
