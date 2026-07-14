@@ -525,41 +525,78 @@ function TrustBar() {
 /* ------------------------------- GALLERY --------------------------------- */
 
 function Gallery() {
+  const [active, setActive] = useState(0);
   return (
     <Section id="gallery" eyebrow="The Portfolio" title="Brides, composed like editorials.">
-      <div className="mt-16 grid grid-cols-12 gap-3 md:gap-5">
-        <GalleryImg src={brides[0]} className="col-span-8 aspect-[4/5]" />
-        <div className="col-span-4 flex flex-col gap-3 md:gap-5">
-          <GalleryImg src={brides[1]} className="aspect-square" />
-          <GalleryImg src={brides[2]} className="flex-1" />
+      <div className="mt-14 grid gap-10 md:grid-cols-[1.1fr_1fr] md:items-center">
+        <div className="relative mx-auto aspect-[4/5] w-full max-w-md">
+          {brides.map((src, i) => {
+            const offset = (i - active + brides.length) % brides.length;
+            const isTop = offset === 0;
+            return (
+              <motion.button
+                key={i}
+                type="button"
+                onClick={() => setActive((active + 1) % brides.length)}
+                aria-label={`Show bride ${i + 1}`}
+                animate={{
+                  x: offset * 10,
+                  y: offset * 14,
+                  rotate: offset * 2.5,
+                  scale: 1 - offset * 0.04,
+                  opacity: offset > 3 ? 0 : 1 - offset * 0.15,
+                }}
+                transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+                style={{ zIndex: brides.length - offset }}
+                className="absolute inset-0 origin-bottom overflow-hidden rounded-2xl border border-white/[0.08] bg-surface shadow-2xl"
+              >
+                <img src={src} alt="Bride" className="h-full w-full object-cover" loading="lazy" />
+                {isTop && (
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/60 to-transparent p-5">
+                    <span className="text-[10px] tracking-[0.28em] uppercase text-ivory/90">
+                      Plate {String(i + 1).padStart(2, "0")} / {String(brides.length).padStart(2, "0")}
+                    </span>
+                    <span className="rounded-full bg-ivory/90 px-3 py-1 text-[10px] tracking-[0.22em] uppercase text-background">
+                      Tap →
+                    </span>
+                  </div>
+                )}
+              </motion.button>
+            );
+          })}
         </div>
-        <GalleryImg src={brides[3]} className="col-span-4 aspect-[4/5]" />
-        <GalleryImg src={brides[4]} className="col-span-4 aspect-[4/5]" />
-        <GalleryImg src={brides[5]} className="col-span-4 aspect-[4/5]" />
-        <GalleryImg src={brides[6]} className="col-span-6 aspect-[4/3]" />
-        <GalleryImg src={brides[7]} className="col-span-6 aspect-[4/3]" />
+
+        <div>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            A private book of recent brides — every plate hand-picked, every finish shot in natural
+            light. Tap the album to leaf through.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-2">
+            {brides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                aria-label={`Go to plate ${i + 1}`}
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  i === active ? "w-10 bg-gold" : "w-4 bg-foreground/20 hover:bg-foreground/40"
+                }`}
+              />
+            ))}
+          </div>
+          <div className="mt-10 flex gap-3">
+            <button
+              onClick={() => setActive((active - 1 + brides.length) % brides.length)}
+              className="btn-ghost-gold"
+            >
+              ← Prev
+            </button>
+            <button onClick={() => setActive((active + 1) % brides.length)} className="btn-cream">
+              Next Plate <span className="arrow">→</span>
+            </button>
+          </div>
+        </div>
       </div>
     </Section>
-  );
-}
-
-function GalleryImg({ src, className = "" }: { src: string; className?: string }) {
-  return (
-    <motion.figure
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1] }}
-      className={`group relative overflow-hidden rounded-xl bg-surface ${className}`}
-    >
-      <img
-        src={src}
-        alt="Bride portrait"
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06]"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
-    </motion.figure>
   );
 }
 
