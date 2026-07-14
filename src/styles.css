@@ -308,3 +308,8 @@ html:not(.dark) .divide-white\/\[0\.06\] > * + * {
       opacity 0.4s ease;
   }
 }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
