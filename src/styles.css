@@ -169,6 +169,12 @@
 /*  border-white/* alpha utilities. In light mode, invert them so     */
 /*  the same JSX reads correctly on paper.                            */
 /* ------------------------------------------------------------------ */
+
+/* --- Background overlays: bg-black/* → soft white scrims --- */
+html:not(.dark) .bg-black\/10,
+html:not(.dark) .bg-black\/20 {
+  background-color: color-mix(in oklab, white 85%, transparent) !important;
+}
 html:not(.dark) .bg-black\/40,
 html:not(.dark) .bg-black\/50,
 html:not(.dark) .bg-black\/60,
@@ -178,6 +184,7 @@ html:not(.dark) .bg-black\/90 {
   background-color: color-mix(in oklab, white 78%, transparent) !important;
 }
 
+/* --- Border overrides: border-white/* → subtle dark borders --- */
 html:not(.dark) .border-white\/5,
 html:not(.dark) .border-white\/10,
 html:not(.dark) .border-white\/20,
@@ -185,6 +192,61 @@ html:not(.dark) .border-white\/\[0\.06\],
 html:not(.dark) .border-white\/\[0\.08\],
 html:not(.dark) .divide-white\/\[0\.06\] > * + * {
   border-color: color-mix(in oklab, black 10%, transparent) !important;
+}
+
+/* --- Text overrides: text-white/* → readable dark text --- */
+html:not(.dark) .text-white\/10 {
+  color: color-mix(in oklab, black 12%, transparent) !important;
+}
+html:not(.dark) .text-white\/20 {
+  color: color-mix(in oklab, black 20%, transparent) !important;
+}
+html:not(.dark) .text-white\/40 {
+  color: color-mix(in oklab, black 40%, transparent) !important;
+}
+html:not(.dark) .text-white\/50 {
+  color: color-mix(in oklab, black 50%, transparent) !important;
+}
+html:not(.dark) .text-white\/60 {
+  color: color-mix(in oklab, black 55%, transparent) !important;
+}
+html:not(.dark) .text-white\/70 {
+  color: color-mix(in oklab, black 60%, transparent) !important;
+}
+html:not(.dark) .text-white\/80 {
+  color: color-mix(in oklab, black 70%, transparent) !important;
+}
+
+/* --- Gradient overrides for cards & scrims --- */
+/* Package cards: from-surface to-black → from-surface to paper */
+html:not(.dark) .from-surface.to-black {
+  --tw-gradient-to: oklch(0.965 0.01 85) !important;
+}
+/* Image overlays: from-black → dark scrim stays on images for legibility */
+/* Keep from-black gradients on images so text on images remains readable */
+
+/* --- Package card image overlay: soften the dark gradient in light mode --- */
+html:not(.dark) .from-black.via-black\/20.to-transparent {
+  --tw-gradient-from: oklch(0.965 0.01 85) !important;
+  --tw-gradient-via: oklch(0.965 0.01 85 / 0.2) !important;
+}
+
+/* --- Nav bg override for light mode --- */
+html:not(.dark) .shadow-\[0_10px_40px_-15px_rgba\(0\,0\,0\,0\.9\)\] {
+  box-shadow: 0 10px 40px -15px rgba(0, 0, 0, 0.1) !important;
+}
+html:not(.dark) .shadow-\[0_20px_60px_-30px_rgba\(0\,0\,0\,0\.7\)\] {
+  box-shadow: 0 20px 60px -30px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* --- Review card gold glow: soften in light mode --- */
+html:not(.dark) .hover\:shadow-\[0_0_40px_rgba\(212\,175\,55\,0\.15\)\]:hover {
+  box-shadow: 0 10px 40px -10px rgba(120, 100, 50, 0.15) !important;
+}
+
+/* --- Drop shadow text on light bg --- */
+html:not(.dark) .drop-shadow-lg {
+  filter: none !important;
 }
 
 /* Hero over-image scrims stay dark for legibility; leave from-black/* alone */
