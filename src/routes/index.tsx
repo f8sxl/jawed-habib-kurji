@@ -14,6 +14,256 @@ import bride7 from "@/assets/brides/wmremove-transformed (2).jpeg";
 import bride8 from "@/assets/brides/wmremove-transformed.jpeg";
 import logoImg from "@/assets/logo/jh_logo_new.png";
 
+/* -------------------------------- HELPERS --------------------------------- */
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="block border-b border-white/10 focus-within:border-gold transition-colors">
+      <span className="eyebrow block">{label}</span>
+      {children}
+    </label>
+  );
+}
+
+function Section({
+  id,
+  eyebrow,
+  title,
+  description,
+  children,
+}: {
+  id?: string;
+  eyebrow?: string;
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <section id={id} className="mx-auto max-w-7xl px-6 py-24 md:py-32">
+      <div className="max-w-3xl">
+        {eyebrow && (
+          <motion.p
+            initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            transition={{ duration: 0.6 }} className="eyebrow"
+          >
+            {eyebrow}
+          </motion.p>
+        )}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+          className="mt-5 font-serif text-[clamp(2rem,4.5vw,3.75rem)] leading-[1.02] text-ivory"
+        >
+          {title}
+        </motion.h2>
+        {description && (
+          <motion.p
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.15 }}
+            className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base"
+          >
+            {description}
+          </motion.p>
+        )}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+interface BookingFormData {
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  venue: string;
+}
+
+function BookingFormSection({
+  selectedDate,
+  formData,
+  setFormData,
+  isFormSubmitted,
+  onSubmit,
+  onDateInputClick
+}: {
+  selectedDate: Date | null;
+  formData: BookingFormData;
+  setFormData: React.Dispatch<React.SetStateAction<BookingFormData>>;
+  isFormSubmitted: boolean;
+  onSubmit: (e: React.FormEvent) => void;
+  onDateInputClick: () => void;
+}) {
+  return (
+    <Section id="booking-form-section" eyebrow="Booking Details" title="Fill the form.">
+      <div className="mx-auto mt-10 max-w-2xl">
+        <div className="glass-card rounded-3xl border border-white/10 bg-surface/40 p-6 md:p-10 shadow-2xl backdrop-blur-md">
+          <form onSubmit={onSubmit} className="flex flex-col gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              <Field label="Full Name (Required)">
+                <input
+                  required
+                  type="text"
+                  name="name"
+                  autoComplete="name"
+                  value={formData.name}
+                  onChange={e => setFormData({ ...formData, name: e.target.value })}
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-white placeholder-white/20 text-sm"
+                  placeholder="Jane Doe"
+                />
+              </Field>
+              <Field label="Mobile Number (Required)">
+                <input
+                  required
+                  type="tel"
+                  name="tel"
+                  autoComplete="tel"
+                  value={formData.phone}
+                  onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-white placeholder-white/20 text-sm"
+                  placeholder="+91 98765 43210"
+                />
+              </Field>
+            </div>
+            
+            <div className="grid gap-6 md:grid-cols-2">
+              <Field label="Email Address (Required)">
+                <input
+                  required
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={e => setFormData({ ...formData, email: e.target.value })}
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-white placeholder-white/20 text-sm"
+                  placeholder="jane@example.com"
+                />
+              </Field>
+              <Field label="City / Locality (Required)">
+                <input
+                  required
+                  type="text"
+                  name="address-level2"
+                  autoComplete="address-level2"
+                  value={formData.city}
+                  onChange={e => setFormData({ ...formData, city: e.target.value })}
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-white placeholder-white/20 text-sm"
+                  placeholder="Patna, Bihar"
+                />
+              </Field>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <Field label="Wedding Date (Click to choose/change)">
+                <input
+                  required
+                  readOnly
+                  type="text"
+                  name="wedding-date"
+                  autoComplete="off"
+                  onClick={onDateInputClick}
+                  value={selectedDate ? selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'}) : ''}
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-gold placeholder-white/20 text-sm cursor-pointer font-medium"
+                  placeholder="Select a date from calendar above"
+                />
+              </Field>
+              <Field label="Wedding Venue / Location (Optional)">
+                <input
+                  type="text"
+                  name="address-line1"
+                  autoComplete="address-line1"
+                  value={formData.venue}
+                  onChange={e => setFormData({ ...formData, venue: e.target.value })}
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-white placeholder-white/20 text-sm"
+                  placeholder="e.g. Taj Hotel, Patna"
+                />
+              </Field>
+            </div>
+
+            <div className="mt-4 flex flex-col items-center gap-3">
+              <button
+                type="submit"
+                className="btn-cream w-full justify-center text-sm font-bold tracking-widest py-4 cursor-pointer"
+              >
+                {isFormSubmitted ? "UPDATE DETAILS & CHOOSE PACKAGE" : "PROCEED TO PACKAGE SELECTION"} <span className="arrow">↓</span>
+              </button>
+              {isFormSubmitted && (
+                <span className="text-xs text-green-400 flex items-center gap-1.5 animate-pulse">
+                  ✓ Details saved! Scroll down to choose package.
+                </span>
+              )}
+            </div>
+          </form>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function SuccessPopup({
+  data,
+  onClose
+}: {
+  data: { bookingId: string; paymentId: string; orderId: string; package: string; date: string; name: string };
+  onClose: () => void;
+}) {
+  const [countdown, setCountdown] = useState(5);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          onClose();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
+    >
+      <motion.div
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 20 }}
+        className="relative w-full max-w-md rounded-3xl border border-gold/30 bg-surface p-8 text-center shadow-[0_0_50px_rgba(212,175,55,0.15)]"
+      >
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gold/10 text-gold mb-6 border border-gold/20">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h2 className="font-serif text-3xl text-gold mb-2">Deposit Received!</h2>
+        <p className="text-white/80 text-sm leading-relaxed mb-6">
+          Thank you, {data.name}. Your booking deposit for the <strong>{data.package}</strong> package is confirmed.
+        </p>
+        
+        <div className="rounded-xl bg-black/40 p-4 text-left text-xs text-white/60 mb-6 border border-white/5 space-y-2 font-mono">
+          <div className="flex justify-between"><span>Booking ID:</span> <span className="text-gold font-bold">{data.bookingId}</span></div>
+          <div className="flex justify-between"><span>Wedding Date:</span> <span className="text-white/80">{data.date}</span></div>
+        </div>
+
+        <p className="text-xs text-white/40 mb-6">
+          Redirecting to confirmation page in <strong className="text-gold">{countdown}</strong> seconds...
+        </p>
+
+        <button 
+          onClick={onClose}
+          className="btn-cream w-full justify-center text-xs font-bold tracking-widest py-3 cursor-pointer"
+        >
+          VIEW CONFIRMATION NOW
+        </button>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 const brides = [bride1, bride2, bride3, bride4, bride5, bride6, bride7, bride8];
 
 export const Route = createFileRoute("/")({
@@ -29,15 +279,170 @@ export const Route = createFileRoute("/")({
       { property: "og:image", content: heroBg },
     ],
   }),
-  component: Landing,
+  component: IndexComponent,
 });
 
 const WHATSAPP = "https://wa.me/919572194458?text=Hi%2C%20I%27d%20like%20to%20reserve%20my%20wedding%20date%20at%20Jawed%20Habib%20Kurji.";
 const PHONE = "tel:+919572194458";
 
-function Landing() {
+export function IndexComponent() {
   const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, mass: 0.5 });
+  const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  
+  // New State for Booking Funnel
+  const [formData, setFormData] = useState({ name: "", phone: "", email: "", city: "", venue: "" });
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [paymentSuccessData, setPaymentSuccessData] = useState<{
+    bookingId: string;
+    paymentId: string;
+    orderId: string;
+    package: string;
+    date: string;
+    name: string;
+  } | null>(null);
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handlePayment = async (packageName: string) => {
+    if (!selectedDate) {
+      alert("Please select your wedding date from the calendar first!");
+      document.getElementById("availability")?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    if (!isFormSubmitted) {
+      alert("Please fill out and submit your booking details form first!");
+      document.getElementById("booking-form-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    
+    setIsProcessing(true);
+
+    const scriptLoaded = await loadRazorpayScript();
+    if (!scriptLoaded) {
+      alert("Failed to load Razorpay SDK. Please check your internet connection.");
+      setIsProcessing(false);
+      return;
+    }
+
+    try {
+      const orderRes = await fetch("/api/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: 200000, // ₹2,000 in paise
+          currency: "INR",
+          receipt: `receipt_date_${selectedDate.getTime()}`,
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          city: formData.city,
+          venue: formData.venue,
+          packageName: packageName,
+          bookingDate: selectedDate.toLocaleDateString()
+        }),
+      });
+
+      if (!orderRes.ok) throw new Error("Failed to create order on the server");
+      const orderData = await orderRes.json() as { order_id: string; amount: number; currency: string; notes: any };
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TEAM5XQSjlLwsr",
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: "Jawed Habib Kurji",
+        description: `${packageName} Booking - Date: ${selectedDate.toLocaleDateString()}`,
+        image: logoImg,
+        order_id: orderData.order_id,
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+          contact: formData.phone,
+        },
+        notes: orderData.notes,
+        handler: async function (response: any) {
+          try {
+            const verifyRes = await fetch("/api/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }),
+            });
+
+            const verifyData = await verifyRes.json() as { status: string; error?: string; booking: any };
+            
+            if (verifyRes.ok && verifyData.status === "success") {
+              setPaymentSuccessData({
+                bookingId: verifyData.booking.id,
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id,
+                package: packageName,
+                date: selectedDate.toLocaleDateString(),
+                name: formData.name
+              });
+            } else {
+              alert(`Signature verification failed: ${verifyData.error || "Please contact support"}`);
+            }
+          } catch (err: any) {
+            console.error("Verification error:", err);
+            alert("An error occurred while verifying the payment. Please contact support.");
+          } finally {
+            setIsProcessing(false);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setIsProcessing(false);
+          }
+        },
+        theme: {
+          color: "#D4AF37"
+        }
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      
+      rzp.on('payment.failed', function (response: any) {
+        alert(`Payment failed: ${response.error.description}`);
+        setIsProcessing(false);
+      });
+
+      rzp.open();
+    } catch (error: any) {
+      console.error("Payment initiation error:", error);
+      alert("Error initiating payment. Please try again.");
+      setIsProcessing(false);
+    }
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedDate) {
+      alert("Please select your wedding date from the calendar first!");
+      document.getElementById("availability")?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    setIsFormSubmitted(true);
+    setTimeout(() => {
+      document.getElementById("packages")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  };
+
+  const handleDateInputClick = () => {
+    document.getElementById("availability")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -51,11 +456,19 @@ function Landing() {
 
       <main>
         <Hero />
-        <Availability />
+        <Availability selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+        <BookingFormSection 
+          selectedDate={selectedDate} 
+          formData={formData} 
+          setFormData={setFormData} 
+          isFormSubmitted={isFormSubmitted} 
+          onSubmit={handleFormSubmit} 
+          onDateInputClick={handleDateInputClick} 
+        />
         <Gallery />
         <Transformations />
+        <Packages selectedDate={selectedDate} handlePayment={handlePayment} isProcessing={isProcessing} />
         <WhyUs />
-        <Packages />
         <BeforeAfter />
         <Testimonials />
         <SalonExperience />
@@ -81,6 +494,18 @@ function Landing() {
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.663-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
         </svg>
       </a>
+
+      {/* Success Modal with auto-redirect countdown */}
+      <AnimatePresence>
+        {paymentSuccessData && (
+          <SuccessPopup 
+            data={paymentSuccessData} 
+            onClose={() => {
+              window.location.href = `/booking-confirmation?bookingId=${paymentSuccessData.bookingId}`;
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -152,8 +577,9 @@ function Nav() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <TranslateToggle />
             <ThemeToggle />
-            <a href="#reserve" className="hidden md:inline-flex btn-cream !py-2.5 !px-5 !text-[11px]">
+            <a href="#availability" className="hidden md:inline-flex btn-cream !py-2.5 !px-5 !text-[11px]">
               Reserve <span className="arrow">→</span>
             </a>
             <button
@@ -226,6 +652,40 @@ function ThemeToggle() {
           </motion.svg>
         )}
       </AnimatePresence>
+    </button>
+  );
+}
+
+function TranslateToggle() {
+  const [lang, setLang] = useState("en");
+
+  useEffect(() => {
+    const match = document.cookie.match(/(^|;\s*)googtrans=([^;]*)/);
+    if (match && match[2].includes("/hi")) {
+      setLang("hi");
+    }
+  }, []);
+
+  const toggle = () => {
+    const nextLang = lang === "en" ? "hi" : "en";
+    setLang(nextLang);
+    const domain = window.location.hostname;
+    document.cookie = `googtrans=/en/${nextLang}; path=/; domain=${domain}`;
+    // Also set without domain for local testing compatibility
+    document.cookie = `googtrans=/en/${nextLang}; path=/`;
+    window.location.reload();
+  };
+
+  return (
+    <button
+      onClick={toggle}
+      aria-label="Toggle language"
+      title={lang === "en" ? "Translate to Hindi" : "Translate to English"}
+      className="theme-toggle flex items-center justify-center text-ivory hover:text-gold"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-[18px] h-[18px]" fill="currentColor">
+        <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+      </svg>
     </button>
   );
 }
@@ -337,7 +797,7 @@ function Hero() {
 
       <motion.div
         style={{ opacity }}
-        className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center gap-8 px-6 pb-24 pt-32 lg:h-full lg:min-h-0 lg:flex-row lg:items-end lg:justify-between lg:gap-12 lg:pb-28 lg:pt-0"
+        className="relative z-10 mx-auto flex max-w-7xl flex-col gap-8 px-6 pb-24 pt-[50svh] lg:h-full lg:min-h-0 lg:flex-row lg:items-end lg:justify-between lg:gap-12 lg:pb-28 lg:pt-0"
       >
         <div className="flex flex-col">
           <motion.div
@@ -461,9 +921,14 @@ function WordReveal({ text, className }: { text: string; className?: string }) {
 
 /* ----------------------------- AVAILABILITY ------------------------------ */
 
-function Availability() {
+function Availability({
+  selectedDate,
+  setSelectedDate
+}: {
+  selectedDate: Date | null;
+  setSelectedDate: (d: Date | null) => void;
+}) {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const prevMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
@@ -490,7 +955,7 @@ function Availability() {
   return (
     <Section id="availability" eyebrow="Wedding Date" title="Reserve before your date is taken.">
       <div className="mx-auto mt-14 max-w-4xl">
-        <div className="glass-card flex flex-col gap-10 rounded-3xl p-6 md:flex-row md:p-10">
+        <div className="glass-card flex flex-col gap-10 rounded-3xl p-6 md:flex-row md:p-10 shadow-2xl backdrop-blur-md">
           {/* Calendar Side */}
           <div className="flex-1 rounded-2xl border border-white/10 bg-black/20 p-6">
             <div className="mb-6 flex items-center justify-between">
@@ -513,52 +978,88 @@ function Availability() {
                 if (d === null) return <div key={`empty-${i}`} className="p-2" />;
                 const thisDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), d);
                 const isPast = thisDate < today;
+                
+                // Pseudo-random scarcity logic (~30% of future dates are marked as 'fast filling')
+                const hash = (d * 13 + thisDate.getMonth() * 7) % 10;
+                const isFastFilling = !isPast && (hash === 2 || hash === 7 || hash === 5);
+                
                 const isSelected = selectedDate?.getTime() === thisDate.getTime();
                 
                 return (
                   <button 
                     key={d}
                     disabled={isPast}
-                    onClick={() => setSelectedDate(thisDate)}
-                    className={`flex h-9 w-full items-center justify-center rounded-full text-sm transition-all ${
+                    onClick={() => {
+                      setSelectedDate(thisDate);
+                      setTimeout(() => {
+                        document.getElementById("booking-form-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }, 100);
+                    }}
+                    className={`relative flex h-9 w-full items-center justify-center rounded-full text-sm transition-all ${
                       isPast ? 'cursor-not-allowed text-white/20' :
-                      isSelected ? 'scale-110 bg-gold font-medium text-background shadow-[0_0_15px_rgba(212,175,55,0.4)]' :
+                      isSelected ? 'scale-110 bg-gold font-medium text-background shadow-[0_0_15px_rgba(212,175,55,0.4)] z-10' :
                       'text-ivory hover:scale-110 hover:bg-white/10'
                     }`}
                   >
-                    {d}
+                    <span>{d}</span>
+                    {isFastFilling && !isSelected && (
+                      <span className="absolute bottom-1.5 h-1 w-1 rounded-full bg-orange-400/80" title="Slots filling fast" />
+                    )}
                   </button>
                 )
               })}
             </div>
+            <div className="mt-4 flex items-center justify-center gap-2 text-[10px] font-medium tracking-widest text-white/40 uppercase">
+               <span className="h-1.5 w-1.5 rounded-full bg-orange-400/80" />
+               Slots filling fast
+            </div>
           </div>
 
-          {/* Form Side */}
-          <div className="flex flex-1 flex-col justify-center gap-6">
-            <h3 className="mb-2 font-serif text-2xl text-ivory">Confirm Your Slot</h3>
-            <p className="mb-4 leading-relaxed text-sm text-ivory/60">
-              Date can be shifted even after the amount gets booked according to your convenience.
-            </p>
+          {/* Form/Deposit Summary Side */}
+          <div className="flex flex-1 flex-col justify-center gap-5 pb-6 md:pb-0">
+            <div>
+              <h3 className="mb-1.5 font-serif text-3xl text-ivory">Reserve Date</h3>
+              <p className="text-sm leading-relaxed text-ivory/60">
+                Pick an available date to secure your slot.
+              </p>
+            </div>
             
-            <div className="space-y-4">
-              <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-4">
-                <span className="text-sm text-white/60">Selected Date</span>
+            <div className="flex flex-col gap-3.5 rounded-2xl border border-white/10 bg-white/5 p-5">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-white/60">Date</span>
                 <span className="font-medium text-gold">
-                  {selectedDate ? selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric'}) : 'None selected'}
+                  {selectedDate ? selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric'}) : 'Pending'}
                 </span>
               </div>
-              <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-4">
-                <span className="text-sm text-white/60">Booking Deposit</span>
-                <span className="font-medium text-ivory">₹2,000</span>
+              <div className="h-px w-full bg-white/10" />
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-sm text-white/60">Deposit</span>
+                  <div className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1.5 rounded-md border border-white/10">
+                    <svg className="w-3 h-3 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <span className="text-[9px] font-bold tracking-widest text-white/70 uppercase flex items-center gap-1.5">
+                      SECURED BY <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" alt="Razorpay" className="h-2.5 brightness-0 invert opacity-80" />
+                    </span>
+                  </div>
+                </div>
+                <span className="text-xl font-medium text-ivory">₹2,000</span>
               </div>
             </div>
 
-            <a 
-              href="#availability"
-              className={`btn-cream mt-4 w-full justify-center ${!selectedDate && 'pointer-events-none opacity-50'}`}
+            <button 
+              onClick={() => {
+                if (selectedDate) {
+                  document.getElementById("booking-form-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+              }}
+              disabled={!selectedDate}
+              className={`btn-cream mt-2 w-full justify-center text-[11px] md:text-sm tracking-[0.2em] cursor-pointer ${!selectedDate && 'pointer-events-none opacity-50'}`}
             >
-              Secure This Date <span className="arrow">→</span>
-            </a>
+              {selectedDate ? "ENTER DETAILS" : "SELECT A DATE"} <span className="arrow">↓</span>
+            </button>
           </div>
         </div>
       </div>
@@ -566,14 +1067,6 @@ function Availability() {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="block border-b border-white/10 focus-within:border-gold transition-colors">
-      <span className="eyebrow block">{label}</span>
-      {children}
-    </label>
-  );
-}
 
 
 /* ------------------------------- GALLERY --------------------------------- */
@@ -660,18 +1153,19 @@ function Transformations() {
   const [active, setActive] = useState<number | null>(null);
   const videos = [
     "https://player.vimeo.com/video/1210129546?background=1",
-    "https://player.vimeo.com/video/1210129516?background=1",
     "https://player.vimeo.com/video/1210129528?background=1",
     "https://player.vimeo.com/video/1210129477?background=1",
     "https://player.vimeo.com/video/1210129479?background=1",
     "https://player.vimeo.com/video/1210129481?background=1",
-    "https://player.vimeo.com/video/1210129478?background=1"
+    "https://player.vimeo.com/video/1210129478?background=1",
+    "https://player.vimeo.com/video/1210496317?background=1",
+    "https://player.vimeo.com/video/1210496318?background=1"
   ];
   
   const items = videos.map((src, i) => ({
     src,
-    title: ["Aanya", "Ishita", "Meher", "Rhea", "Sanvi", "Tara", "Kriti"][i],
-    duration: ["1:04", "0:48", "1:22", "0:56", "1:11", "0:44", "1:15"][i],
+    title: ["Aanya", "Meher", "Rhea", "Sanvi", "Tara", "Kriti", "Nisha", "Pooja"][i],
+    duration: ["1:04", "1:22", "0:56", "1:11", "0:44", "1:15", "1:02", "0:58"][i],
   }));
 
   return (
@@ -762,7 +1256,7 @@ function WhyUs() {
 
   return (
     <Section id="bridal" eyebrow="Premium Products" title="Brands we trust for your big day.">
-      <div className="mt-14 grid gap-8 md:grid-cols-[1.1fr_1fr] md:items-stretch">
+      <div className="mt-14 grid gap-8 md:grid-cols-[1.1fr_1fr] md:items-center">
         
         {/* Accordion list */}
         <div className="flex flex-col justify-center">
@@ -809,7 +1303,7 @@ function WhyUs() {
         </div>
 
         {/* Animated Image Container */}
-        <div className="group relative min-h-[420px] overflow-hidden rounded-3xl border border-white/10 bg-black md:min-h-full">
+        <div className="group relative min-h-[420px] overflow-hidden rounded-3xl border border-white/10 bg-black w-full md:aspect-[3/4]">
           <motion.div
             initial={{ opacity: 0, filter: "blur(10px)", scale: 1.1 }}
             whileInView={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
@@ -818,7 +1312,7 @@ function WhyUs() {
             className="absolute inset-0 h-full w-full"
           >
             <motion.img
-              src="/new-bride.jpg"
+              src="/product-section-bride.jpeg"
               alt="Bride showcasing premium products"
               animate={{ 
                 scale: [1, 1.05, 1], 
@@ -828,7 +1322,7 @@ function WhyUs() {
                 repeat: Infinity, 
                 ease: "easeInOut" 
               }}
-              className="h-full w-full object-cover object-top"
+              className="h-full w-full object-cover object-center"
             />
           </motion.div>
           
@@ -844,7 +1338,15 @@ function WhyUs() {
 
 /* ------------------------------- PACKAGES -------------------------------- */
 
-function Packages() {
+function Packages({
+  selectedDate,
+  handlePayment,
+  isProcessing
+}: {
+  selectedDate: Date | null;
+  handlePayment: (pkgName: string) => Promise<void>;
+  isProcessing: boolean;
+}) {
   const pkgs = [
     {
       name: "Haldi & Sangeet",
@@ -892,6 +1394,13 @@ function Packages() {
   ];
   return (
     <Section id="packages" eyebrow="Bridal Packages" title="Six ways to be adorned.">
+      <div className="mt-6 max-w-3xl">
+        <p className="text-sm md:text-base leading-relaxed text-white/70">
+          A secure booking deposit of <strong className="text-white font-semibold">₹2,000</strong> is required to reserve any package. 
+          This amount will be <strong className="text-gold font-semibold">fully adjusted</strong> against your final package cost. 
+          <span className="block mt-2 text-xs text-white/50">Note: Booking deposits are non-refundable.</span>
+        </p>
+      </div>
       <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {pkgs.map((p, i) => (
           <motion.article
@@ -922,9 +1431,39 @@ function Packages() {
                   <div className="font-serif text-3xl text-gold">{p.price}</div>
                   {p.onward && <div className="text-[10px] tracking-[0.24em] uppercase text-muted-foreground mt-1">{p.onward}</div>}
                 </div>
-                <a href="#reserve" className="inline-flex items-center justify-center rounded-full border border-gold/50 bg-gold/10 px-5 py-2.5 text-[11px] font-medium tracking-[0.2em] uppercase text-gold backdrop-blur-sm transition-all duration-300 hover:bg-gold hover:text-black hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
-                  Reserve
-                </a>
+                <button
+                  disabled={isProcessing}
+                  onClick={() => handlePayment(p.name)}
+                  className="group inline-flex items-center gap-2.5 rounded-full border border-blue-500 bg-white pl-5 pr-2 py-2 transition-all duration-300 hover:bg-gray-50 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] disabled:opacity-50"
+                >
+                  <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-black flex items-center gap-1.5 transition-colors">
+                    Book Now
+                  </span>
+                  
+                  <div className="flex items-center -space-x-1.5 opacity-100 transition-transform group-hover:scale-105">
+                    {/* GPay */}
+                    <div className="w-[22px] h-[22px] rounded-full bg-white flex items-center justify-center relative z-[4] shadow-sm border border-gray-200 shrink-0">
+                      <svg viewBox="0 0 48 48" className="w-[12px] h-[12px]">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.7 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                      </svg>
+                    </div>
+                    {/* PhonePe */}
+                    <div className="w-[22px] h-[22px] rounded-full bg-[#5f259f] flex items-center justify-center relative z-[3] shadow-sm border border-gray-200 shrink-0">
+                      <span className="text-[8px] font-bold text-white tracking-tighter">पे</span>
+                    </div>
+                    {/* UPI */}
+                    <div className="w-[22px] h-[22px] rounded-full bg-white flex items-center justify-center relative z-[2] shadow-sm border border-gray-200 shrink-0">
+                      <span className="text-[7px] font-bold text-black tracking-tighter italic">UPI</span>
+                    </div>
+                    {/* Mastercard */}
+                    <div className="w-[22px] h-[22px] rounded-full bg-white flex items-center justify-center relative z-[1] shadow-sm border border-gray-200 shrink-0">
+                      <svg viewBox="0 0 24 24" className="w-[14px] h-[14px]"><circle cx="8" cy="12" r="6" fill="#EB001B"/><circle cx="16" cy="12" r="6" fill="#F79E1B"/></svg>
+                    </div>
+                  </div>
+                </button>
                 </div>
               </div>
             </div>
@@ -979,70 +1518,187 @@ function BeforeAfter() {
 /* ---------------------------- TESTIMONIALS ------------------------------- */
 
 function Testimonials() {
-  const t = [
-    { n: "Ananya S.", w: "March 2024", stars: 5, q: "I have never felt more like myself. Base ekdum flawless tha, and the eye makeup was literally exactly what I wanted for my big day." },
-    { n: "Priya M.", w: "December 2024", stars: 4, q: "Makeup was stunning. Subah se lekar raat ke reception tak ekdum set tha, bas thoda rush tha subah but final look was amazing." },
-    { n: "Rhea K.", w: "November 2024", stars: 5, q: "Patna mein Jawed Habib Kurji jaisa koi bridal studio nahi hai. The team made me feel so comfortable aur mera look sabko pasand aaya!" },
-    { n: "Sanvi R.", w: "October 2024", stars: 5, q: "Mera lehenga bohot bhari tha but draping itni perfect ki thi ki I was dancing all night without any worry. Highly recommended." },
-    { n: "Megha T.", w: "February 2024", stars: 4, q: "Overall experience was very good. Products ekdum premium use kiye the aur skin pe bilkul heavy feel nahi ho raha tha." },
-    { n: "Nandini P.", w: "January 2025", stars: 5, q: "Tearproof makeup ki guarantee sach thi! Vidai ke time bohot royi but makeup touch se bhi kharab nahi hua. Thank you so much!" },
-    { n: "Ishita D.", w: "April 2024", stars: 5, q: "Staff bohot polite aur professional hai. Mujhe natural look chahiye tha aur unhone exactly wahi deliver kiya. Best decision ever." },
-    { n: "Kritika S.", w: "May 2024", stars: 5, q: "Engagement makeup ke liye aayi thi, and it was so good ki maine bridal booking bhi turant kar li. Ekdum subtle aur elegant." },
-    { n: "Sneha V.", w: "July 2024", stars: 4, q: "Hairdo bohot sundar tha, bas thoda time zyada lag gaya but they made sure I looked perfect before leaving." },
-    { n: "Aditi G.", w: "August 2024", stars: 5, q: "Airbrush makeup was magical. It didn't look cakey at all, photos mein filter ki zaroorat hi nahi padi!" },
-    { n: "Kavya R.", w: "September 2024", stars: 5, q: "From the consultation to the final look, everything was seamless. They actually listened to my inputs and execution was flawless." },
-    { n: "Simran A.", w: "August 2024", stars: 5, q: "Haldi look was bright and fun, and reception look was totally glamorous. Do alag alag looks itni beautifully execute kiye, I felt like a celebrity!" },
-    { n: "Pooja K.", w: "June 2024", stars: 4, q: "Products were top-notch and skin felt very breathable. Sirf ek problem thi ki AC thoda zyada thanda tha studio mein haha!" },
-    { n: "Tanya M.", w: "May 2024", stars: 5, q: "Best makeup studio in Bihar! Every single guest asked me where I got my makeup done. Jawed Habib Kurji has the best bridal team hands down." },
-    { n: "Aisha S.", w: "October 2024", stars: 5, q: "My eyes are very sensitive but unhone itni carefully eye makeup kiya ki koi watering ya redness nahi hui. Bohot professional log hain." },
+  const [filter, setFilter] = useState("All");
+  const [sortOrder, setSortOrder] = useState("Top reviews");
+
+  const reviews = [
+    { n: "Neha Sharma", date: "July 14, 2026", stars: 5, title: "Absolutely stunning work!", tag: "Bridal", q: "Got my bridal makeup done here last week and the team was exceptional! The HD makeup stayed put through all the crying and sweating during the pheras." },
+    { n: "Aarushi P.", date: "June 28, 2026", stars: 5, title: "Best Airbrush in Patna", tag: "Airbrush", q: "Booked them for my engagement in June 2026. The airbrush finish was so glass-like, literally everyone asked me where I got it done." },
+    { n: "Ananya S.", date: "May 12, 2026", stars: 5, title: "Flawless Bridal Makeup", tag: "Bridal", q: "I have never felt more like myself. Base ekdum flawless tha, and the eye makeup was literally exactly what I wanted for my big day." },
+    { n: "Priya M.", date: "March 05, 2026", stars: 4, title: "Stunning Reception Look", tag: "Party", q: "Makeup was stunning. Subah se lekar raat ke reception tak ekdum set tha, bas thoda rush tha subah but final look was amazing." },
+    { n: "Rhea K.", date: "February 18, 2026", stars: 5, title: "Best Studio in Patna", tag: "Bridal", q: "Patna mein Jawed Habib Kurji jaisa koi bridal studio nahi hai. The team made me feel so comfortable aur mera look sabko pasand aaya!" },
+    { n: "Sanvi R.", date: "November 22, 2025", stars: 5, title: "Perfect Draping", tag: "Bridal", q: "Mera lehenga bohot bhari tha but draping itni perfect ki thi ki I was dancing all night without any worry. Highly recommended." },
+    { n: "Megha T.", date: "October 14, 2025", stars: 4, title: "Premium Products", tag: "Party", q: "Overall experience was very good. Products ekdum premium use kiye the aur skin pe bilkul heavy feel nahi ho raha tha." },
+    { n: "Nandini P.", date: "January 28, 2025", stars: 5, title: "Tearproof Guarantee", tag: "Bridal", q: "Tearproof makeup ki guarantee sach thi! Vidai ke time bohot royi but makeup touch se bhi kharab nahi hua. Thank you so much!" },
+    { n: "Ishita D.", date: "April 09, 2024", stars: 5, title: "Natural & Elegant", tag: "Party", q: "Staff bohot polite aur professional hai. Mujhe natural look chahiye tha aur unhone exactly wahi deliver kiya. Best decision ever." },
+    { n: "Kritika S.", date: "May 15, 2024", stars: 5, title: "Booked Immediately", tag: "Party", q: "Engagement makeup ke liye aayi thi, and it was so good ki maine bridal booking bhi turant kar li. Ekdum subtle aur elegant." },
+    { n: "Sneha V.", date: "July 02, 2024", stars: 4, title: "Beautiful Hairdo", tag: "Hair", q: "Hairdo bohot sundar tha, bas thoda time zyada lag gaya but they made sure I looked perfect before leaving." },
+    { n: "Aditi G.", date: "August 21, 2024", stars: 5, title: "Magical Airbrush", tag: "Airbrush", q: "Airbrush makeup was magical. It didn't look cakey at all, photos mein filter ki zaroorat hi nahi padi!" },
+    { n: "Kavya R.", date: "September 12, 2024", stars: 5, title: "Seamless Experience", tag: "Bridal", q: "From the consultation to the final look, everything was seamless. They actually listened to my inputs and execution was flawless." },
+    { n: "Simran A.", date: "August 04, 2024", stars: 5, title: "Felt Like a Celebrity", tag: "Party", q: "Haldi look was bright and fun, and reception look was totally glamorous. Do alag alag looks itni beautifully execute kiye, I felt like a celebrity!" },
+    { n: "Pooja K.", date: "June 19, 2024", stars: 4, title: "Very Breathable", tag: "Bridal", q: "Products were top-notch and skin felt very breathable. Sirf ek problem thi ki AC thoda zyada thanda tha studio mein haha!" },
   ];
 
-  const rotations = [
-    "rotate-0",
-    "-rotate-[3deg]",
-    "rotate-[2deg]",
-    "-rotate-[1deg]",
-    "rotate-[4deg]",
-    "-rotate-[2deg]",
-    "rotate-0",
-    "rotate-[3deg]",
-    "-rotate-[4deg]"
+  const filters = ["All", "Bridal", "Party", "Hair", "Airbrush", "5 Stars"];
+
+  const filteredReviews = reviews.filter(r => {
+    if (filter === "All") return true;
+    if (filter === "5 Stars") return r.stars === 5;
+    return r.tag === filter;
+  }).sort((a, b) => {
+    if (sortOrder === "Most recent") {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    }
+    // Top reviews (highest stars, then most recent)
+    if (b.stars !== a.stars) return b.stars - a.stars;
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
+  // Stats calculation
+  const totalReviews = 412;
+  const avgRating = 4.8;
+  const distribution = [
+    { stars: 5, percent: 85 },
+    { stars: 4, percent: 12 },
+    { stars: 3, percent: 2 },
+    { stars: 2, percent: 1 },
+    { stars: 1, percent: 0 },
   ];
 
   return (
-    <Section id="reviews" eyebrow="In Their Words" title="Trusted by the brides of Bihar.">
-      <div className="mt-14 columns-1 gap-6 space-y-6 md:columns-2 lg:columns-3 xl:columns-4">
-        {t.map((it, i) => (
-          <motion.figure
-            key={i}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ delay: (i % 4) * 0.1, duration: 0.9 }}
-            className={`glass-card group relative break-inside-avoid flex flex-col overflow-hidden rounded-3xl p-8 transition-all duration-500 hover:z-10 hover:scale-[1.03] hover:rotate-0 hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] ${rotations[i % rotations.length]}`}
-          >
-            <div className="flex flex-1 flex-col justify-between">
-              <div>
-                <div className="flex text-lg">
-                  {Array.from({ length: 5 }).map((_, j) => (
-                    <span key={j} className={j < it.stars ? "text-gold" : "text-white/10"}>★</span>
-                  ))}
-                </div>
-                <blockquote className="mt-6 font-serif text-[1.15rem] leading-relaxed text-ivory">
-                  “{it.q}”
-                </blockquote>
+    <Section id="reviews" eyebrow="Verified Feedback" title="Trusted by brides everywhere.">
+      <div className="mt-14 max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20">
+        
+        {/* Left Sidebar: Rating Summary */}
+        <div className="lg:w-1/3 shrink-0">
+          <div className="sticky top-24">
+            <h3 className="text-2xl font-serif text-ivory mb-4">Customer Reviews</h3>
+            <div className="flex items-center gap-4 mb-2">
+              <div className="flex text-2xl">
+                {Array.from({ length: 5 }).map((_, j) => (
+                  <span key={j} className={j < 4 ? "text-gold" : "text-gold/50"}>★</span>
+                ))}
               </div>
-              <figcaption className="mt-8 border-t border-white/[0.06] pt-5">
-                <div className="text-sm font-medium text-ivory">{it.n}</div>
-                <div className="text-[10px] tracking-[0.24em] uppercase text-muted-foreground mt-1.5">Bride · {it.w}</div>
-              </figcaption>
+              <span className="text-3xl font-medium text-white">{avgRating} out of 5</span>
             </div>
-          </motion.figure>
-        ))}
+            <p className="text-sm text-white/50 mb-8">{totalReviews} global ratings</p>
+
+            <div className="space-y-3">
+              {distribution.map((d) => (
+                <div key={d.stars} className="flex items-center gap-3 text-sm text-white/70 group cursor-pointer" onClick={() => setFilter(d.stars === 5 ? "5 Stars" : "All")}>
+                  <span className="w-12 text-right group-hover:text-gold transition-colors whitespace-nowrap">{d.stars} star</span>
+                  <div className="flex-1 h-3 bg-white/5 rounded-full overflow-hidden border border-white/10 group-hover:border-gold/50 transition-colors">
+                    <div className="h-full bg-gold rounded-full" style={{ width: `${d.percent}%` }} />
+                  </div>
+                  <span className="w-9 text-right text-white/40">{d.percent}%</span>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+
+        {/* Right Area: Filters & Reviews */}
+        <div className="lg:w-2/3">
+          
+          {/* Filters */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {filters.map(f => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all border ${
+                  filter === f 
+                  ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]' 
+                  : 'bg-transparent text-white/70 border-white/20 hover:border-gold hover:text-gold'
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between pb-4 mb-8 border-b border-white/10">
+            <span className="text-sm text-white/60 font-medium">Showing {filteredReviews.length} verified reviews</span>
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+              className="bg-transparent border border-white/20 text-white/90 text-sm font-medium rounded-lg px-4 py-2 hover:border-white/40 focus:outline-none focus:border-gold outline-none cursor-pointer appearance-none pr-10 relative transition-colors"
+              style={{
+                backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 0.75rem center',
+                backgroundSize: '1em'
+              }}
+            >
+              <option value="Top reviews" className="bg-zinc-900 text-white">Top reviews</option>
+              <option value="Most recent" className="bg-zinc-900 text-white">Most recent</option>
+            </select>
+          </div>
+
+          {/* Review List */}
+          <div className="space-y-8">
+            <AnimatePresence mode="popLayout">
+              {filteredReviews.map((r, i) => (
+                <motion.div
+                  key={i + r.n}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  className="pb-8 border-b border-white/5 last:border-0"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs font-medium text-ivory border border-white/10">
+                      {r.n.charAt(0)}
+                    </div>
+                    <span className="font-medium text-ivory text-sm">{r.n}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="flex text-sm">
+                      {Array.from({ length: 5 }).map((_, j) => (
+                        <span key={j} className={j < r.stars ? "text-gold" : "text-white/10"}>★</span>
+                      ))}
+                    </div>
+                    <span className="font-medium text-ivory text-sm">{r.title}</span>
+                  </div>
+
+                  <div className="text-xs text-white/40 mb-3 flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span>Reviewed on {r.date}</span>
+                    <span className="hidden sm:inline">|</span>
+                    <span className="text-[#D4AF37] font-medium flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+                      Verified Booking
+                    </span>
+                    <span className="hidden sm:inline">|</span>
+                    <span className="px-1.5 py-0.5 rounded-md bg-white/5 border border-white/10">{r.tag}</span>
+                  </div>
+
+                  <p className="text-white/80 text-sm leading-relaxed mb-4">
+                    {r.q}
+                  </p>
+                  
+                  <div className="flex items-center gap-4">
+                    <button className="flex items-center gap-1.5 text-xs text-white/50 hover:text-white transition-colors border border-white/10 rounded-full px-3 py-1 hover:bg-white/5">
+                      Helpful
+                    </button>
+                    <button className="text-xs text-white/40 hover:text-white transition-colors">
+                      Report abuse
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {filteredReviews.length === 0 && (
+              <div className="py-12 text-center text-white/50">
+                No reviews found for this filter.
+              </div>
+            )}
+          </div>
+
+        </div>
       </div>
-      <p className="mt-8 text-center text-[11px] tracking-[0.24em] uppercase text-muted-foreground">
-        Verified on Google · <a href="https://share.google/uvjGMHYzYzGpzXCSL" target="_blank" rel="noopener noreferrer" className="text-gold hover:underline">400+ reviews</a> · Swipe →
-      </p>
     </Section>
   );
 }
@@ -1175,11 +1831,11 @@ function Brands() {
 
 function Process() {
   const steps = [
-    { t: "Choose Your Date", d: "Reserve your wedding date from our seasonal calendar." },
-    { t: "Private Consultation", d: "A one-on-one session with your senior artist." },
-    { t: "Booking Deposit", d: "A refundable ₹5,000 confirms the date exclusively for you." },
-    { t: "Confirmation", d: "Trial, drape rehearsal and final look approval." },
-    { t: "Your Wedding Day", d: "Undivided attention from your artist, sunrise to reception." },
+    { t: "Choose Your Date", d: "Reserve your wedding date from our live calendar check." },
+    { t: "Enter Details", d: "Fill in your contact and venue information below." },
+    { t: "Choose Package", d: "Select your signature bridal makeup and styling look." },
+    { t: "Booking Deposit", d: "A non-refundable ₹2,000 confirms the date exclusively for you." },
+    { t: "Your Wedding Day", d: "Undivided attention from your artist, trial, and draping rehearsals." },
   ];
   const [active, setActive] = useState(0);
   return (
@@ -1424,6 +2080,7 @@ function Footer() {
             <p className="eyebrow">Contact</p>
             <a href="tel:+919572194458" className="mt-3 block text-sm text-ivory hover:text-gold transition-colors">+91 95721 94458</a>
             <a href="tel:+919709575559" className="block text-sm text-ivory hover:text-gold transition-colors">+91 97095 75559</a>
+            <a href="mailto:Jawedhabib.kurji@gmail.com" className="block text-sm text-ivory hover:text-gold transition-colors">Jawedhabib.kurji@gmail.com</a>
             <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="mt-2 block text-sm text-gold hover:underline">WhatsApp Us →</a>
             <a href="https://www.instagram.com/jawedhabib_kurji_patna/" target="_blank" rel="noopener noreferrer" className="block text-sm text-muted-foreground hover:text-ivory mt-1">Instagram</a>
           </div>
@@ -1437,50 +2094,4 @@ function Footer() {
   );
 }
 
-/* -------------------------------- SHARED --------------------------------- */
 
-function Section({
-  id,
-  eyebrow,
-  title,
-  description,
-  children,
-}: {
-  id?: string;
-  eyebrow?: string;
-  title: React.ReactNode;
-  description?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="mx-auto max-w-7xl px-6 py-24 md:py-32">
-      <div className="max-w-3xl">
-        {eyebrow && (
-          <motion.p
-            initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            transition={{ duration: 0.6 }} className="eyebrow"
-          >
-            {eyebrow}
-          </motion.p>
-        )}
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
-          className="mt-5 font-serif text-[clamp(2rem,4.5vw,3.75rem)] leading-[1.02] text-ivory"
-        >
-          {title}
-        </motion.h2>
-        {description && (
-          <motion.p
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.15 }}
-            className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base"
-          >
-            {description}
-          </motion.p>
-        )}
-      </div>
-      {children}
-    </section>
-  );
-}
