@@ -183,6 +183,8 @@ function RootShell({ children }: { children: ReactNode }) {
           __html: `function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element'); }`
         }} />
         <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" />
+        {/* Razorpay SDK */}
+        <script src="https://checkout.razorpay.com/v1/checkout.js" async />
         {/* Meta Pixel Code */}
         <script
           dangerouslySetInnerHTML={{

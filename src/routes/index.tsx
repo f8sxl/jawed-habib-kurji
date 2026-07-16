@@ -306,6 +306,10 @@ export function IndexComponent() {
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
+      if ((window as any).Razorpay) {
+        resolve(true);
+        return;
+      }
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.onload = () => resolve(true);
@@ -353,7 +357,18 @@ export function IndexComponent() {
         }),
       });
 
-      if (!orderRes.ok) throw new Error("Failed to create order on the server");
+      if (!orderRes.ok) {
+        const errText = await orderRes.text().catch(() => "Unknown server error");
+        let errMsg = "Failed to create order on the server";
+        try {
+          const errJson = JSON.parse(errText);
+          errMsg = errJson.error || errMsg;
+        } catch (_) {
+          errMsg = errText || errMsg;
+        }
+        throw new Error(errMsg);
+      }
+      
       const orderData = await orderRes.json() as { order_id: string; amount: number; currency: string; notes: any };
 
       const options = {
@@ -423,7 +438,7 @@ export function IndexComponent() {
       rzp.open();
     } catch (error: any) {
       console.error("Payment initiation error:", error);
-      alert("Error initiating payment. Please try again.");
+      alert(`Error initiating payment: ${error.message || "Please try again."}`);
       setIsProcessing(false);
     }
   };
@@ -1180,22 +1195,57 @@ function Gallery() {
 
 function Transformations() {
   const [active, setActive] = useState<number | null>(null);
-  const videos = [
-    "https://player.vimeo.com/video/1210129546?background=1",
-    "https://player.vimeo.com/video/1210129528?background=1",
-    "https://player.vimeo.com/video/1210129477?background=1",
-    "https://player.vimeo.com/video/1210129479?background=1",
-    "https://player.vimeo.com/video/1210129481?background=1",
-    "https://player.vimeo.com/video/1210129478?background=1",
-    "https://player.vimeo.com/video/1210496317?background=1",
-    "https://player.vimeo.com/video/1210496318?background=1"
-  ];
   
-  const items = videos.map((src, i) => ({
-    src,
-    title: ["Aanya", "Meher", "Rhea", "Sanvi", "Tara", "Kriti", "Nisha", "Pooja"][i],
-    duration: ["1:04", "1:22", "0:56", "1:11", "0:44", "1:15", "1:02", "0:58"][i],
-  }));
+  const items = [
+    {
+      id: "1210129546",
+      thumbnail: "https://i.vimeocdn.com/video/2179925961-9025f8f9165c4eeebe748a077c8346657b816943fc2400c06b882d37603b3f2d-d_640?region=us",
+      title: "Aanya",
+      duration: "1:04"
+    },
+    {
+      id: "1210129528",
+      thumbnail: "https://i.vimeocdn.com/video/2179925915-8d2005d1be0b65426edb159e90fd4479f2e11ea7a996ecb9c7a6517b52c5e8cd-d_640?region=us",
+      title: "Meher",
+      duration: "1:22"
+    },
+    {
+      id: "1210129477",
+      thumbnail: "https://i.vimeocdn.com/video/2179925908-02dcf300f9f6ed0f9832a71a7abbc4ad3bac9c965c64a553ce120a687d9021ac-d_640?region=us",
+      title: "Rhea",
+      duration: "0:56"
+    },
+    {
+      id: "1210129479",
+      thumbnail: "https://i.vimeocdn.com/video/2179925907-f57dc3c2eae0caf24be226aebc433eb07ba8640a755ef34fa8e35414fda60db9-d_640?region=us",
+      title: "Sanvi",
+      duration: "1:11"
+    },
+    {
+      id: "1210129481",
+      thumbnail: "https://i.vimeocdn.com/video/2179925864-ff445d3f257a0af5eebbdafc32e599146d76f8a8a412f0107553d53cadd81e20-d_640?region=us",
+      title: "Tara",
+      duration: "0:44"
+    },
+    {
+      id: "1210129478",
+      thumbnail: "https://i.vimeocdn.com/video/2179925835-5df735145bf336ce4a5ab755a66437d1f52d9e96ec28088ebb7e19bc49bd3cbd-d_640?region=us",
+      title: "Kriti",
+      duration: "1:15"
+    },
+    {
+      id: "1210496317",
+      thumbnail: "https://i.vimeocdn.com/video/2180417964-b3a203e6f11e8df3eb20e3935cad1463b9fd0710332e90127a1d44126217b5dd-d_640?region=us",
+      title: "Nisha",
+      duration: "1:02"
+    },
+    {
+      id: "1210496318",
+      thumbnail: "https://i.vimeocdn.com/video/2180417982-032867ca7d9c990f7bb4c9c1e60a50ef1153d30ce209de1ab7bdf0f0a9124c79-d_640?region=us",
+      title: "Pooja",
+      duration: "0:58"
+    }
+  ];
 
   return (
     <Section
@@ -1209,19 +1259,34 @@ function Transformations() {
             <motion.button
               key={i}
               onClick={() => setActive(i)}
-
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.06, duration: 0.8 }}
               className="group relative aspect-[9/13] w-[70vw] shrink-0 overflow-hidden rounded-2xl md:w-[340px]"
             >
-              <iframe src={it.src} allow="autoplay; fullscreen; picture-in-picture" className="pointer-events-none absolute left-1/2 top-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 transition-transform duration-1000 group-hover:scale-105" />
+              {/* Static lightweight thumbnail from Vimeo CDN */}
+              <img
+                src={it.thumbnail}
+                alt={it.title}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+              
+              {/* Play icon overlay */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gold/90 text-black shadow-[0_0_20px_rgba(212,175,55,0.3)] scale-90 group-hover:scale-100 transition-transform duration-300">
+                  <svg width="12" height="14" viewBox="0 0 10 12" fill="currentColor" className="ml-0.5">
+                    <path d="M0 0v12l10-6z" />
+                  </svg>
+                </span>
+              </div>
+
               <div className="absolute inset-x-0 bottom-0 p-5 text-left">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-ivory text-background transition-transform duration-300 group-hover:scale-110">
-                    <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><path d="M0 0v12l10-6z" /></svg>
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-ivory/15 text-ivory backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
+                    <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor" className="ml-0.5"><path d="M0 0v12l10-6z" /></svg>
                   </span>
                   <div>
                     <div className="font-serif text-2xl text-ivory">{it.title}</div>
@@ -1239,31 +1304,39 @@ function Transformations() {
       <AnimatePresence>
         {active !== null && (
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={() => setActive(null)}
             className="fixed inset-0 z-[90] flex items-center justify-center bg-black/90 p-6 backdrop-blur-xl"
           >
             <motion.div
-              initial={{ scale: 0.94, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.96, opacity: 0 }}
-              transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
-              className="relative aspect-[9/13] max-h-full w-full max-w-sm overflow-hidden rounded-2xl"
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.96, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
+              className="relative aspect-[9/16] max-h-[80vh] w-full max-w-sm overflow-hidden rounded-2xl bg-black shadow-[0_0_60px_rgba(0,0,0,0.8)] border border-white/10"
               onClick={(e) => e.stopPropagation()}
             >
-              <iframe src={items[active].src} allow="autoplay; fullscreen; picture-in-picture" className="pointer-events-none absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2" />
-              <div className="absolute inset-0 bg-black/20" />
+              {/* Interactive Player Frame with play controls */}
+              <iframe
+                src={`https://player.vimeo.com/video/${items[active].id}?autoplay=1&muted=1&controls=1&playsinline=1`}
+                className="absolute inset-0 h-full w-full"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title={items[active].title}
+              />
+              
               <button
                 onClick={() => setActive(null)}
-                className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-ivory backdrop-blur"
+                className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-ivory backdrop-blur hover:bg-black/90 transition-colors"
                 aria-label="Close"
               >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.2" /></svg>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.2" />
+                </svg>
               </button>
-              <div className="absolute inset-x-0 bottom-0 p-6 text-center text-ivory">
-                <div className="font-serif text-3xl">{items[active].title}</div>
-                <p className="mt-2 text-[11px] tracking-[0.2em] uppercase text-ivory/60">
-                  Reel preview · Full video plays in salon consultation
-                </p>
-              </div>
             </motion.div>
           </motion.div>
         )}
