@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "framer-motion";
+import { ChevronDown, ArrowRight } from "lucide-react";
 
 import heroBg from "@/assets/hero-bg.jpg";
 import salonInterior from "@/assets/salon-interior.jpg";
@@ -779,18 +780,46 @@ function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], [0, 180]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
+  useEffect(() => {
+    // Defer loading the heavy background video until after critical page assets are parsed
+    const timer = setTimeout(() => {
+      setVideoSrc("/hero-bg.mov");
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section id="top" ref={ref} className="relative min-h-[100svh] w-full overflow-hidden lg:h-[100svh] lg:min-h-[720px]">
-      <motion.div style={{ y, scale }} className="absolute inset-0">
-        <video
-          src="/hero-bg.mov"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="h-full w-full object-cover blur-[4px] scale-105"
+      <motion.div style={{ y, scale }} className="absolute inset-0 overflow-hidden">
+        {/* Static blurred background poster that renders instantly */}
+        <img
+          src={heroBg}
+          alt="Hero background placeholder"
+          className="absolute inset-0 h-full w-full object-cover blur-[6px] scale-105"
         />
+        
+        {/* Smoothly cross-fading loop video with GPU-accelerated transitions */}
+        {videoSrc && (
+          <video
+            src={videoSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            onPlay={() => setVideoLoaded(true)}
+            className={`absolute inset-0 h-full w-full object-cover blur-[6px] scale-105 transition-opacity duration-1000 ease-in-out ${
+              videoLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            style={{
+              backfaceVisibility: 'hidden',
+              transform: 'translate3d(0, 0, 0)',
+            }}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-transparent" />
       </motion.div>
@@ -1751,48 +1780,167 @@ function SalonExperience() {
 
 function HairServices() {
   const svc = [
-    { name: "Keratin Treatment", icon: "✦", desc: "Frizz-free, silky smooth hair that lasts for months." },
-    { name: "Hair Botox", icon: "◆", desc: "Deep repair and rejuvenation for damaged, lifeless hair." },
-    { name: "Hair Smoothening", icon: "❖", desc: "Permanently straight, glossy hair with zero chemical damage." },
-    { name: "Hair Spa", icon: "✧", desc: "Deep conditioning therapy for nourished, healthy scalp." },
-    { name: "Hair Colour", icon: "◇", desc: "Premium global & balayage colouring by certified colourists." },
-    { name: "Hydrafacial", icon: "♛", desc: "Deep cleanse, exfoliate, and hydrate for an instant radiant glow." },
+    {
+      name: "Keratin Treatment",
+      icon: "✦",
+      desc: "Frizz-free, silky smooth hair that lasts for months.",
+      inclusions: [
+        "Premium formaldehyde-free formula",
+        "Signature blow-dry & thermal sealing",
+        "Long-lasting frizz control (3-4 months)"
+      ]
+    },
+    {
+      name: "Hair Botox",
+      icon: "◆",
+      desc: "Deep repair and rejuvenation for damaged, lifeless hair.",
+      inclusions: [
+        "Deep fiber restoration & reconstruction",
+        "Intense hydration & natural volume control",
+        "Ideal for color-treated & heat-damaged hair"
+      ]
+    },
+    {
+      name: "Hair Smoothening",
+      icon: "❖",
+      desc: "Permanently straight, glossy hair with zero chemical damage.",
+      inclusions: [
+        "Permanent straightening alignment therapy",
+        "Mirror-like gloss finish with natural proteins",
+        "Includes personalized post-treatment care routine"
+      ]
+    },
+    {
+      name: "Hair Spa",
+      icon: "✧",
+      desc: "Deep conditioning therapy for nourished, healthy scalp.",
+      inclusions: [
+        "Scalp detox & premium oil stimulation massage",
+        "Intense steam activation & nutrition lock",
+        "Tailored hydration mask for your hair type"
+      ]
+    },
+    {
+      name: "Hair Colour",
+      icon: "◇",
+      desc: "Premium global & balayage colouring by certified colourists.",
+      inclusions: [
+        "Personalized shade matching & style consultation",
+        "Global hair coloring, highlights, or balayage",
+        "Ammonia-free formulas & color-lock treatment"
+      ]
+    },
+    {
+      name: "Hydrafacial",
+      icon: "♛",
+      desc: "Deep cleanse, exfoliate, and hydrate for an instant radiant glow.",
+      inclusions: [
+        "High-performance deep pore vacuum extraction",
+        "Multi-step antioxidant & hyaluronic serum infusion",
+        "Instant skin cooling, soothing, and visible radiance"
+      ]
+    }
   ];
+
+  const [active, setActive] = useState<number | null>(0);
+
   return (
     <Section id="hair" eyebrow="Hair Studio" title="Beyond bridal. Perfected for every day.">
-      <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {svc.map((s, i) => (
-          <motion.div
-            key={s.name}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ delay: i * 0.08, duration: 0.9 }}
-          >
-            <a
-              href={`https://wa.me/919572194458?text=${encodeURIComponent(`Hi, I'm interested in ${s.name} service at Jawed Habib Kurji. Could you share the details and availability?`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/[0.08] bg-surface p-8 transition-all duration-500 hover:border-gold/30 hover:shadow-[0_0_40px_rgba(212,175,55,0.1)] hover:-translate-y-1"
+      <div className="mx-auto mt-14 max-w-4xl space-y-4">
+        {svc.map((s, i) => {
+          const isOpen = active === i;
+          return (
+            <motion.div
+              key={s.name}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: i * 0.05, duration: 0.8 }}
+              className={`group overflow-hidden rounded-2xl border bg-surface/30 transition-all duration-500 ${
+                isOpen
+                  ? "border-gold/30 bg-surface/50 shadow-[0_0_50px_rgba(212,175,55,0.05)]"
+                  : "border-white/[0.06] hover:border-white/10 hover:bg-surface/40"
+              }`}
             >
-              {/* Decorative gradient blob */}
-              <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/5 blur-3xl transition-all duration-700 group-hover:bg-gold/10 group-hover:scale-150" />
-
-              <div className="relative z-10">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/20 bg-gold/5 text-xl text-gold transition-all duration-500 group-hover:bg-gold/15 group-hover:border-gold/40 group-hover:shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-                  {s.icon}
+              {/* Header Toggle Row */}
+              <button
+                onClick={() => setActive(isOpen ? null : i)}
+                className="flex w-full items-center justify-between p-6 text-left md:p-8"
+              >
+                <div className="flex items-center gap-4 md:gap-6">
+                  <span className="font-mono text-xs tracking-widest text-gold/50">
+                    {(i + 1).toString().padStart(2, "0")}
+                  </span>
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-500 ${
+                    isOpen
+                      ? "border-gold/30 bg-gold/10 text-gold shadow-[0_0_15px_rgba(212,175,55,0.15)]"
+                      : "border-white/10 bg-white/5 text-muted-foreground group-hover:border-gold/20 group-hover:text-gold"
+                  }`}>
+                    <span className="text-sm md:text-base">{s.icon}</span>
+                  </div>
+                  <h3 className="font-serif text-lg md:text-xl tracking-wide text-ivory">
+                    {s.name}
+                  </h3>
                 </div>
-                <h3 className="mt-6 font-serif text-2xl text-ivory">{s.name}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
-              </div>
+                
+                <div className={`flex h-8 w-8 items-center justify-center rounded-full border transition-all duration-300 ${
+                  isOpen
+                    ? "border-gold/30 text-gold bg-gold/5"
+                    : "border-white/10 text-muted-foreground group-hover:border-gold/20 group-hover:text-gold"
+                }`}>
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-500 ${isOpen ? "rotate-180" : ""}`} />
+                </div>
+              </button>
 
-              <div className="relative z-10 mt-8 flex items-center gap-2 text-[11px] font-medium tracking-[0.2em] uppercase text-gold/70 transition-all duration-300 group-hover:text-gold group-hover:gap-3">
-                <span>Book on WhatsApp</span>
-                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </div>
-            </a>
-          </motion.div>
-        ))}
+              {/* Collapsible Content */}
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="border-t border-white/[0.04] px-6 pb-6 pt-6 md:px-8 md:pb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                      <div className="flex-1 space-y-4">
+                        <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                          {s.desc}
+                        </p>
+                        
+                        <div className="space-y-2">
+                          <p className="text-[10px] font-semibold tracking-wider uppercase text-gold/60">
+                            Service Benefits & Inclusions
+                          </p>
+                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {s.inclusions.map((inc, index) => (
+                              <li key={index} className="flex items-center gap-2 text-xs text-ivory/80">
+                                <span className="text-gold text-[10px]">✦</span>
+                                <span>{inc}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      <a
+                        href={`https://wa.me/919572194458?text=${encodeURIComponent(
+                          `Hi, I want to book a ${s.name} appointment at Jawed Habib Kurji, Patna. Please let me know the details.`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 rounded-full bg-gold/10 hover:bg-gold px-6 py-3 border border-gold/30 hover:border-gold text-xs font-semibold uppercase tracking-widest text-gold hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.1)] group/btn whitespace-nowrap self-start md:self-center"
+                      >
+                        <span>Book on WhatsApp</span>
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                      </a>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
       </div>
     </Section>
   );
