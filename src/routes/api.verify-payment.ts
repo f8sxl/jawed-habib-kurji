@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import Razorpay from 'razorpay';
 import { saveBooking, Booking } from '../lib/db';
 import { sendConfirmationEmails } from '../lib/email';
+import { sendBookingNotifications } from '../lib/notifications';
 
 export const Route = createFileRoute('/api/verify-payment')({
   server: {
@@ -23,11 +24,11 @@ export const Route = createFileRoute('/api/verify-payment')({
             });
           }
 
-          const keyId = process.env.RAZORPAY_KEY_ID;
-          const keySecret = process.env.RAZORPAY_KEY_SECRET;
+          const keyId = process.env.RAZORPAY_KEY_ID || (import.meta.env ? import.meta.env.RAZORPAY_KEY_ID : undefined);
+          const keySecret = process.env.RAZORPAY_KEY_SECRET || (import.meta.env ? import.meta.env.RAZORPAY_KEY_SECRET : undefined);
           
           if (!keyId || !keySecret) {
-            return new Response(JSON.stringify({ error: "Razorpay credentials not configured on the server" }), {
+            return new Response(JSON.stringify({ error: "Razorpay credentials not configured on the server. Please verify your environment variables." }), {
               status: 500,
               headers: { 'Content-Type': 'application/json' },
             });
@@ -85,6 +86,10 @@ export const Route = createFileRoute('/api/verify-payment')({
           if (!emailResult.success) {
             console.error(`Email sending failed for booking ${bookingId}:`, emailResult.error);
           }
+
+          // Send automated SMS & WhatsApp notifications (customer gets SMS, owner gets WhatsApp)
+          const messageResult = await sendBookingNotifications(booking);
+          console.log(`[Alerts] SMS sent: ${messageResult.sms}, WhatsApp sent: ${messageResult.whatsapp}`);
 
           return new Response(JSON.stringify({ 
             status: "success", 

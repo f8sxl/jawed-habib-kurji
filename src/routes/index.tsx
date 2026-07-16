@@ -372,7 +372,7 @@ export function IndexComponent() {
       const orderData = await orderRes.json() as { order_id: string; amount: number; currency: string; notes: any };
 
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TEAM5XQSjlLwsr",
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TEK7IYf5IWz3om",
         amount: orderData.amount,
         currency: orderData.currency,
         name: "Jawed Habib Kurji",

@@ -27,11 +27,11 @@ export const Route = createFileRoute('/api/create-order')({
             });
           }
 
-          const keyId = process.env.RAZORPAY_KEY_ID;
-          const keySecret = process.env.RAZORPAY_KEY_SECRET;
+          const keyId = process.env.RAZORPAY_KEY_ID || (import.meta.env ? import.meta.env.RAZORPAY_KEY_ID : undefined);
+          const keySecret = process.env.RAZORPAY_KEY_SECRET || (import.meta.env ? import.meta.env.RAZORPAY_KEY_SECRET : undefined);
 
           if (!keyId || !keySecret) {
-            return new Response(JSON.stringify({ error: "Razorpay credentials not configured on the server" }), {
+            return new Response(JSON.stringify({ error: "Razorpay credentials not configured on the server. Please verify your environment variables." }), {
               status: 500,
               headers: { 'Content-Type': 'application/json' },
             });
