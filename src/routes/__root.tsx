@@ -201,23 +201,6 @@ function RootShell({ children }: { children: ReactNode }) {
         />
         {/* Razorpay SDK */}
         <script src="https://checkout.razorpay.com/v1/checkout.js" async />
-        {/* Meta Pixel Code */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '27765686026450666');
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
         <noscript>
           <img
             height="1"
@@ -239,6 +222,53 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    const w = window as unknown as {
+      fbq?: {
+        (...args: unknown[]): void;
+        callMethod?: (...args: unknown[]) => void;
+        queue: unknown[][];
+        loaded?: boolean;
+        version?: string;
+        push?: (...args: unknown[]) => void;
+      };
+      _fbq?: unknown;
+    };
+
+    if (w.fbq) return;
+
+    w.fbq = function (...args: unknown[]) {
+      if (w.fbq && w.fbq.callMethod) {
+        w.fbq.callMethod.apply(w.fbq, args);
+      } else if (w.fbq) {
+        w.fbq.queue.push(args);
+      }
+    } as unknown as typeof w.fbq;
+
+    if (!w._fbq) w._fbq = w.fbq;
+    if (w.fbq) {
+      w.fbq.push = w.fbq;
+      w.fbq.loaded = true;
+      w.fbq.version = "2.0";
+      w.fbq.queue = [];
+    }
+
+    const t = document.createElement("script");
+    t.async = true;
+    t.src = "https://connect.facebook.net/en_US/fbevents.js";
+    const s = document.getElementsByTagName("script")[0];
+    if (s && s.parentNode) {
+      s.parentNode.insertBefore(t, s);
+    } else {
+      document.head.appendChild(t);
+    }
+
+    if (w.fbq) {
+      w.fbq("init", "27765686026450666");
+      w.fbq("track", "PageView");
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
