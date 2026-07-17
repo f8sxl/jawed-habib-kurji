@@ -246,10 +246,31 @@ function InAppBrowserBanner() {
 
   useEffect(() => {
     const ua = navigator.userAgent || "";
-    const isInstagram = /Instagram/i.test(ua);
+    const isInstagram = /Instagram|FBAN|FBAV/i.test(ua);
 
     if (isInstagram) {
-      setShow(true);
+      const url = window.location.href;
+      const cleanUrl = url.replace(/^https?:\/\//, "");
+
+      // Android: Instantly break out to Chrome
+      if (/Android/i.test(ua)) {
+        window.location.href = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+        // Show popup just in case intent fails
+        setShow(true);
+        return;
+      }
+
+      // iOS: Try to break out to Safari automatically
+      if (/iPhone|iPad|iPod/i.test(ua)) {
+        window.location.href = `x-safari-https://${cleanUrl}`;
+        
+        // Show popup because iOS heavily restricts automatic breakouts
+        setTimeout(() => {
+          setShow(true);
+        }, 500);
+      } else {
+        setShow(true);
+      }
     }
   }, []);
 
