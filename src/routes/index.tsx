@@ -454,6 +454,10 @@ export function IndexComponent() {
             };
 
             if (verifyRes.ok && verifyData.status === "success") {
+              // Send Purchase event to Meta Pixel manually
+              if (typeof window !== "undefined" && (window as any).fbq) {
+                (window as any).fbq('track', 'Purchase', { currency: 'INR', value: orderData.amount / 100 });
+              }
               setPaymentSuccessData({
                 bookingId: verifyData.booking.id,
                 paymentId: response.razorpay_payment_id,
@@ -540,6 +544,10 @@ export function IndexComponent() {
       };
 
       if (verifyRes.ok && verifyData.status === "success") {
+        // Send Purchase event to Meta Pixel manually
+        if (typeof window !== "undefined" && (window as any).fbq) {
+          (window as any).fbq('track', 'Purchase', { currency: 'INR', value: 2000 });
+        }
         setPaymentSuccessData({
           bookingId: verifyData.booking.id,
           paymentId: `pay_MOCK_${Date.now()}`,
