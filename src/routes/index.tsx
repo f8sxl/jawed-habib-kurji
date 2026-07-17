@@ -375,6 +375,15 @@ export function IndexComponent() {
       return;
     }
 
+    const ua = navigator.userAgent || "";
+    const isInAppBrowser = /Instagram|FBAN|FBAV/i.test(ua);
+    if (isInAppBrowser) {
+      alert(
+        "Instagram blocks secure payments.\n\nPlease tap the three dots (⋮) in the top right corner and select 'Open in Browser' to complete your booking securely."
+      );
+      return;
+    }
+
     setIsProcessing(true);
 
     const scriptLoaded = await loadRazorpayScript();
