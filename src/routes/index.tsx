@@ -1567,7 +1567,7 @@ function Transformations() {
             >
               {/* Interactive Player Frame with play controls */}
               <iframe
-                src={`https://player.vimeo.com/video/${items[active].id}?autoplay=1&muted=1&controls=1&playsinline=1`}
+                src={`https://player.vimeo.com/video/${items[active].id}?autoplay=1&muted=1&autopause=0&controls=1&playsinline=1`}
                 className="absolute inset-0 h-full w-full"
                 frameBorder="0"
                 allow="autoplay; fullscreen; picture-in-picture"
@@ -1676,7 +1676,7 @@ function WhyUs() {
             className="absolute inset-0 h-full w-full"
           >
             <motion.img
-              src="/product-section-bride.jpeg"
+              src="/product_section_bride.jpg"
               alt="Bride showcasing premium products"
               animate={{
                 scale: [1, 1.05, 1],
@@ -1799,8 +1799,8 @@ function Packages({
             <div className="relative z-10 flex flex-1 flex-col p-8 pt-0 -mt-10">
               <h3 className="font-serif text-3xl text-ivory drop-shadow-lg">{p.name}</h3>
               <p className="mt-3 text-sm leading-relaxed text-white/70">{p.desc}</p>
-              <div className="flex flex-col items-end gap-3 border-t border-white/[0.08] pt-6 w-full mt-auto">
-                <div className="flex items-center justify-between w-full">
+              <div className="flex flex-col items-end gap-3 border-t border-white/[0.08] pt-8 w-full mt-8">
+                <div className="flex items-center justify-between w-full gap-6">
                   <div>
                     <div className="font-serif text-3xl text-gold">{p.price}</div>
                     {p.onward && (
@@ -1812,7 +1812,7 @@ function Packages({
                   <button
                     disabled={isProcessing}
                     onClick={() => handlePayment(p.name)}
-                    className="group inline-flex items-center gap-2.5 rounded-full border border-blue-500 bg-white pl-5 pr-2 py-2 transition-all duration-300 hover:bg-gray-50 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] disabled:opacity-50 cursor-pointer"
+                    className="group inline-flex items-center gap-2.5 rounded-full border border-blue-500 bg-white pl-5 pr-2 py-2 transition-all duration-300 hover:bg-gray-50 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] disabled:opacity-50 cursor-pointer shrink-0"
                   >
                     <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-black flex items-center gap-1.5 transition-colors">
                       Book Now
@@ -1922,6 +1922,14 @@ function BeforeAfter() {
 function Testimonials() {
   const [filter, setFilter] = useState("All");
   const [sortOrder, setSortOrder] = useState("Top reviews");
+  const [helpfulReviews, setHelpfulReviews] = useState<Record<string, boolean>>({});
+
+  const toggleHelpful = (authorName: string) => {
+    setHelpfulReviews((prev) => ({
+      ...prev,
+      [authorName]: !prev[authorName],
+    }));
+  };
 
   const reviews = [
     {
@@ -2211,11 +2219,18 @@ function Testimonials() {
                   <p className="text-white/80 text-sm leading-relaxed mb-4">{r.q}</p>
 
                   <div className="flex items-center gap-4">
-                    <button className="flex items-center gap-1.5 text-xs text-white/50 hover:text-white transition-colors border border-white/10 rounded-full px-3 py-1 hover:bg-white/5">
-                      Helpful
-                    </button>
-                    <button className="text-xs text-white/40 hover:text-white transition-colors">
-                      Report abuse
+                    <button
+                      onClick={() => toggleHelpful(r.n)}
+                      className={`flex items-center gap-1.5 text-xs transition-colors border rounded-full px-3 py-1 cursor-pointer ${
+                        helpfulReviews[r.n]
+                          ? "border-gold bg-gold/15 text-gold shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+                          : "border-white/10 text-white/50 hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      <span>Helpful</span>
+                      {helpfulReviews[r.n] && (
+                        <span className="text-[10px] filter saturate-100 animate-pulse">👍</span>
+                      )}
                     </button>
                   </div>
                 </motion.div>
@@ -2839,8 +2854,91 @@ function Footer() {
             </a>
           </div>
         </div>
-        <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-white/[0.06] pt-6 text-[11px] tracking-[0.2em] uppercase text-muted-foreground md:flex-row">
+        <div className="mt-14 flex flex-col items-center justify-between gap-6 border-t border-white/[0.06] pt-8 text-[11px] tracking-[0.2em] uppercase text-muted-foreground md:flex-row">
           <span>© {new Date().getFullYear()} Jawed Habib Hair & Beauty, Kurji</span>
+          <div className="flex flex-col items-center gap-3">
+            <span className="normal-case tracking-normal text-sm font-sans flex items-center gap-1.5 text-white/50">
+              built with <span className="text-red-500 animate-pulse">❤️</span> by{" "}
+              <span className="text-ivory font-medium hover:text-gold transition-colors">
+                「faisal」
+              </span>
+            </span>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://www.instagram.com/f8sxl.qrx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-gold transition-colors duration-300"
+                title="Instagram"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  viewBox="0 0 24 24"
+                >
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                </svg>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/faisal-undefined-0a8135420"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-gold transition-colors duration-300"
+                title="LinkedIn"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect width="4" height="12" x="2" y="9" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a
+                href="https://github.com/f8sxl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-gold transition-colors duration-300"
+                title="GitHub"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                  <path d="M9 18c-4.51 2-5-2-7-2" />
+                </svg>
+              </a>
+              <a
+                href="https://x.com/faisalarete"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-gold transition-colors duration-300"
+                title="X"
+              >
+                <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+            </div>
+          </div>
           <span>Crafted for the brides of Bihar</span>
         </div>
       </div>
