@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -242,38 +242,82 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function InAppBrowserBanner() {
+  const [show, setShow] = useState(false);
+
   useEffect(() => {
     const ua = navigator.userAgent || "";
-    const isInAppBrowser =
-      ua.includes("Instagram") ||
-      ua.includes("FBAN") ||
-      ua.includes("FBAV");
+    const isInstagram = /Instagram/i.test(ua);
 
-    if (!isInAppBrowser) return;
-
-    const url = window.location.href;
-    const cleanUrl = url.replace(/^https?:\/\//, "");
-
-    // Android: use intent:// to open in Chrome directly
-    if (/Android/i.test(ua)) {
-      window.location.href = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
-      return;
-    }
-
-    // iOS: use x-safari-https:// scheme or window.open trick
-    if (/iPhone|iPad|iPod/i.test(ua)) {
-      // Try opening in Safari via a known workaround
-      const safariUrl = `x-safari-https://${cleanUrl}`;
-      window.location.href = safariUrl;
-
-      // Fallback: try window.open after a short delay
-      setTimeout(() => {
-        window.open(url, "_system");
-      }, 300);
+    if (isInstagram) {
+      setShow(true);
     }
   }, []);
 
-  return null;
+  if (!show) return null;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 9999,
+        background: "rgba(0,0,0,0.85)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+        backdropFilter: "blur(10px)",
+      }}
+      onClick={() => setShow(false)}
+    >
+      <div
+        style={{
+          background: "linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%)",
+          border: "1px solid rgba(212, 175, 55, 0.3)",
+          borderRadius: "16px",
+          padding: "24px",
+          textAlign: "center",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 20px rgba(212,175,55,0.1)",
+          maxWidth: "400px",
+          width: "100%",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div style={{ fontSize: "40px", marginBottom: "16px" }}>↗️</div>
+        <div
+          style={{
+            color: "#D4AF37",
+            fontSize: "18px",
+            fontWeight: 700,
+            letterSpacing: "0.05em",
+            marginBottom: "12px",
+          }}
+        >
+          Open in Browser
+        </div>
+        <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", lineHeight: 1.5, marginBottom: "20px" }}>
+          For the best experience, please tap the <strong>three dots (⋮)</strong> in the top right corner and select <strong>"Open in Browser"</strong> or <strong>"Open in Chrome/Safari"</strong>.
+        </div>
+        <button
+          onClick={() => setShow(false)}
+          style={{
+            background: "none",
+            color: "rgba(255,255,255,0.5)",
+            border: "1px solid rgba(255,255,255,0.2)",
+            borderRadius: "8px",
+            padding: "8px 16px",
+            fontSize: "12px",
+            cursor: "pointer",
+          }}
+        >
+          Dismiss
+        </button>
+      </div>
+    </div>
+  );
 }
 
 function RootComponent() {
