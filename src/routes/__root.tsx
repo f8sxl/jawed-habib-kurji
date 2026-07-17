@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -241,6 +241,122 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function InAppBrowserBanner() {
+  const [show, setShow] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const ua = navigator.userAgent || "";
+    const isInApp =
+      /Instagram|FBAN|FBAV|Line\/|Twitter|Snapchat/i.test(ua) &&
+      !/Chrome\/[.\d]+ Mobile Safari|CriOS|Firefox/i.test(ua) === false;
+    // Simpler detection: Instagram and Facebook in-app browsers
+    const isInAppBrowser =
+      ua.includes("Instagram") ||
+      ua.includes("FBAN") ||
+      ua.includes("FBAV");
+    if (isInAppBrowser) {
+      setShow(true);
+    }
+  }, []);
+
+  if (!show) return null;
+
+  const siteUrl = "https://jawedhabibkurji.com";
+
+  const handleOpen = () => {
+    // Try intent:// for Android Chrome
+    const intentUrl = `intent://${siteUrl.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;
+    window.location.href = intentUrl;
+
+    // Fallback: copy link for iOS
+    setTimeout(() => {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(siteUrl).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        });
+      }
+    }, 500);
+  };
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: "80px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 9999,
+        background: "linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%)",
+        border: "1px solid rgba(212, 175, 55, 0.3)",
+        borderRadius: "16px",
+        padding: "14px 20px",
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 20px rgba(212,175,55,0.1)",
+        maxWidth: "92vw",
+        width: "380px",
+        backdropFilter: "blur(20px)",
+        animation: "slideUp 0.4s ease-out",
+      }}
+    >
+      <style>{`@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}`}</style>
+      <div style={{ flex: 1 }}>
+        <div
+          style={{
+            color: "#D4AF37",
+            fontSize: "12px",
+            fontWeight: 600,
+            letterSpacing: "0.05em",
+            marginBottom: "2px",
+          }}
+        >
+          Better Experience
+        </div>
+        <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "11px" }}>
+          Open in your browser for full features
+        </div>
+      </div>
+      <button
+        onClick={handleOpen}
+        style={{
+          background: "#D4AF37",
+          color: "#000",
+          border: "none",
+          borderRadius: "10px",
+          padding: "8px 16px",
+          fontSize: "11px",
+          fontWeight: 700,
+          letterSpacing: "0.05em",
+          cursor: "pointer",
+          whiteSpace: "nowrap",
+          flexShrink: 0,
+        }}
+      >
+        {copied ? "Link Copied!" : "Open ↗"}
+      </button>
+      <button
+        onClick={() => setShow(false)}
+        style={{
+          background: "none",
+          border: "none",
+          color: "rgba(255,255,255,0.4)",
+          fontSize: "18px",
+          cursor: "pointer",
+          padding: "0 2px",
+          lineHeight: 1,
+          flexShrink: 0,
+        }}
+        aria-label="Dismiss"
+      >
+        ×
+      </button>
+    </div>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
@@ -248,6 +364,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <InAppBrowserBanner />
     </QueryClientProvider>
   );
 }
