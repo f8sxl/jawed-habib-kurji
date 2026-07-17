@@ -47,17 +47,17 @@
 :root {
   --radius: 1rem;
 
-  --background: oklch(0.985 0.006 85);       /* warm paper white */
-  --surface: oklch(0.965 0.01 85);           /* soft ivory card */
-  --foreground: oklch(0.2 0.012 40);         /* deep espresso ink */
-  --ivory: oklch(0.2 0.012 40);              /* text-ivory renders as ink in light */
+  --background: oklch(0.985 0.006 85); /* warm paper white */
+  --surface: oklch(0.965 0.01 85); /* soft ivory card */
+  --foreground: oklch(0.2 0.012 40); /* deep espresso ink */
+  --ivory: oklch(0.2 0.012 40); /* text-ivory renders as ink in light */
 
   --card: oklch(0.98 0.008 85);
   --card-foreground: oklch(0.2 0.012 40);
   --popover: oklch(0.98 0.008 85);
   --popover-foreground: oklch(0.2 0.012 40);
 
-  --primary: oklch(0.2 0.012 40);            /* dark buttons in light mode */
+  --primary: oklch(0.2 0.012 40); /* dark buttons in light mode */
   --primary-foreground: oklch(0.985 0.006 85);
 
   --secondary: oklch(0.94 0.01 85);
@@ -66,7 +66,7 @@
   --muted: oklch(0.94 0.01 85);
   --muted-foreground: oklch(0.42 0.015 60);
 
-  --accent: oklch(0.62 0.11 70);             /* deeper gold for contrast on light */
+  --accent: oklch(0.62 0.11 70); /* deeper gold for contrast on light */
   --accent-foreground: oklch(0.985 0.006 85);
   --gold: oklch(0.6 0.11 70);
   --gold-soft: oklch(0.7 0.1 75);
@@ -128,7 +128,8 @@
   * {
     border-color: var(--color-border);
     /* smooth theme swap on any color-carrying property */
-    transition: background-color 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transition:
+      background-color 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
       border-color 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
       color 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
       fill 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -154,14 +155,21 @@
     color: var(--ivory);
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-serif);
     font-weight: 400;
     letter-spacing: -0.01em;
   }
 
-  .font-serif { font-family: var(--font-serif); }
-  .font-sans { font-family: var(--font-sans); }
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+  .font-sans {
+    font-family: var(--font-sans);
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -290,8 +298,11 @@ html:not(.dark) .drop-shadow-lg {
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.35s ease, background 0.35s ease, color 0.35s ease;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s ease,
+    background 0.35s ease,
+    color 0.35s ease;
   box-shadow: var(--shadow-soft);
 }
 @utility btn-cream {
@@ -357,8 +368,10 @@ html:not(.dark) .drop-shadow-lg {
   color: var(--foreground);
   background: var(--glass-tint);
   overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    background 0.4s ease, border-color 0.4s ease;
+  transition:
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.4s ease,
+    border-color 0.4s ease;
 }
 @utility theme-toggle {
   &:hover {
@@ -366,19 +379,31 @@ html:not(.dark) .drop-shadow-lg {
     border-color: color-mix(in oklab, var(--gold) 60%, transparent);
   }
   & svg {
-    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transition:
+      transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
       opacity 0.4s ease;
   }
 }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* Hide Google Translate UI */
-.skiptranslate { display: none !important; }
-body { top: 0 !important; }
-.goog-te-banner-frame { display: none !important; }
-#google_translate_element { display: none !important; }
-
+.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+}
+.goog-te-banner-frame {
+  display: none !important;
+}
+#google_translate_element {
+  display: none !important;
+}

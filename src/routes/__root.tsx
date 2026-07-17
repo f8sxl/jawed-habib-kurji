@@ -85,10 +85,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         name: "keywords",
-        content: "best bridal makeup artist in patna, best salon in patna, jawed habib kurji patna, bridal makeup price in patna, bridal studio patna, makeup artist in patna, best bridal makeup in patna, hydrafacial in patna, hair smoothening patna, keratin treatment patna"
+        content:
+          "best bridal makeup artist in patna, best salon in patna, jawed habib kurji patna, bridal makeup price in patna, bridal studio patna, makeup artist in patna, best bridal makeup in patna, hydrafacial in patna, hair smoothening patna, keratin treatment patna",
       },
       { name: "author", content: "Jawed Habib Kurji" },
-      { property: "og:title", content: "Best Bridal Makeup Artist & Luxury Salon in Patna | Jawed Habib Kurji" },
+      {
+        property: "og:title",
+        content: "Best Bridal Makeup Artist & Luxury Salon in Patna | Jawed Habib Kurji",
+      },
       {
         property: "og:description",
         content:
@@ -97,10 +101,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0D0D0D" },
-      { name: "twitter:title", content: "Best Bridal Makeup Artist & Luxury Salon in Patna | Jawed Habib Kurji" },
-      { name: "twitter:description", content: "Jawed Habib Kurji is the best bridal makeup artist and luxury salon in Patna. Book premium HD, Ultra HD, Airbrush, Haldi & Sangeet, and Reception makeup packages." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8971c94f-80a4-419e-9e92-fc0951930c97/id-preview-541dcdd9--7c8642a3-6049-4625-a893-19b2b2f27b49.lovable.app-1784032442735.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8971c94f-80a4-419e-9e92-fc0951930c97/id-preview-541dcdd9--7c8642a3-6049-4625-a893-19b2b2f27b49.lovable.app-1784032442735.png" },
+      {
+        name: "twitter:title",
+        content: "Best Bridal Makeup Artist & Luxury Salon in Patna | Jawed Habib Kurji",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Jawed Habib Kurji is the best bridal makeup artist and luxury salon in Patna. Book premium HD, Ultra HD, Airbrush, Haldi & Sangeet, and Reception makeup packages.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8971c94f-80a4-419e-9e92-fc0951930c97/id-preview-541dcdd9--7c8642a3-6049-4625-a893-19b2b2f27b49.lovable.app-1784032442735.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8971c94f-80a4-419e-9e92-fc0951930c97/id-preview-541dcdd9--7c8642a3-6049-4625-a893-19b2b2f27b49.lovable.app-1784032442735.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -123,46 +142,37 @@ function RootShell({ children }: { children: ReactNode }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BeautySalon",
-    "name": "Jawed Habib Hair & Beauty Kurji",
-    "image": "/logo.png",
-    "url": "https://jawedhabibkurji.com",
-    "telephone": "+919572194458",
-    "priceRange": "$$",
-    "address": {
+    name: "Jawed Habib Hair & Beauty Kurji",
+    image: "/logo.png",
+    url: "https://jawedhabibkurji.com",
+    telephone: "+919572194458",
+    priceRange: "$$",
+    address: {
       "@type": "PostalAddress",
-      "streetAddress": "Ward 22B, Circle 247B, Holding 817A/2, Patliputra Kurji Rd, above Lenskart Outlet, opposite RBI Quarter",
-      "addressLocality": "Patna",
-      "addressRegion": "Bihar",
-      "postalCode": "800010",
-      "addressCountry": "IN"
+      streetAddress:
+        "Ward 22B, Circle 247B, Holding 817A/2, Patliputra Kurji Rd, above Lenskart Outlet, opposite RBI Quarter",
+      addressLocality: "Patna",
+      addressRegion: "Bihar",
+      postalCode: "800010",
+      addressCountry: "IN",
     },
-    "geo": {
+    geo: {
       "@type": "GeoCoordinates",
-      "latitude": "25.6322",
-      "longitude": "85.1014"
+      latitude: "25.6322",
+      longitude: "85.1014",
     },
-    "openingHoursSpecification": {
+    openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ],
-      "opens": "10:00",
-      "closes": "20:30"
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      opens: "10:00",
+      closes: "20:30",
     },
-    "sameAs": [
-      "https://www.instagram.com/jawedhabib_kurji_patna/"
-    ],
-    "aggregateRating": {
+    sameAs: ["https://www.instagram.com/jawedhabib_kurji_patna/"],
+    aggregateRating: {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "400"
-    }
+      ratingValue: "4.9",
+      reviewCount: "400",
+    },
   };
 
   return (
@@ -176,13 +186,19 @@ function RootShell({ children }: { children: ReactNode }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLd)
+            __html: JSON.stringify(jsonLd),
           }}
         />
-        <script type="text/javascript" dangerouslySetInnerHTML={{
-          __html: `function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element'); }`
-        }} />
-        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" />
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element'); }`,
+          }}
+        />
+        <script
+          type="text/javascript"
+          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        />
         {/* Razorpay SDK */}
         <script src="https://checkout.razorpay.com/v1/checkout.js" async />
         {/* Meta Pixel Code */}
@@ -197,17 +213,17 @@ function RootShell({ children }: { children: ReactNode }) {
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '1770880150564886');
+              fbq('init', '27765686026450666');
               fbq('track', 'PageView');
-            `
+            `,
           }}
         />
         <noscript>
           <img
             height="1"
             width="1"
-            style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=1770880150564886&ev=PageView&noscript=1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=27765686026450666&ev=PageView&noscript=1"
           />
         </noscript>
         {/* End Meta Pixel Code */}
@@ -220,7 +236,6 @@ function RootShell({ children }: { children: ReactNode }) {
     </html>
   );
 }
-
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();

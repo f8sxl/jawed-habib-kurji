@@ -1,10 +1,20 @@
-import { createFileRoute, useSearch } from '@tanstack/react-router';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Check, Calendar, MapPin, Phone, MessageSquare, Mail, Package, ArrowLeft, ExternalLink } from 'lucide-react';
-import { Nav } from './index';
+import { createFileRoute, useSearch } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  Check,
+  Calendar,
+  MapPin,
+  Phone,
+  MessageSquare,
+  Mail,
+  Package,
+  ArrowLeft,
+  ExternalLink,
+} from "lucide-react";
+import { Nav } from "./index";
 
-export const Route = createFileRoute('/booking-confirmation')({
+export const Route = createFileRoute("/booking-confirmation")({
   component: BookingConfirmationComponent,
 });
 
@@ -24,7 +34,7 @@ interface Booking {
 }
 
 function BookingConfirmationComponent() {
-  const search = useSearch({ from: '/booking-confirmation' }) as { bookingId?: string };
+  const search = useSearch({ from: "/booking-confirmation" }) as { bookingId?: string };
   const bookingId = search.bookingId;
 
   const [booking, setBooking] = useState<Booking | null>(null);
@@ -33,7 +43,7 @@ function BookingConfirmationComponent() {
 
   useEffect(() => {
     if (!bookingId) {
-      setError('No Booking ID provided in URL');
+      setError("No Booking ID provided in URL");
       setLoading(false);
       return;
     }
@@ -42,12 +52,12 @@ function BookingConfirmationComponent() {
       try {
         const response = await fetch(`/api/booking?id=${bookingId}`);
         if (!response.ok) {
-          throw new Error('Booking not found or failed to load');
+          throw new Error("Booking not found or failed to load");
         }
-        const data = await response.json() as Booking;
+        const data = (await response.json()) as Booking;
         setBooking(data);
       } catch (err: any) {
-        setError(err.message || 'An error occurred while retrieving your booking details.');
+        setError(err.message || "An error occurred while retrieving your booking details.");
       } finally {
         setLoading(false);
       }
@@ -57,23 +67,24 @@ function BookingConfirmationComponent() {
   }, [bookingId]);
 
   const getWhatsAppLink = (b: Booking) => {
-    const text = `*Booking Confirmation - Jawed Habib Kurji* 🌸\n\n` +
+    const text =
+      `*Booking Confirmation - Jawed Habib Kurji* 🌸\n\n` +
       `*Booking ID:* ${b.id}\n` +
       `*Package:* ${b.packageSelected}\n` +
       `*Wedding Date:* ${b.weddingDate}\n` +
-      `*Venue:* ${b.weddingVenue || 'In-Salon (Kurji, Patna)'}\n` +
+      `*Venue:* ${b.weddingVenue || "In-Salon (Kurji, Patna)"}\n` +
       `*Deposit Paid:* ₹${b.amountPaid} (Razorpay)\n\n` +
       `*Salon Address:* Jawed Habib Kurji, Kurji, Patna\n` +
       `*Google Maps:* https://maps.google.com/?q=Jawed+Habib+Hair+Beauty+Kurji+Patna\n` +
       `*Contact:* +91 95721 94458\n\n` +
       `Thank you for booking with us! We look forward to creating your dream bridal look. ✨`;
-    
+
     // We send it to the salon contact number so they align details, or allow sharing
     return `https://wa.me/919572194458?text=${encodeURIComponent(text)}`;
   };
 
   const getSmsLink = (b: Booking) => {
-    const text = `Booking Confirmed: ID ${b.id}. Package: ${b.packageSelected} on ${b.weddingDate}. Venue: ${b.weddingVenue || 'In-Salon'}. Deposit: RS ${b.amountPaid}. Salon Address: Kurji, Patna. Contact: +919572194458. Maps: https://maps.google.com/?q=Jawed+Habib+Hair+Beauty+Kurji+Patna`;
+    const text = `Booking Confirmed: ID ${b.id}. Package: ${b.packageSelected} on ${b.weddingDate}. Venue: ${b.weddingVenue || "In-Salon"}. Deposit: RS ${b.amountPaid}. Salon Address: Kurji, Patna. Contact: +919572194458. Maps: https://maps.google.com/?q=Jawed+Habib+Hair+Beauty+Kurji+Patna`;
     // Standard SMS link
     return `sms:${b.mobileNumber}?body=${encodeURIComponent(text)}`;
   };
@@ -91,10 +102,23 @@ function BookingConfirmationComponent() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-background p-6 text-center text-foreground">
         <div className="mb-6 rounded-full bg-red-500/10 p-4 text-red-500">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
         </div>
         <h2 className="font-serif text-3xl text-ivory mb-2">Booking Not Found</h2>
-        <p className="max-w-md text-sm text-white/60 mb-8">{error || 'The booking details could not be loaded.'}</p>
+        <p className="max-w-md text-sm text-white/60 mb-8">
+          {error || "The booking details could not be loaded."}
+        </p>
         <a href="/" className="btn-cream inline-flex items-center gap-2">
           <ArrowLeft size={16} /> Back to Home
         </a>
@@ -110,7 +134,7 @@ function BookingConfirmationComponent() {
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+            transition={{ type: "spring", stiffness: 200, damping: 15 }}
             className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gold/10 text-gold mb-6 border border-gold/20"
           >
             <Check size={40} className="stroke-[2.5]" />
@@ -143,15 +167,21 @@ function BookingConfirmationComponent() {
           {/* Header Row */}
           <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/[0.08] pb-6 mb-8 gap-4">
             <div>
-              <span className="text-[10px] uppercase tracking-widest text-gold font-medium">Reservation Reference</span>
-              <h2 className="font-serif text-2xl md:text-3xl text-ivory mt-1 font-mono tracking-tight">{booking.id}</h2>
+              <span className="text-[10px] uppercase tracking-widest text-gold font-medium">
+                Reservation Reference
+              </span>
+              <h2 className="font-serif text-2xl md:text-3xl text-ivory mt-1 font-mono tracking-tight">
+                {booking.id}
+              </h2>
             </div>
             <div className="text-left md:text-right">
-              <span className="text-[10px] uppercase tracking-widest text-white/40 font-medium">Booking Time</span>
+              <span className="text-[10px] uppercase tracking-widest text-white/40 font-medium">
+                Booking Time
+              </span>
               <p className="text-sm text-white/70 mt-1">
-                {new Date(booking.bookingTime).toLocaleString('en-US', {
-                  dateStyle: 'medium',
-                  timeStyle: 'short',
+                {new Date(booking.bookingTime).toLocaleString("en-US", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
                 })}
               </p>
             </div>
@@ -160,22 +190,32 @@ function BookingConfirmationComponent() {
           <div className="grid gap-8 md:grid-cols-2">
             {/* Customer Information */}
             <div className="space-y-6">
-              <h3 className="text-xs uppercase tracking-widest text-gold font-semibold border-b border-white/5 pb-2">Customer Details</h3>
+              <h3 className="text-xs uppercase tracking-widest text-gold font-semibold border-b border-white/5 pb-2">
+                Customer Details
+              </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider text-white/40 block">Full Name</label>
+                  <label className="text-[10px] uppercase tracking-wider text-white/40 block">
+                    Full Name
+                  </label>
                   <p className="text-base text-ivory mt-0.5 font-serif">{booking.customerName}</p>
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider text-white/40 block">Mobile Number</label>
+                  <label className="text-[10px] uppercase tracking-wider text-white/40 block">
+                    Mobile Number
+                  </label>
                   <p className="text-base text-ivory mt-0.5">{booking.mobileNumber}</p>
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider text-white/40 block">Email Address</label>
+                  <label className="text-[10px] uppercase tracking-wider text-white/40 block">
+                    Email Address
+                  </label>
                   <p className="text-base text-ivory mt-0.5">{booking.emailAddress}</p>
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider text-white/40 block">City / Locality</label>
+                  <label className="text-[10px] uppercase tracking-wider text-white/40 block">
+                    City / Locality
+                  </label>
                   <p className="text-base text-ivory mt-0.5">{booking.city}</p>
                 </div>
               </div>
@@ -183,23 +223,40 @@ function BookingConfirmationComponent() {
 
             {/* Wedding & Appointment Information */}
             <div className="space-y-6">
-              <h3 className="text-xs uppercase tracking-widest text-gold font-semibold border-b border-white/5 pb-2">Wedding details</h3>
+              <h3 className="text-xs uppercase tracking-widest text-gold font-semibold border-b border-white/5 pb-2">
+                Wedding details
+              </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider text-white/40 block flex items-center gap-1.5"><Calendar size={12} className="text-gold" /> Wedding Date</label>
+                  <label className="text-[10px] uppercase tracking-wider text-white/40 block flex items-center gap-1.5">
+                    <Calendar size={12} className="text-gold" /> Wedding Date
+                  </label>
                   <p className="text-base text-ivory mt-0.5 font-medium">{booking.weddingDate}</p>
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider text-white/40 block flex items-center gap-1.5"><MapPin size={12} className="text-gold" /> Wedding Venue</label>
-                  <p className="text-base text-ivory mt-0.5">{booking.weddingVenue || 'Not Specified (In-Salon)'}</p>
+                  <label className="text-[10px] uppercase tracking-wider text-white/40 block flex items-center gap-1.5">
+                    <MapPin size={12} className="text-gold" /> Wedding Venue
+                  </label>
+                  <p className="text-base text-ivory mt-0.5">
+                    {booking.weddingVenue || "Not Specified (In-Salon)"}
+                  </p>
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider text-white/40 block flex items-center gap-1.5"><Package size={12} className="text-gold" /> Selected Package</label>
-                  <p className="text-base text-gold mt-0.5 font-serif font-semibold">{booking.packageSelected}</p>
+                  <label className="text-[10px] uppercase tracking-wider text-white/40 block flex items-center gap-1.5">
+                    <Package size={12} className="text-gold" /> Selected Package
+                  </label>
+                  <p className="text-base text-gold mt-0.5 font-serif font-semibold">
+                    {booking.packageSelected}
+                  </p>
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider text-white/40 block">Deposit Paid</label>
-                  <p className="text-xl text-ivory mt-0.5 font-medium">₹{booking.amountPaid} <span className="text-xs text-white/40">(Adjustable)</span></p>
+                  <label className="text-[10px] uppercase tracking-wider text-white/40 block">
+                    Deposit Paid
+                  </label>
+                  <p className="text-xl text-ivory mt-0.5 font-medium">
+                    ₹{booking.amountPaid}{" "}
+                    <span className="text-xs text-white/40">(Adjustable)</span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -208,11 +265,15 @@ function BookingConfirmationComponent() {
           {/* Payment & Transaction logs */}
           <div className="mt-10 pt-6 border-t border-white/[0.08] grid gap-4 md:grid-cols-2 text-xs text-white/50 bg-black/20 p-4 rounded-2xl border border-white/5">
             <div>
-              <span className="block text-white/30 uppercase tracking-widest text-[9px]">Razorpay Payment ID</span>
+              <span className="block text-white/30 uppercase tracking-widest text-[9px]">
+                Razorpay Payment ID
+              </span>
               <code className="block mt-1 font-mono text-white/70">{booking.paymentId}</code>
             </div>
             <div>
-              <span className="block text-white/30 uppercase tracking-widest text-[9px]">Razorpay Order ID</span>
+              <span className="block text-white/30 uppercase tracking-widest text-[9px]">
+                Razorpay Order ID
+              </span>
               <code className="block mt-1 font-mono text-white/70">{booking.orderId}</code>
             </div>
           </div>
@@ -267,7 +328,10 @@ function BookingConfirmationComponent() {
 
         {/* Back to main site link */}
         <div className="text-center mt-12">
-          <a href="/" className="inline-flex items-center gap-1.5 text-xs text-white/40 hover:text-white uppercase tracking-widest transition-colors">
+          <a
+            href="/"
+            className="inline-flex items-center gap-1.5 text-xs text-white/40 hover:text-white uppercase tracking-widest transition-colors"
+          >
             <ArrowLeft size={12} /> Back to main website
           </a>
         </div>
