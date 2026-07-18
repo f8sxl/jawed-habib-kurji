@@ -104,7 +104,7 @@ export function AnimatedDepositSlider({
           <div className="h-[1px] bg-gradient-to-l from-transparent to-gold/40 flex-1" />
         </div>
         
-        <div className="relative flex items-center gap-1 rounded-full px-5 py-2.5 shadow-xl border border-[#87CEEB]/50 text-[11px] font-bold text-black tracking-wide overflow-hidden" style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%)' }}>
+        <div className="relative flex items-center gap-1 rounded-full px-5 py-2.5 shadow-xl border border-[#87CEEB]/50 text-[11px] font-bold text-black tracking-wide overflow-hidden whitespace-nowrap shrink-0" style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%)' }}>
           {/* Shine sweep */}
           <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
             <div className="absolute inset-0 animate-[shimmer_2.5s_ease-in-out_infinite]" style={{ background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.7) 45%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.7) 55%, transparent 70%)', backgroundSize: '200% 100%' }} />
@@ -116,7 +116,7 @@ export function AnimatedDepositSlider({
           <img 
             src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" 
             alt="Razorpay" 
-            className="relative z-10 h-[12px] opacity-90 object-contain translate-y-[0.5px]" 
+            className="relative z-10 h-[12px] w-[55px] shrink-0 opacity-90 object-contain translate-y-[0.5px]" 
           />
         </div>
       </div>

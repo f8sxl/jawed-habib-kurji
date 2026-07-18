@@ -278,7 +278,7 @@ export function ChatWidget() {
             sessionStorage.setItem("chatWidgetOpened", "true");
           }
         }}
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_14px_rgba(37,211,102,0.4)] transition-transform hover:scale-110 relative z-[101]"
+        className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_14px_rgba(37,211,102,0.4)] transition-transform hover:scale-110 relative z-[101]"
         aria-label={isOpen ? "Close Chat" : "Open Chat"}
       >
         <AnimatePresence mode="wait">
@@ -290,7 +290,7 @@ export function ChatWidget() {
               exit={{ opacity: 0, rotate: 90 }}
               transition={{ duration: 0.2 }}
             >
-              <ChevronDown className="h-8 w-8" />
+              <ChevronDown className="h-6 w-6 sm:h-8 sm:w-8" />
             </motion.div>
           ) : (
             <motion.div
@@ -300,7 +300,7 @@ export function ChatWidget() {
               exit={{ opacity: 0, scale: 0.5 }}
               transition={{ duration: 0.2 }}
             >
-              <MessageCircle className="h-7 w-7 fill-current" />
+              <MessageCircle className="h-5 w-5 sm:h-7 sm:w-7 fill-current" />
             </motion.div>
           )}
         </AnimatePresence>
