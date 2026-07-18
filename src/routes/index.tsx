@@ -2944,173 +2944,106 @@ function ReserveCTA() {
 
 function Footer() {
   return (
-    <footer id="contact" className="border-t border-white/[0.06] bg-surface/60">
-      <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <img src={logoImg} alt="Jawed Habib Logo" className="h-12 w-auto object-contain" />
-            <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+    <footer id="contact" className="border-t border-white/10 bg-black/60 backdrop-blur-xl relative z-10">
+      <div className="mx-auto max-w-7xl px-6 py-20">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          {/* Brand */}
+          <div className="flex flex-col items-start">
+            <img src={logoImg} alt="Jawed Habib Logo" className="h-10 w-auto object-contain opacity-90" />
+            <p className="mt-6 text-[13px] text-white/50 leading-relaxed font-light max-w-[240px]">
               Patna's premier luxury salon. Specializing in flawless bridal transformations, global
-              hair styling, and clinical hydrafacials.
+              hair styling, and clinical aesthetics.
             </p>
           </div>
+          
+          {/* Visit */}
           <div>
-            <p className="eyebrow">Visit</p>
-            <p className="mt-3 text-sm text-ivory leading-relaxed">
-              Ward 22B, Circle 247B,
-              <br />
-              Holding 817A/2, Patliputra Kurji Rd,
-              <br />
-              above Lenskart Outlet, opposite RBI Quarter,
-              <br />
+            <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-6">Visit</h4>
+            <p className="text-[13px] text-white/70 leading-loose font-light">
+              Ward 22B, Circle 247B,<br />
+              Holding 817A/2, Patliputra Kurji Rd,<br />
+              above Lenskart Outlet, opposite RBI Quarter,<br />
               Patna, Bihar 800010
             </p>
           </div>
+
+          {/* Hours */}
           <div>
-            <p className="eyebrow">Hours</p>
-            <p className="mt-3 text-sm text-ivory">Mon – Sun</p>
-            <p className="text-sm text-muted-foreground">10:00 AM – 8:30 PM</p>
-            <p className="mt-2 text-xs text-gold">Open All Days</p>
+            <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-6">Hours</h4>
+            <div className="flex flex-col gap-2 text-[13px] font-light">
+              <p className="text-white/70">Mon – Sun</p>
+              <p className="text-white/50">10:00 AM – 8:30 PM</p>
+              <p className="mt-1 text-gold/80 font-medium">Open All Days</p>
+            </div>
           </div>
+
+          {/* Contact */}
           <div>
-            <p className="eyebrow">Contact</p>
-            <a
-              href="tel:+919572194458"
-              className="mt-3 block text-sm text-ivory hover:text-gold transition-colors"
-            >
-              +91 95721 94458
-            </a>
-            <a
-              href="tel:+919709575559"
-              className="block text-sm text-ivory hover:text-gold transition-colors"
-            >
-              +91 97095 75559
-            </a>
-            <a
-              href="mailto:Jawedhabib.kurji@gmail.com"
-              className="block text-sm text-ivory hover:text-gold transition-colors"
-            >
-              Jawedhabib.kurji@gmail.com
-            </a>
-            <a
-              href={WHATSAPP}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 block text-sm text-gold hover:underline"
-            >
-              WhatsApp Us →
-            </a>
-            <a
-              href="https://www.instagram.com/jawedhabib_kurji_patna/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] px-4 py-2.5 text-sm font-medium text-white shadow-lg transition-transform hover:scale-105 hover:shadow-xl"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-              </svg>
-              Follow us on Instagram
-            </a>
-          </div>
-        </div>
-        <div className="mt-14 flex flex-col items-center justify-between gap-6 border-t border-white/[0.06] pt-8 text-[11px] tracking-[0.2em] uppercase text-muted-foreground md:flex-row">
-          <span>© {new Date().getFullYear()} Jawed Habib Hair & Beauty, Kurji</span>
-          <div className="flex flex-col items-center gap-3">
-            <span className="normal-case tracking-normal text-sm font-sans flex items-center gap-1.5 text-white/50">
-              built with <span className="text-red-500 animate-pulse">❤️</span> by{" "}
-              <span className="text-ivory font-medium hover:text-gold transition-colors">
-                「faisal」
-              </span>
-            </span>
-            <div className="flex items-center gap-4">
+            <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-6">Contact</h4>
+            <div className="flex flex-col gap-4 text-[13px] font-light">
+              <a href="tel:+919572194458" className="text-white/70 hover:text-gold transition-colors inline-flex items-center gap-2">
+                +91 95721 94458
+              </a>
+              <a href="tel:+919709575559" className="text-white/70 hover:text-gold transition-colors inline-flex items-center gap-2">
+                +91 97095 75559
+              </a>
+              <a href="mailto:Jawedhabib.kurji@gmail.com" className="text-white/70 hover:text-gold transition-colors">
+                Jawedhabib.kurji@gmail.com
+              </a>
+              
               <a
-                href="https://www.instagram.com/f8sxl.qrx"
+                href={WHATSAPP}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-gold transition-colors duration-300"
-                title="Instagram"
+                className="mt-2 text-gold hover:text-white transition-colors flex items-center gap-2 text-sm font-medium"
               >
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  viewBox="0 0 24 24"
-                >
+                Chat on WhatsApp <span className="text-lg leading-none">→</span>
+              </a>
+
+              <a
+                href="https://www.instagram.com/jawedhabib_kurji_patna/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-xs font-medium text-white/80 transition-all hover:bg-white hover:text-black hover:border-white"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                   <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
                 </svg>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/faisal-undefined-0a8135420"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-gold transition-colors duration-300"
-                title="LinkedIn"
-              >
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                  <rect width="4" height="12" x="2" y="9" />
-                  <circle cx="4" cy="4" r="2" />
-                </svg>
-              </a>
-              <a
-                href="https://github.com/f8sxl"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-gold transition-colors duration-300"
-                title="GitHub"
-              >
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                  <path d="M9 18c-4.51 2-5-2-7-2" />
-                </svg>
-              </a>
-              <a
-                href="https://x.com/faisalarete"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-gold transition-colors duration-300"
-                title="X"
-              >
-                <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
+                Follow on Instagram
               </a>
             </div>
           </div>
-          <span>Crafted for the brides of Bihar</span>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-20 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 md:flex-row">
+          <span className="text-[10px] tracking-[0.2em] uppercase text-white/40">
+            © {new Date().getFullYear()} Jawed Habib, Kurji
+          </span>
+          
+          {/* Developer Credit */}
+          <div className="flex items-center gap-6">
+            <span className="text-[11px] font-mono text-white/30 flex items-center gap-2">
+              built by <a href="https://github.com/f8sxl" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-gold transition-colors">faisal</a>
+            </span>
+            <div className="flex items-center gap-4 border-l border-white/10 pl-6">
+              <a href="https://www.instagram.com/f8sxl.qrx" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-white transition-colors" title="Instagram">
+                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" /></svg>
+              </a>
+              <a href="https://www.linkedin.com/in/faisal-undefined-0a8135420" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-white transition-colors" title="LinkedIn">
+                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" /></svg>
+              </a>
+              <a href="https://x.com/faisalarete" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-white transition-colors" title="X">
+                <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+              </a>
+            </div>
+          </div>
+
+          <span className="text-[10px] tracking-[0.2em] uppercase text-white/40">
+            Crafted for the brides of Bihar
+          </span>
         </div>
       </div>
     </footer>
