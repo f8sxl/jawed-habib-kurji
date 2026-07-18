@@ -677,7 +677,7 @@ export function IndexComponent() {
         <HairServices />
         <Brands />
         <Process />
-        <Process />
+        <FAQ />
         <MapSection />
 
         <ReserveCTA />
