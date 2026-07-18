@@ -19,16 +19,20 @@ export interface Booking {
   bookingTime: string;
 }
 
-const DB_DIR = path.resolve(process.cwd(), "src/data");
+const DB_DIR = process.env.VERCEL ? "/tmp/data" : path.resolve(process.cwd(), "src/data");
 const DB_FILE = path.join(DB_DIR, "bookings.json");
 
 // Ensure database directory and file exist (for fallback)
 function ensureDb() {
-  if (!fs.existsSync(DB_DIR)) {
-    fs.mkdirSync(DB_DIR, { recursive: true });
-  }
-  if (!fs.existsSync(DB_FILE)) {
-    fs.writeFileSync(DB_FILE, JSON.stringify([], null, 2), "utf-8");
+  try {
+    if (!fs.existsSync(DB_DIR)) {
+      fs.mkdirSync(DB_DIR, { recursive: true });
+    }
+    if (!fs.existsSync(DB_FILE)) {
+      fs.writeFileSync(DB_FILE, JSON.stringify([], null, 2), "utf-8");
+    }
+  } catch (error) {
+    console.error("[Local DB] Failed to ensure database directory/file:", error);
   }
 }
 

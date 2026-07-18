@@ -2,12 +2,16 @@ import fs from "fs";
 import path from "path";
 import { Booking } from "./db";
 
-const LOG_DIR = path.resolve(process.cwd(), "src/data");
+const LOG_DIR = process.env.VERCEL ? "/tmp/data" : path.resolve(process.cwd(), "src/data");
 const LOG_FILE = path.join(LOG_DIR, "mock-emails.log");
 
 function ensureLogDir() {
-  if (!fs.existsSync(LOG_DIR)) {
-    fs.mkdirSync(LOG_DIR, { recursive: true });
+  try {
+    if (!fs.existsSync(LOG_DIR)) {
+      fs.mkdirSync(LOG_DIR, { recursive: true });
+    }
+  } catch (error) {
+    console.error("[Email Log] Failed to ensure log directory:", error);
   }
 }
 
