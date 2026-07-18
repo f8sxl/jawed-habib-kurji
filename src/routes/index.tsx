@@ -1387,8 +1387,8 @@ function Availability({
                 </span>
               </div>
               <div className="h-px w-full bg-white/10" />
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col items-center gap-1.5 sm:items-start">
                   <span className="text-sm text-white/60">Deposit</span>
                   <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-md border border-white/10 shadow-sm">
                     <svg
@@ -1413,7 +1413,7 @@ function Availability({
                     </span>
                   </div>
                 </div>
-                <span className="text-xl font-medium text-ivory">₹2,000</span>
+                <span className="text-2xl sm:text-xl font-medium text-ivory">₹2,000</span>
               </div>
             </div>
 
