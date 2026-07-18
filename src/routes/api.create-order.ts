@@ -17,6 +17,8 @@ export const Route = createFileRoute("/api/create-order")({
             venue?: string;
             packageName?: string;
             bookingDate?: string;
+            total_price?: number;
+            remaining_balance?: number;
           };
           const {
             amount,
@@ -29,6 +31,8 @@ export const Route = createFileRoute("/api/create-order")({
             venue,
             packageName,
             bookingDate,
+            total_price,
+            remaining_balance,
           } = body;
 
           if (!amount || amount < 100) {
@@ -75,6 +79,8 @@ export const Route = createFileRoute("/api/create-order")({
               venue: venue || "",
               package: packageName || "",
               booking_date: bookingDate || "",
+              total_price: total_price ? String(total_price) : "0",
+              remaining_balance: remaining_balance ? String(remaining_balance) : "0",
             },
           });
 
@@ -92,7 +98,14 @@ export const Route = createFileRoute("/api/create-order")({
           );
         } catch (error: any) {
           console.error("Error creating order:", error);
-          return new Response(JSON.stringify({ error: error.message || "Internal Server Error" }), {
+          
+          // Razorpay throws errors with a nested .error object
+          const errorMessage = 
+            error?.error?.description || 
+            error?.message || 
+            "Internal Server Error. Please check your Razorpay API keys.";
+
+          return new Response(JSON.stringify({ error: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" },
           });

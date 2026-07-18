@@ -24,6 +24,8 @@ export async function sendConfirmationEmails(
     timeStyle: "short",
   });
 
+  const [datePart, timePart] = booking.weddingDate.split(" at ");
+
   // WhatsApp, Call, and Email buttons configuration for Owner
   let cleanPhone = booking.mobileNumber.replace(/\D/g, "");
   if (cleanPhone.length === 10) cleanPhone = `91${cleanPhone}`;
@@ -46,10 +48,13 @@ export async function sendConfirmationEmails(
         <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Mobile Number:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9;">${booking.mobileNumber}</td></tr>
         <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Email Address:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9;">${booking.emailAddress}</td></tr>
         <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">City:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9;">${booking.city}</td></tr>
-        <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Wedding Date:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0f172a;">${booking.weddingDate}</td></tr>
+        <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Wedding Date:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0f172a;">${datePart}</td></tr>
+        ${timePart ? `<tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Time Slot:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #c5a850;">${timePart}</td></tr>` : ""}
         <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Wedding Venue:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9;">${booking.weddingVenue || "Not Specified (In-Salon)"}</td></tr>
         <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Selected Package:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold; color: #c5a850;">${booking.packageSelected}</td></tr>
-        <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Amount Paid:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #15803d;">₹${booking.amountPaid} (Paid)</td></tr>
+        <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Total Package Value:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9; font-weight: 600;">₹${(booking.totalPrice || 0).toLocaleString("en-IN")}</td></tr>
+        <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Deposit Paid:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #15803d;">₹${booking.amountPaid.toLocaleString("en-IN")} ✅</td></tr>
+        <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Due at Venue:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #b91c1c;">₹${(booking.remainingBalance || 0).toLocaleString("en-IN")}</td></tr>
         <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Payment Status:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #16a34a;">PAID</td></tr>
         <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Razorpay Payment ID:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9; font-family: monospace; font-size: 13px;">${booking.paymentId}</td></tr>
         <tr><td style="padding: 10px 8px; font-weight: bold; border-bottom: 1px solid #f1f5f9; color: #475569;">Booking Time:</td><td style="padding: 10px 8px; border-bottom: 1px solid #f1f5f9;">${bookingTimeStr}</td></tr>
@@ -85,9 +90,12 @@ export async function sendConfirmationEmails(
         <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px;">
           <tr><td style="padding: 6px 0; color: #64748b; font-weight: bold; width: 40%;">Booking ID:</td><td style="padding: 6px 0; font-weight: 600;">${booking.id}</td></tr>
           <tr><td style="padding: 6px 0; color: #64748b; font-weight: bold;">Selected Package:</td><td style="padding: 6px 0; font-weight: 600; color: #c5a850;">${booking.packageSelected}</td></tr>
-          <tr><td style="padding: 6px 0; color: #64748b; font-weight: bold;">Wedding Date:</td><td style="padding: 6px 0; font-weight: 600;">${booking.weddingDate}</td></tr>
+          <tr><td style="padding: 6px 0; color: #64748b; font-weight: bold;">Wedding Date:</td><td style="padding: 6px 0; font-weight: 600;">${datePart}</td></tr>
+          ${timePart ? `<tr><td style="padding: 6px 0; color: #64748b; font-weight: bold;">Time Slot:</td><td style="padding: 6px 0; font-weight: 600;">${timePart}</td></tr>` : ""}
           <tr><td style="padding: 6px 0; color: #64748b; font-weight: bold;">Wedding Venue:</td><td style="padding: 6px 0;">${booking.weddingVenue || "Not Specified (In-Salon Appointment)"}</td></tr>
-          <tr><td style="padding: 6px 0; color: #64748b; font-weight: bold;">Deposit Paid:</td><td style="padding: 6px 0; font-weight: 600; color: #16a34a;">₹${booking.amountPaid} (Adjusted on final bill)</td></tr>
+          <tr><td style="padding: 6px 0; color: #64748b; font-weight: bold;">Total Package Price:</td><td style="padding: 6px 0; font-weight: 600;">₹${(booking.totalPrice || 0).toLocaleString("en-IN")}</td></tr>
+          <tr><td style="padding: 6px 0; color: #64748b; font-weight: bold;">Deposit Paid (Now):</td><td style="padding: 6px 0; font-weight: 600; color: #16a34a;">- ₹${booking.amountPaid.toLocaleString("en-IN")}</td></tr>
+          <tr><td style="padding: 6px 0; color: #64748b; font-weight: bold;">Due at Venue:</td><td style="padding: 6px 0; font-weight: bold; color: #c5a850;">₹${(booking.remainingBalance || 0).toLocaleString("en-IN")}</td></tr>
         </table>
       </div>
 

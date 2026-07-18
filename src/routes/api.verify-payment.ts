@@ -22,8 +22,11 @@ export const Route = createFileRoute("/api/verify-payment")({
             venue?: string;
             package?: string;
             booking_date?: string;
+            amountPaid?: number;
+            total_price?: number;
+            remaining_balance?: number;
           };
-          const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = body;
+          const { razorpay_order_id, razorpay_payment_id, razorpay_signature, total_price, remaining_balance, amountPaid } = body;
 
           if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
             return new Response(
@@ -52,7 +55,9 @@ export const Route = createFileRoute("/api/verify-payment")({
               weddingDate: body.booking_date || new Date().toLocaleDateString(),
               weddingVenue: body.venue || "",
               packageSelected: body.package || "Ultra HD Bridal",
-              amountPaid: 2000,
+              totalPrice: total_price || 17199,
+              amountPaid: amountPaid || 2000,
+              remainingBalance: remaining_balance || 15199,
               paymentId: razorpay_payment_id,
               orderId: razorpay_order_id,
               bookingTime: new Date().toISOString(),
@@ -119,7 +124,9 @@ export const Route = createFileRoute("/api/verify-payment")({
               weddingDate: notes.booking_date || "",
               weddingVenue: notes.venue || "",
               packageSelected: notes.package || "",
+              totalPrice: notes.total_price ? parseInt(notes.total_price) : 0,
               amountPaid: Number(order.amount) / 100, // Convert paise to INR
+              remainingBalance: notes.remaining_balance ? parseInt(notes.remaining_balance) : 0,
               paymentId: razorpay_payment_id,
               orderId: razorpay_order_id,
               bookingTime: new Date().toISOString(),

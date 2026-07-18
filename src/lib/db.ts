@@ -11,7 +11,9 @@ export interface Booking {
   weddingDate: string;
   weddingVenue?: string;
   packageSelected: string;
+  totalPrice?: number;
   amountPaid: number; // in INR (e.g. 2000)
+  remainingBalance?: number;
   paymentId: string;
   orderId: string;
   bookingTime: string;
