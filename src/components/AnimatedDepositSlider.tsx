@@ -104,15 +104,19 @@ export function AnimatedDepositSlider({
           <div className="h-[1px] bg-gradient-to-l from-transparent to-red-500/50 flex-1" />
         </div>
         
-        <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md rounded-full px-5 py-2.5 shadow-xl border border-white/30 ring-1 ring-black/5 text-[11px] font-bold text-gray-800 tracking-wide">
-          <span>Save</span>
-          <span className="text-black font-extrabold text-[12px]">₹199</span>
-          <span className="text-gray-800 font-bold">more</span>
-          <span className="text-gray-500 font-medium">via</span>
+        <div className="relative flex items-center gap-1 rounded-full px-5 py-2.5 shadow-xl border border-sky-300/40 text-[11px] font-bold text-white tracking-wide overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(135,206,250,0.25) 0%, rgba(173,216,230,0.35) 50%, rgba(135,206,250,0.25) 100%)' }}>
+          {/* Shine sweep */}
+          <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
+            <div className="absolute inset-0 animate-[shimmer_2.5s_ease-in-out_infinite]" style={{ background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.35) 45%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.35) 55%, transparent 70%)', backgroundSize: '200% 100%' }} />
+          </div>
+          <span className="relative z-10">Save</span>
+          <span className="relative z-10 font-extrabold text-[12px]">₹199</span>
+          <span className="relative z-10 font-bold">more</span>
+          <span className="relative z-10 font-medium opacity-80">via</span>
           <img 
             src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" 
             alt="Razorpay" 
-            className="h-[12px] opacity-90 object-contain translate-y-[0.5px]" 
+            className="relative z-10 h-[12px] opacity-90 object-contain translate-y-[0.5px]" 
           />
         </div>
       </div>
