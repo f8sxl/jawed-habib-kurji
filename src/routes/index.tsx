@@ -2632,13 +2632,12 @@ function Brands() {
 /* ------------------------------- PROCESS --------------------------------- */
 
 function Process() {
-  const steps = [
-    { t: "Choose Your Date", d: "Reserve your wedding date from our live calendar check." },
-    { t: "Enter Details", d: "Fill in your contact and venue information below." },
+  const processSteps = [
+    { t: "Consultation", d: "A detailed discussion over WhatsApp or Phone about your vision and styling preferences." },
     { t: "Choose Package", d: "Select your signature bridal makeup and styling look." },
-    { t: "Booking Deposit", d: "A non-refundable ₹2,000 confirms the date exclusively for you." },
+    { t: "Booking Deposit", d: "Choose a non-refundable deposit between ₹1,500 and ₹2,500 to confirm the date exclusively for you." },
     {
-      t: "Your Wedding Day",
+      t: "The Big Day",
       d: "Undivided attention from your artist, trial, and draping rehearsals.",
     },
   ];
@@ -2751,7 +2750,7 @@ function FAQ() {
     },
     {
       q: "Is the booking deposit refundable?",
-      a: "The booking amount is ₹2,000 and it is non-refundable. This amount is adjusted against your final bill.",
+      a: "Your selected booking deposit (between ₹1,500 and ₹2,500) is non-refundable and will be securely adjusted against your final bill.",
     },
     {
       q: "Do you offer a trial?",
@@ -2922,7 +2921,7 @@ function ReserveCTA() {
           <br /> Secure yours today.
         </motion.h2>
         <p className="mx-auto mt-6 max-w-lg text-sm leading-relaxed text-muted-foreground md:text-base">
-          A non-refundable ₹2,000 booking amount reserves the day exclusively for you. Adjusted
+          A flexible, non-refundable deposit (₹1,500 - ₹2,500) reserves the day exclusively for you. Adjusted
           against your final bill.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
