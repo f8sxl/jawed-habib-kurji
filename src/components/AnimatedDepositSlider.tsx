@@ -11,6 +11,11 @@ export function AnimatedDepositSlider({
   const min = 1500;
   const max = 2500;
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   // Calculate percentage for filling the track
   const percentage = bookingDeposit === 0 ? 0 : ((bookingDeposit - min) / (max - min)) * 100;
@@ -72,11 +77,11 @@ export function AnimatedDepositSlider({
           className="absolute w-7 h-7 rounded-full bg-gold shadow-[0_0_15px_rgba(212,175,55,0.6)] border-2 border-white flex items-center justify-center pointer-events-none z-10"
           animate={{ 
             left: `calc(${percentage}% - 14px)`,
-            x: hasInteracted ? 0 : [0, 6, -6, 4, -4, 0]
+            x: (!hasInteracted && mounted) ? [0, 6, -6, 4, -4, 0] : 0
           }}
           transition={{ 
             left: { type: "spring", stiffness: 300, damping: 30 },
-            x: hasInteracted ? { duration: 0 } : { duration: 1.5, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }
+            x: (!hasInteracted && mounted) ? { duration: 1.5, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" } : { duration: 0 }
           }}
         >
           <div className="w-2 h-2 rounded-full bg-black/80" />
