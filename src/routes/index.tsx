@@ -2651,11 +2651,11 @@ function Process() {
           <motion.div
             className="absolute left-0 top-6 h-px bg-gold"
             initial={{ width: "0%" }}
-            animate={{ width: `${(active / (steps.length - 1)) * 100}%` }}
+            animate={{ width: `${(active / (processSteps.length - 1)) * 100}%` }}
             transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
           />
           <ol className="relative grid grid-cols-5 gap-4">
-            {steps.map((s, i) => {
+            {processSteps.map((s, i) => {
               const done = i <= active;
               return (
                 <li key={s.t} className="flex flex-col items-center text-center">
@@ -2693,7 +2693,7 @@ function Process() {
               ← Back
             </button>
             <button
-              onClick={() => setActive(Math.min(steps.length - 1, active + 1))}
+              onClick={() => setActive(Math.min(processSteps.length - 1, active + 1))}
               className="btn-cream"
             >
               {active === steps.length - 1 ? "Restart" : "Next Step"}{" "}
@@ -2712,7 +2712,7 @@ function Process() {
             viewport={{ once: true, margin: "-40%" }}
             transition={{ duration: 2, ease: [0.2, 0.8, 0.2, 1] }}
           />
-          {steps.map((s, i) => (
+          {processSteps.map((s, i) => (
             <motion.li
               key={s.t}
               initial={{ opacity: 0, x: -12 }}
