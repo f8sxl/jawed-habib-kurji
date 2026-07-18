@@ -91,6 +91,7 @@ interface BookingFormData {
 
 function BookingFormSection({
   selectedDate,
+  selectedTime,
   formData,
   setFormData,
   isFormSubmitted,
@@ -100,6 +101,7 @@ function BookingFormSection({
   setBookingDeposit,
 }: {
   selectedDate: Date | null;
+  selectedTime: string | null;
   formData: BookingFormData;
   setFormData: React.Dispatch<React.SetStateAction<BookingFormData>>;
   isFormSubmitted: boolean;
@@ -653,6 +655,7 @@ export function IndexComponent() {
         />
         <BookingFormSection
           selectedDate={selectedDate}
+          selectedTime={selectedTime}
           formData={formData}
           setFormData={setFormData}
           isFormSubmitted={isFormSubmitted}
