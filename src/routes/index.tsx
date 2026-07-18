@@ -168,7 +168,7 @@ function BookingFormSection({
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <Field label="Wedding Date (Click to choose/change)">
+              <Field label="Wedding Date & Time (Click to choose/change)">
                 <input
                   required
                   readOnly
@@ -178,15 +178,15 @@ function BookingFormSection({
                   onClick={onDateInputClick}
                   value={
                     selectedDate
-                      ? selectedDate.toLocaleDateString("en-US", {
+                      ? `${selectedDate.toLocaleDateString("en-US", {
                           month: "long",
                           day: "numeric",
                           year: "numeric",
-                        })
+                        })}${selectedTime ? ` at ${selectedTime}` : ""}`
                       : ""
                   }
                   className="mt-1 w-full bg-transparent py-2.5 outline-none text-gold placeholder-white/20 text-sm cursor-pointer font-medium"
-                  placeholder="Select a date from calendar above"
+                  placeholder="Select a date & time from calendar above"
                 />
               </Field>
               <Field label="Wedding Venue / Location (Optional)">
@@ -1410,7 +1410,7 @@ function Availability({
                     </span>
                   </div>
                 </div>
-                <span className="text-xl font-medium text-ivory">₹1,500 – ₹2,500</span>
+                <span className="text-xl font-medium text-ivory">₹2,000</span>
               </div>
             </div>
 
