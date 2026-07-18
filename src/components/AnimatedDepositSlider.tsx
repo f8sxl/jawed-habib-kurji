@@ -97,22 +97,22 @@ export function AnimatedDepositSlider({
       {/* Scarcity Offer */}
       <div className="mt-7 flex flex-col items-center justify-center w-full gap-3">
         <div className="flex items-center gap-3 w-full max-w-[220px]">
-          <div className="h-[1px] bg-gradient-to-r from-transparent to-red-500/50 flex-1" />
-          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-red-400 animate-pulse drop-shadow-[0_0_8px_rgba(248,113,113,0.5)]">
+          <div className="h-[1px] bg-gradient-to-r from-transparent to-gold/40 flex-1" />
+          <span className="text-[9px] font-semibold uppercase tracking-[0.25em] text-gold/90 drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]">
             LIMITED TIME OFFER
           </span>
-          <div className="h-[1px] bg-gradient-to-l from-transparent to-red-500/50 flex-1" />
+          <div className="h-[1px] bg-gradient-to-l from-transparent to-gold/40 flex-1" />
         </div>
         
-        <div className="relative flex items-center gap-1 rounded-full px-5 py-2.5 shadow-xl border border-sky-300/40 text-[11px] font-bold text-white tracking-wide overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(135,206,250,0.25) 0%, rgba(173,216,230,0.35) 50%, rgba(135,206,250,0.25) 100%)' }}>
+        <div className="relative flex items-center gap-1 rounded-full px-5 py-2.5 shadow-xl border border-[#87CEEB]/50 text-[11px] font-bold text-black tracking-wide overflow-hidden" style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%)' }}>
           {/* Shine sweep */}
           <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
-            <div className="absolute inset-0 animate-[shimmer_2.5s_ease-in-out_infinite]" style={{ background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.35) 45%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.35) 55%, transparent 70%)', backgroundSize: '200% 100%' }} />
+            <div className="absolute inset-0 animate-[shimmer_2.5s_ease-in-out_infinite]" style={{ background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.7) 45%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.7) 55%, transparent 70%)', backgroundSize: '200% 100%' }} />
           </div>
           <span className="relative z-10">Save</span>
           <span className="relative z-10 font-extrabold text-[12px]">₹199</span>
           <span className="relative z-10 font-bold">more</span>
-          <span className="relative z-10 font-medium opacity-80">via</span>
+          <span className="relative z-10 font-medium text-black/70">via</span>
           <img 
             src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" 
             alt="Razorpay" 
