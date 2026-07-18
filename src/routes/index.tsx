@@ -465,7 +465,7 @@ export function IndexComponent() {
       };
 
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TEzyOdJageNSZc",
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_TEtskwE2tLdB8G",
         amount: orderData.amount,
         currency: orderData.currency,
         name: "Jawed Habib Kurji",
