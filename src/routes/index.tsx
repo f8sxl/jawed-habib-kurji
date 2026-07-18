@@ -673,8 +673,8 @@ export function IndexComponent() {
         <WhyUs />
         <BeforeAfter />
         <Testimonials />
-        <SalonExperience />
         <HairServices />
+        <SalonExperience />
         <Brands />
         <Process />
         <FAQ />
