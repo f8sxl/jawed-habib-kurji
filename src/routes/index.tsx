@@ -333,6 +333,7 @@ export function IndexComponent() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   // New State for Booking Funnel
@@ -362,8 +363,8 @@ export function IndexComponent() {
   };
 
   const handlePayment = async (packageName: string) => {
-    if (!selectedDate) {
-      alert("Please select your wedding date from the calendar first!");
+    if (!selectedDate || !selectedTime) {
+      alert("Please select your wedding date and time from the calendar first!");
       document.getElementById("availability")?.scrollIntoView({ behavior: "smooth" });
       return;
     }
@@ -407,7 +408,7 @@ export function IndexComponent() {
           city: formData.city,
           venue: formData.venue,
           packageName: packageName,
-          bookingDate: selectedDate.toLocaleDateString(),
+          bookingDate: `${selectedDate.toLocaleDateString()} at ${selectedTime}`,
         }),
       });
 
@@ -472,7 +473,7 @@ export function IndexComponent() {
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id,
                 package: packageName,
-                date: selectedDate.toLocaleDateString(),
+                date: `${selectedDate.toLocaleDateString()} at ${selectedTime}`,
                 name: formData.name,
               });
             } else {
@@ -513,8 +514,8 @@ export function IndexComponent() {
   };
 
   const handleMockPayment = async (packageName: string) => {
-    if (!selectedDate) {
-      alert("Please select your wedding date from the calendar first!");
+    if (!selectedDate || !selectedTime) {
+      alert("Please select your wedding date and time from the calendar first!");
       document.getElementById("availability")?.scrollIntoView({ behavior: "smooth" });
       return;
     }
@@ -542,7 +543,7 @@ export function IndexComponent() {
           customer_city: formData.city,
           venue: formData.venue,
           package: packageName,
-          booking_date: selectedDate.toLocaleDateString(),
+          booking_date: `${selectedDate.toLocaleDateString()} at ${selectedTime}`,
         }),
       });
 
@@ -562,7 +563,7 @@ export function IndexComponent() {
           paymentId: `pay_MOCK_${Date.now()}`,
           orderId: `order_MOCK_${Date.now()}`,
           package: packageName,
-          date: selectedDate.toLocaleDateString(),
+          date: `${selectedDate.toLocaleDateString()} at ${selectedTime}`,
           name: formData.name,
         });
       } else {
@@ -578,8 +579,8 @@ export function IndexComponent() {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedDate) {
-      alert("Please select your wedding date from the calendar first!");
+    if (!selectedDate || !selectedTime) {
+      alert("Please select your wedding date and time from the calendar first!");
       document.getElementById("availability")?.scrollIntoView({ behavior: "smooth" });
       return;
     }
@@ -605,7 +606,13 @@ export function IndexComponent() {
 
       <main>
         <Hero />
-        <Availability selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+        {/* Availability / Calendar Section */}
+        <Availability 
+          selectedDate={selectedDate} 
+          setSelectedDate={setSelectedDate} 
+          selectedTime={selectedTime}
+          setSelectedTime={setSelectedTime}
+        />
         <BookingFormSection
           selectedDate={selectedDate}
           formData={formData}
@@ -1144,9 +1151,13 @@ function WordReveal({ text, className }: { text: string; className?: string }) {
 function Availability({
   selectedDate,
   setSelectedDate,
+  selectedTime,
+  setSelectedTime,
 }: {
   selectedDate: Date | null;
   setSelectedDate: (d: Date | null) => void;
+  selectedTime: string | null;
+  setSelectedTime: (t: string | null) => void;
 }) {
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -1250,11 +1261,7 @@ function Availability({
                     disabled={isPast}
                     onClick={() => {
                       setSelectedDate(thisDate);
-                      setTimeout(() => {
-                        document
-                          .getElementById("booking-form-section")
-                          ?.scrollIntoView({ behavior: "smooth", block: "start" });
-                      }, 100);
+                      setSelectedTime(null);
                     }}
                     className={`relative flex h-9 w-full items-center justify-center rounded-full text-sm transition-all ${
                       isPast
@@ -1284,22 +1291,62 @@ function Availability({
           {/* Form/Deposit Summary Side */}
           <div className="flex flex-1 flex-col justify-center gap-5 pb-6 md:pb-0">
             <div>
-              <h3 className="mb-1.5 font-serif text-3xl text-ivory">Reserve Date</h3>
+              <h3 className="mb-1.5 font-serif text-3xl text-ivory">
+                {selectedDate ? "Select a Time" : "Reserve Date"}
+              </h3>
               <p className="text-sm leading-relaxed text-ivory/60">
-                Pick an available date to secure your slot.
+                {selectedDate 
+                  ? `Available slots for ${selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}` 
+                  : "Pick an available date to secure your slot."}
               </p>
             </div>
 
-            <div className="flex flex-col gap-3.5 rounded-2xl border border-white/10 bg-white/5 p-5">
+            {selectedDate ? (
+              <div className="grid grid-cols-2 gap-3 mb-2">
+                {["10:00 AM", "11:30 AM", "01:00 PM", "02:30 PM", "04:00 PM", "05:30 PM"].map((time, idx) => {
+                  const hash = (selectedDate.getDate() * 13 + selectedDate.getMonth() * 7) % 10;
+                  const isFastFilling = (hash === 2 || hash === 7 || hash === 5);
+                  // Make specific slots booked if fast filling
+                  const isBooked = isFastFilling && (idx === 1 || idx === 4 || (idx === 2 && hash === 7));
+                  
+                  return (
+                    <button
+                      key={time}
+                      disabled={isBooked}
+                      onClick={() => {
+                        setSelectedTime(time);
+                        setTimeout(() => {
+                          document.getElementById("booking-form-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }, 100);
+                      }}
+                      className={`relative flex items-center justify-center rounded-xl border py-3 text-sm font-medium transition-all ${
+                        isBooked
+                          ? "border-white/5 bg-white/5 text-white/20 cursor-not-allowed"
+                          : selectedTime === time
+                            ? "border-gold bg-gold text-background shadow-[0_0_15px_rgba(212,175,55,0.3)]"
+                            : "border-white/20 bg-black/40 text-ivory hover:border-white/40 hover:bg-white/10"
+                      }`}
+                    >
+                      {time}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-white/5 bg-white/5 p-10 text-center">
+                <svg className="mb-3 h-8 w-8 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p className="text-sm text-white/40">Select a date on the calendar<br/>to view available times</p>
+              </div>
+            )}
+
+            <div className="flex flex-col gap-3.5 rounded-2xl border border-white/10 bg-white/5 p-5 mt-auto">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-white/60">Date</span>
-                <span className="font-medium text-gold">
-                  {selectedDate
-                    ? selectedDate.toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })
+                <span className="text-sm text-white/60">Selected</span>
+                <span className="font-medium text-gold text-right">
+                  {selectedDate && selectedTime
+                    ? `${selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })} at ${selectedTime}`
                     : "Pending"}
                 </span>
               </div>
@@ -1336,16 +1383,16 @@ function Availability({
 
             <button
               onClick={() => {
-                if (selectedDate) {
+                if (selectedDate && selectedTime) {
                   document
                     .getElementById("booking-form-section")
                     ?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
               }}
-              disabled={!selectedDate}
-              className={`btn-cream mt-2 w-full justify-center text-[11px] md:text-sm tracking-[0.2em] cursor-pointer ${!selectedDate && "pointer-events-none opacity-50"}`}
+              disabled={!selectedDate || !selectedTime}
+              className={`btn-cream mt-2 w-full justify-center text-[11px] md:text-sm tracking-[0.2em] cursor-pointer ${(!selectedDate || !selectedTime) && "pointer-events-none opacity-50"}`}
             >
-              {selectedDate ? "ENTER DETAILS" : "SELECT A DATE"} <span className="arrow">↓</span>
+              {selectedDate && selectedTime ? "ENTER DETAILS" : "SELECT DATE & TIME"} <span className="arrow">↓</span>
             </button>
           </div>
         </div>
