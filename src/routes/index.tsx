@@ -363,7 +363,7 @@ export function IndexComponent() {
   // New State for Booking Funnel
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", city: "", venue: "" });
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [bookingDeposit, setBookingDeposit] = useState(0);
+  const [bookingDeposit, setBookingDeposit] = useState(2000);
   const [paymentSuccessData, setPaymentSuccessData] = useState<{
     bookingId: string;
     paymentId: string;

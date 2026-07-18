@@ -10,6 +10,7 @@ export function AnimatedDepositSlider({
 }) {
   const min = 1500;
   const max = 2500;
+  const [hasInteracted, setHasInteracted] = useState(false);
   
   // Calculate percentage for filling the track
   const percentage = bookingDeposit === 0 ? 0 : ((bookingDeposit - min) / (max - min)) * 100;
@@ -59,15 +60,24 @@ export function AnimatedDepositSlider({
           max={max} 
           step="100" 
           value={bookingDeposit} 
-          onChange={(e) => setBookingDeposit(parseInt(e.target.value))}
+          onChange={(e) => {
+            setHasInteracted(true);
+            setBookingDeposit(parseInt(e.target.value));
+          }}
           className="absolute inset-0 w-full opacity-0 cursor-pointer z-20"
         />
 
         {/* Custom Thumb (Animated to follow the native input) */}
         <motion.div 
           className="absolute w-7 h-7 rounded-full bg-gold shadow-[0_0_15px_rgba(212,175,55,0.6)] border-2 border-white flex items-center justify-center pointer-events-none z-10"
-          animate={{ left: `calc(${percentage}% - 14px)` }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          animate={{ 
+            left: `calc(${percentage}% - 14px)`,
+            x: hasInteracted ? 0 : [0, 6, -6, 4, -4, 0]
+          }}
+          transition={{ 
+            left: { type: "spring", stiffness: 300, damping: 30 },
+            x: hasInteracted ? { duration: 0 } : { duration: 1.5, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }
+          }}
         >
           <div className="w-2 h-2 rounded-full bg-black/80" />
         </motion.div>
