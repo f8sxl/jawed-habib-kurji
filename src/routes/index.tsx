@@ -1303,11 +1303,11 @@ function Availability({
 
             {selectedDate ? (
               <div className="grid grid-cols-2 gap-3 mb-2">
-                {["10:00 AM", "11:30 AM", "01:00 PM", "02:30 PM", "04:00 PM", "05:30 PM"].map((time, idx) => {
+                {["10:00 AM", "11:30 AM", "01:00 PM", "02:30 PM", "04:00 PM", "05:30 PM", "07:00 PM", "08:30 PM"].map((time, idx) => {
                   const hash = (selectedDate.getDate() * 13 + selectedDate.getMonth() * 7) % 10;
                   const isFastFilling = (hash === 2 || hash === 7 || hash === 5);
-                  // Make specific slots booked if fast filling
-                  const isBooked = isFastFilling && (idx === 1 || idx === 4 || (idx === 2 && hash === 7));
+                  // Make specific slots booked if fast filling (idx 1, 4, 6)
+                  const isBooked = isFastFilling && (idx === 1 || idx === 4 || idx === 6 || (idx === 2 && hash === 7));
                   
                   return (
                     <button
@@ -1372,7 +1372,7 @@ function Availability({
                       <img
                         src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg"
                         alt="Razorpay"
-                        className="h-2.5 brightness-0 invert opacity-80"
+                        className="h-2.5"
                       />
                     </span>
                   </div>
