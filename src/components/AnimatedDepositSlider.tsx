@@ -8,8 +8,8 @@ export function AnimatedDepositSlider({
   bookingDeposit: number;
   setBookingDeposit: (val: number) => void;
 }) {
-  const min = 1000;
-  const max = 2000;
+  const min = 1500;
+  const max = 2500;
   
   // Calculate percentage for filling the track
   const percentage = bookingDeposit === 0 ? 0 : ((bookingDeposit - min) / (max - min)) * 100;
@@ -75,8 +75,8 @@ export function AnimatedDepositSlider({
 
       {/* Min/Max Labels */}
       <div className="flex justify-between text-xs font-medium text-white/40 px-1 mb-8">
-        <span>₹1,000</span>
-        <span>₹2,000</span>
+        <span>₹1,500</span>
+        <span>₹2,500</span>
       </div>
 
       {/* Scarcity Offer */}

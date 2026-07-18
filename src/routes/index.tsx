@@ -428,7 +428,7 @@ export function IndexComponent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: (bookingDeposit - 199) * 100, // Apply ₹199 online discount in paise
+          amount: bookingDeposit * 100,
           currency: "INR",
           receipt: `receipt_date_${selectedDate.getTime()}`,
           name: formData.name,
@@ -579,7 +579,7 @@ export function IndexComponent() {
           venue: formData.venue,
           package: packageName,
           booking_date: `${selectedDate.toLocaleDateString()} at ${selectedTime}`,
-          amountPaid: bookingDeposit - 199,
+          amountPaid: bookingDeposit,
           total_price,
           remaining_balance,
         }),
