@@ -737,7 +737,7 @@ function Nav() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: 0.2 }}
-        className="fixed inset-x-0 top-4 z-50 flex justify-center px-4 md:top-6"
+        className="absolute inset-x-0 top-4 z-50 flex justify-center px-4 md:top-6"
       >
         <div
           className={`flex w-full max-w-6xl items-center justify-between rounded-full border border-white/10 px-4 backdrop-blur-xl transition-all duration-500 md:px-5 ${
