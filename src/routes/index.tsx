@@ -478,8 +478,49 @@ export function IndexComponent() {
           contact: formData.phone,
         },
         notes: orderData.notes,
-        callback_url: "https://jawedhabibkurji.com/api/payment-callback",
-        redirect: true,
+        handler: async function (response: any) {
+          try {
+            const verifyRes = await fetch("/api/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }),
+            });
+
+            const verifyData = (await verifyRes.json()) as {
+              status: string;
+              error?: string;
+              booking: any;
+            };
+
+            if (verifyRes.ok && verifyData.status === "success") {
+              // Send Purchase event to Meta Pixel manually
+              if (typeof window !== "undefined" && (window as any).fbq) {
+                (window as any).fbq('track', 'Purchase', { currency: 'INR', value: orderData.amount / 100 });
+              }
+              setPaymentSuccessData({
+                bookingId: verifyData.booking.id,
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id,
+                package: packageName,
+                date: `${selectedDate.toLocaleDateString()} at ${selectedTime}`,
+                name: formData.name,
+              });
+            } else {
+              alert(
+                `Signature verification failed: ${verifyData.error || "Please contact support"}`,
+              );
+            }
+          } catch (err: any) {
+            console.error("Verification error:", err);
+            alert("An error occurred while verifying the payment. Please contact support.");
+          } finally {
+            setIsProcessing(false);
+          }
+        },
         modal: {
           ondismiss: function () {
             setIsProcessing(false);

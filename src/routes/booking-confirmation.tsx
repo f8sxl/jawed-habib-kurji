@@ -56,11 +56,6 @@ function BookingConfirmationComponent() {
         }
         const data = (await response.json()) as Booking;
         setBooking(data);
-        
-        // Fire Meta Pixel Purchase event now that we have the confirmed booking data
-        if (typeof window !== "undefined" && (window as any).fbq) {
-          (window as any).fbq('track', 'Purchase', { currency: 'INR', value: data.amountPaid });
-        }
       } catch (err: any) {
         setError(err.message || "An error occurred while retrieving your booking details.");
       } finally {
