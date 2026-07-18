@@ -26,10 +26,19 @@ export function ChatWidget() {
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Auto open after 12 seconds
+  // Auto open after 12 seconds only if user hasn't interacted
   useEffect(() => {
+    const hasClosed = sessionStorage.getItem("chatWidgetClosed");
+    const hasOpened = sessionStorage.getItem("chatWidgetOpened");
+    if (hasClosed || hasOpened) return;
+
     const timer = setTimeout(() => {
-      setIsOpen(true);
+      setIsOpen((current) => {
+        if (!sessionStorage.getItem("chatWidgetClosed")) {
+          return true;
+        }
+        return current;
+      });
     }, 12000);
     return () => clearTimeout(timer);
   }, []);
@@ -75,6 +84,7 @@ export function ChatWidget() {
 
   const handleClose = () => {
     setIsOpen(false);
+    sessionStorage.setItem("chatWidgetClosed", "true");
     setTimeout(() => {
       setStep("menu");
       setSelectedQ(null);
@@ -260,7 +270,14 @@ export function ChatWidget() {
       </AnimatePresence>
 
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (isOpen) {
+            handleClose();
+          } else {
+            setIsOpen(true);
+            sessionStorage.setItem("chatWidgetOpened", "true");
+          }
+        }}
         className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_14px_rgba(37,211,102,0.4)] transition-transform hover:scale-110 relative z-[101]"
         aria-label={isOpen ? "Close Chat" : "Open Chat"}
       >
