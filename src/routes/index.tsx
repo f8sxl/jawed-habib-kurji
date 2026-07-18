@@ -1410,7 +1410,7 @@ function Availability({
                     </span>
                   </div>
                 </div>
-                <span className="text-xl font-medium text-ivory">₹2,000</span>
+                <span className="text-xl font-medium text-ivory">{bookingDeposit !== 0 ? `₹${bookingDeposit.toLocaleString()} (adjusted against final bill)` : `Select deposit`}</span>
               </div>
             </div>
 
@@ -2696,7 +2696,7 @@ function Process() {
               onClick={() => setActive(Math.min(processSteps.length - 1, active + 1))}
               className="btn-cream"
             >
-              {active === steps.length - 1 ? "Restart" : "Next Step"}{" "}
+              {active === processSteps.length - 1 ? "Restart" : "Next Step"}{" "}
               <span className="arrow">→</span>
             </button>
           </div>
