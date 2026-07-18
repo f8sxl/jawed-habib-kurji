@@ -3,7 +3,7 @@ import path from "path";
 import { supabase } from "./supabase";
 
 export interface Booking {
-  id: string; // JHKB-XXXXXX
+  id: string;
   customerName: string;
   mobileNumber: string;
   emailAddress: string;
@@ -12,11 +12,12 @@ export interface Booking {
   weddingVenue?: string;
   packageSelected: string;
   totalPrice?: number;
-  amountPaid: number; // in INR (e.g. 2000)
+  amountPaid: number;
   remainingBalance?: number;
-  paymentId: string;
+  paymentId?: string; // Optional because it doesn't exist when PENDING
   orderId: string;
   bookingTime: string;
+  status?: "PENDING" | "CONFIRMED"; // New field to track payment state
 }
 
 const DB_DIR = process.env.VERCEL ? "/tmp/data" : path.resolve(process.cwd(), "src/data");
@@ -93,7 +94,15 @@ export async function saveBooking(booking: Booking): Promise<boolean> {
   ensureDb();
   try {
     const bookings = getLocalBookings();
-    bookings.push(booking);
+    
+    // Check if booking already exists (for updates)
+    const existingIndex = bookings.findIndex((b) => b.id === booking.id || b.orderId === booking.orderId);
+    if (existingIndex >= 0) {
+      bookings[existingIndex] = booking;
+    } else {
+      bookings.push(booking);
+    }
+    
     fs.writeFileSync(DB_FILE, JSON.stringify(bookings, null, 2), "utf-8");
     console.log("[Local DB] Booking cached successfully.");
     return supabaseSaved || !supabase; // return success true if either Supabase succeeded, or local succeeded when Supabase is not configured
@@ -101,4 +110,58 @@ export async function saveBooking(booking: Booking): Promise<boolean> {
     console.error("[Local DB] Error saving booking:", error);
     return false;
   }
+}
+
+export async function updateBookingStatusAndPayment(
+  orderId: string,
+  paymentId: string,
+  status: "PENDING" | "CONFIRMED"
+): Promise<Booking | undefined> {
+  let updatedBooking: Booking | undefined;
+
+  if (supabase) {
+    try {
+      // Fetch current booking to return it
+      const { data: fetchRes, error: fetchErr } = await supabase
+        .from("bookings")
+        .select("*")
+        .eq("orderId", orderId)
+        .maybeSingle();
+        
+      if (fetchRes) {
+        updatedBooking = { ...fetchRes, paymentId, status } as Booking;
+        const { error: updateErr } = await supabase
+          .from("bookings")
+          .update({ paymentId, status })
+          .eq("orderId", orderId);
+          
+        if (updateErr) {
+          console.error("[Supabase] Error updating booking status:", updateErr.message);
+        } else {
+          console.log(`[Supabase] Booking ${orderId} updated to ${status}`);
+        }
+      }
+    } catch (err) {
+      console.error("[Supabase] Update execution failed:", err);
+    }
+  }
+
+  // Fallback / Local sync
+  ensureDb();
+  try {
+    const bookings = getLocalBookings();
+    const index = bookings.findIndex((b) => b.orderId === orderId);
+    if (index >= 0) {
+      bookings[index].paymentId = paymentId;
+      bookings[index].status = status;
+      fs.writeFileSync(DB_FILE, JSON.stringify(bookings, null, 2), "utf-8");
+      if (!updatedBooking) {
+        updatedBooking = bookings[index];
+      }
+    }
+  } catch (err) {
+    console.error("[Local DB] Error updating booking status:", err);
+  }
+
+  return updatedBooking;
 }
