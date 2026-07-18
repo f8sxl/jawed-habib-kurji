@@ -1410,7 +1410,7 @@ function Availability({
                     </span>
                   </div>
                 </div>
-                <span className="text-xl font-medium text-ivory">{bookingDeposit !== 0 ? `₹${bookingDeposit.toLocaleString()} (adjusted against final bill)` : `Select deposit`}</span>
+                <span className="text-xl font-medium text-ivory">₹1,500 – ₹2,500</span>
               </div>
             </div>
 
