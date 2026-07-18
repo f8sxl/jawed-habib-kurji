@@ -213,13 +213,13 @@ function BookingFormSection({
                 className={`group relative flex justify-center overflow-hidden rounded-[2rem] py-4 text-base font-bold tracking-widest transition-all duration-500 ${
                   bookingDeposit === 0 
                     ? "bg-white/5 text-white/40 border border-white/10 cursor-not-allowed w-full" 
-                    : "w-full cursor-pointer bg-white/10 backdrop-blur-2xl border border-white/20 text-white shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_2px_rgba(255,255,255,0.4)] hover:bg-white/20 hover:border-white/40 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.6)]"
+                    : "w-full cursor-pointer bg-[#d4af37]/15 backdrop-blur-2xl border border-[#d4af37]/30 text-[#f9e596] shadow-[0_8px_32px_rgba(212,175,55,0.2),inset_0_1px_2px_rgba(249,229,150,0.3)] hover:bg-[#d4af37]/25 hover:border-[#d4af37]/50 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(212,175,55,0.35),inset_0_1px_2px_rgba(249,229,150,0.5)]"
                 }`}
               >
                 {bookingDeposit !== 0 && (
                   <>
-                    <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent opacity-50 rounded-t-[2rem]" />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:translate-x-full -translate-x-full" />
+                    <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-[#f9e596]/20 to-transparent opacity-50 rounded-t-[2rem]" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-[#f9e596]/0 via-[#f9e596]/15 to-[#f9e596]/0 opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:translate-x-full -translate-x-full" />
                   </>
                 )}
                 <span className="relative z-10 flex items-center justify-center gap-2 drop-shadow-md">
