@@ -111,10 +111,12 @@ export function AnimatedDepositSlider({
             </span>
           </div>
           
-          <div className="flex items-center w-full flex-wrap gap-4 mt-1">
-            {/* Animated Light Blue Pill with Razorpay */}
-            <div 
-              className="relative flex items-center gap-1.5 rounded-full px-3 md:px-3.5 py-1.5 w-fit shadow-[0_0_15px_rgba(59,130,246,0.15)] shrink-0 overflow-hidden border border-blue-300/50"
+          <div className="flex items-center w-full mt-1">
+            {/* Animated Clickable Razorpay Pill Button */}
+            <button 
+              type="button"
+              onClick={() => document.getElementById("packages")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+              className="relative flex items-center justify-between gap-3 rounded-full px-4 py-2.5 w-full shadow-[0_0_15px_rgba(59,130,246,0.2)] overflow-hidden border border-blue-300/60 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:-translate-y-0.5 transition-all cursor-pointer group"
               style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)' }}
             >
               <style dangerouslySetInnerHTML={{__html: `
@@ -134,22 +136,23 @@ export function AnimatedDepositSlider({
                 }} 
               />
               
-              <span className="relative z-10 text-[#0c2e60] text-[8px] md:text-[9px] font-extrabold tracking-widest uppercase whitespace-nowrap">
-                Save ₹199 more via
-              </span>
-              <img 
-                src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" 
-                alt="Razorpay" 
-                className="relative z-10 h-[8px] md:h-[9px] object-contain translate-y-[0.5px]" 
-              />
-            </div>
-            
-            {/* White "BOOK" Button */}
-            <button 
-              type="button" 
-              className="ml-auto px-5 py-1.5 bg-white text-black text-xs font-extrabold rounded-full hover:bg-gray-200 transition-colors shrink-0 shadow-[0_0_15px_rgba(255,255,255,0.3)] tracking-wide"
-            >
-              BOOK
+              <div className="relative z-10 flex items-center gap-1.5">
+                <span className="text-[#0c2e60] text-[9px] md:text-[10px] font-extrabold tracking-[0.15em] uppercase whitespace-nowrap">
+                  Save ₹199 via
+                </span>
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" 
+                  alt="Razorpay" 
+                  className="h-[9px] md:h-[10px] object-contain translate-y-[0.5px]" 
+                />
+              </div>
+
+              <div className="relative z-10 flex items-center gap-1 text-[#0c2e60]">
+                <span className="text-[10px] font-extrabold tracking-widest uppercase">Select Package</span>
+                <svg className="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </div>
             </button>
           </div>
         </div>

@@ -1925,15 +1925,7 @@ function Packages({
   setBookingDeposit: (val: number) => void;
   isFormSubmitted: boolean;
 }) {
-  const [showDepositMessage, setShowDepositMessage] = useState(false);
-
-  useEffect(() => {
-    setShowDepositMessage(true);
-    const timer = setTimeout(() => {
-      setShowDepositMessage(false);
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, [bookingDeposit]);
+  // Removed temporary deposit message state in favor of unified static message
 
   return (
     <Section id="packages" eyebrow="Secure Your Package" title="Begin your bridal journey.">
@@ -1946,39 +1938,12 @@ function Packages({
           {/* Premium Partition for Packages */}
           <div className="w-full flex flex-col items-center justify-center my-20">
             <div className="h-[1px] w-full max-w-md bg-gradient-to-r from-transparent via-white/20 to-transparent mb-10"></div>
-            <div className="flex flex-col items-center text-center min-h-[100px] justify-center">
-              <AnimatePresence mode="wait">
-                {showDepositMessage ? (
-                  <motion.div 
-                    key="deposit-message"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="flex flex-col items-center"
-                  >
-                    <span className="text-gold text-xs uppercase tracking-[0.3em] font-bold mb-3">Booking Initialized</span>
-                    <h4 className="font-serif text-2xl md:text-3xl text-ivory tracking-wide">
-                      You have selected <span className="text-gold">₹{bookingDeposit.toLocaleString()}</span>
-                    </h4>
-                    <p className="text-white/50 text-sm mt-3 max-w-sm">
-                      Now, choose your package below to complete the booking.
-                    </p>
-                  </motion.div>
-                ) : (
-                  <motion.div 
-                    key="standard-message"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="flex flex-col items-center"
-                  >
-                    <h4 className="font-serif text-3xl md:text-4xl text-ivory tracking-wide">Choose Your Experience</h4>
-                    <p className="text-white/50 text-sm mt-3 max-w-sm">
-                      Explore our curated bridal packages to find the perfect match for your big day.
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            <div className="flex flex-col items-center text-center">
+              <span className="text-gold text-xs uppercase tracking-[0.3em] font-bold mb-3">Final Step</span>
+              <h4 className="font-serif text-3xl md:text-4xl text-ivory tracking-wide">Choose Your Experience</h4>
+              <p className="text-white/50 text-sm mt-3 max-w-sm">
+                You have selected a deposit of <span className="text-gold font-bold">₹{bookingDeposit.toLocaleString()}</span>. Now pick your perfect match below.
+              </p>
             </div>
             <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-gold/50 to-transparent mt-10"></div>
           </div>
