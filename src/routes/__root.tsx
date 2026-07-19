@@ -10,7 +10,7 @@ import {
 import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+import { reportError } from "../lib/error-reporting";
 
 function NotFoundComponent() {
   return (
@@ -38,7 +38,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    reportError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
   return (
@@ -113,12 +113,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:image",
         content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8971c94f-80a4-419e-9e92-fc0951930c97/id-preview-541dcdd9--7c8642a3-6049-4625-a893-19b2b2f27b49.lovable.app-1784032442735.png",
+          "/og-image.png",
       },
       {
         name: "twitter:image",
         content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8971c94f-80a4-419e-9e92-fc0951930c97/id-preview-541dcdd9--7c8642a3-6049-4625-a893-19b2b2f27b49.lovable.app-1784032442735.png",
+          "/og-image.png",
       },
     ],
     links: [
