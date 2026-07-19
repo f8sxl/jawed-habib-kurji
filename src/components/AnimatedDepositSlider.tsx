@@ -22,34 +22,48 @@ export function AnimatedDepositSlider({
         </p>
       </div>
 
-      {/* Cool Vertical Slider Container */}
-      <div className="relative flex items-center justify-between px-8 py-10 rounded-[28px] border border-white/10 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl mb-8 overflow-hidden min-h-[280px]">
+      {/* Cool Horizontal Slider Container */}
+      <div className="relative flex flex-col items-center justify-center px-8 py-10 rounded-[28px] border border-white/10 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl mb-8 overflow-hidden min-h-[220px]">
         
         {/* Glow effect */}
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.1)_0%,transparent_70%)] opacity-50 pointer-events-none" />
 
-        {/* Vertical Slider Wrapper (Absolute positioning prevents layout breakage from rotation) */}
-        <div className="relative h-[200px] w-[50px] shrink-0 z-10 flex flex-col items-center">
-          {/* Top Label */}
-          <span className="absolute -top-6 text-[10px] text-white/40 font-bold tracking-widest">₹2,500</span>
+        {/* Amount Display */}
+        <div className="flex flex-col items-center justify-center z-10 w-full mb-8">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 mb-2 font-bold text-center">
+            Initial Deposit
+          </span>
+          <motion.div 
+            key={bookingDeposit}
+            initial={{ scale: 1.1, opacity: 0.8 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="font-serif text-5xl md:text-6xl text-gold drop-shadow-[0_0_15px_rgba(212,175,55,0.3)] text-center"
+          >
+            ₹{bookingDeposit.toLocaleString()}
+          </motion.div>
+        </div>
+
+        {/* Horizontal Slider Wrapper */}
+        <div className="relative w-full max-w-[220px] md:max-w-[340px] shrink-0 z-10 flex items-center justify-center mt-2">
+          {/* Left Label */}
+          <span className="absolute -left-12 md:-left-16 top-1/2 -translate-y-1/2 text-[10px] text-white/40 font-bold tracking-widest">₹1,500</span>
           
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90">
-            <input
-              type="range"
-              min="1500"
-              max="2500"
-              step="100"
-              value={bookingDeposit}
-              onChange={(e) => setBookingDeposit(parseInt(e.target.value))}
-              className="w-[200px] h-3 bg-black/80 rounded-full appearance-none outline-none border border-white/10 shadow-[inset_0_0_10px_rgba(0,0,0,1)] cursor-pointer"
-              style={{ 
-                background: `linear-gradient(to right, #D4AF37 0%, #D4AF37 ${((bookingDeposit - 1500) / 1000) * 100}%, rgba(255,255,255,0.05) ${((bookingDeposit - 1500) / 1000) * 100}%, rgba(255,255,255,0.05) 100%)`
-              }}
-            />
-          </div>
+          <input
+            type="range"
+            min="1500"
+            max="2500"
+            step="100"
+            value={bookingDeposit}
+            onChange={(e) => setBookingDeposit(parseInt(e.target.value))}
+            className="w-full h-3 bg-black/80 rounded-full appearance-none outline-none border border-white/10 shadow-[inset_0_0_10px_rgba(0,0,0,1)] cursor-pointer"
+            style={{ 
+              background: `linear-gradient(to right, #D4AF37 0%, #D4AF37 ${((bookingDeposit - 1500) / 1000) * 100}%, rgba(255,255,255,0.05) ${((bookingDeposit - 1500) / 1000) * 100}%, rgba(255,255,255,0.05) 100%)`
+            }}
+          />
           
-          {/* Bottom Label */}
-          <span className="absolute -bottom-6 text-[10px] text-white/40 font-bold tracking-widest">₹1,500</span>
+          {/* Right Label */}
+          <span className="absolute -right-12 md:-right-16 top-1/2 -translate-y-1/2 text-[10px] text-white/40 font-bold tracking-widest">₹2,500</span>
 
           <style dangerouslySetInnerHTML={{__html: `
             input[type=range]::-webkit-slider-thumb {
@@ -73,29 +87,6 @@ export function AnimatedDepositSlider({
               box-shadow: 0 2px 8px rgba(212, 175, 55, 0.8);
             }
           `}} />
-        </div>
-
-        {/* Amount Display on the Right */}
-        <div className="flex flex-col items-end justify-center z-10 w-full pl-6">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 mb-2 font-bold text-right">
-            Initial Deposit
-          </span>
-          <motion.div 
-            key={bookingDeposit}
-            initial={{ scale: 1.1, opacity: 0.8 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="font-serif text-5xl md:text-6xl text-gold drop-shadow-[0_0_15px_rgba(212,175,55,0.3)] text-right"
-          >
-            ₹{bookingDeposit.toLocaleString()}
-          </motion.div>
-          
-          <div className="flex items-center gap-2 mt-4 text-xs font-medium text-white/30">
-            <span>Slide to adjust</span>
-            <svg className="w-3 h-3 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-            </svg>
-          </div>
         </div>
       </div>
 
