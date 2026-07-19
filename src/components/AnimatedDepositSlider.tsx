@@ -22,8 +22,8 @@ export function AnimatedDepositSlider({
         </p>
       </div>
 
-      {/* Cool Horizontal Slider Container */}
-      <div className="relative flex flex-col items-center justify-center px-8 py-10 rounded-[28px] border border-white/10 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl mb-8 overflow-hidden min-h-[220px]">
+      {/* Combined Unified Deposit Card */}
+      <div className="relative max-w-md mx-auto flex flex-col px-6 py-8 md:px-8 md:py-10 rounded-[28px] border border-white/10 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] shadow-2xl overflow-hidden">
         
         {/* Glow effect */}
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.1)_0%,transparent_70%)] opacity-50 pointer-events-none" />
@@ -45,7 +45,7 @@ export function AnimatedDepositSlider({
         </div>
 
         {/* Horizontal Slider Wrapper */}
-        <div className="relative w-full max-w-[220px] md:max-w-[340px] shrink-0 z-10 flex items-center justify-center mt-2">
+        <div className="relative w-full max-w-[200px] md:max-w-[280px] mx-auto shrink-0 z-10 flex items-center justify-center mt-2 mb-10">
           {/* Left Label */}
           <span className="absolute -left-12 md:-left-16 top-1/2 -translate-y-1/2 text-[10px] text-white/40 font-bold tracking-widest">₹1,500</span>
           
@@ -88,30 +88,23 @@ export function AnimatedDepositSlider({
             }
           `}} />
         </div>
-      </div>
 
-      {/* Summary Box */}
-      <div className="max-w-md mx-auto rounded-[24px] border border-white/10 bg-[#161616] p-5 md:p-6 shadow-2xl">
-        {/* Row 1: Selected & Amount */}
-        <div className="flex justify-between items-center mb-5">
-          <span className="text-white/50 text-xs md:text-sm font-medium">Selected</span>
-          <span className="text-[#D4AF37] text-sm md:text-base font-bold tracking-wide">Booking Amount: ₹{bookingDeposit.toLocaleString()}</span>
-        </div>
-        
-        {/* Divider */}
-        <div className="h-px w-full bg-white/5 mb-5" />
-        
-        {/* Row 2 & 3: Offer Text, Pill, and Button */}
-        <div className="flex flex-col gap-3">
-          {/* Blinking "Limited Offer" replacing "Special Offer" */}
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" />
-            <span className="text-white font-bold text-sm tracking-wider animate-pulse drop-shadow-[0_0_8px_rgba(239,68,68,0.5)] whitespace-nowrap">
-              Limited Offer
-            </span>
+        {/* Divider inside the combined card */}
+        <div className="h-px w-full bg-white/10 mb-6 relative z-10" />
+
+        {/* Lower Section (formerly Summary Box) */}
+        <div className="relative z-10 flex flex-col w-full">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" />
+              <span className="text-white font-bold text-sm tracking-wider animate-pulse drop-shadow-[0_0_8px_rgba(239,68,68,0.5)] whitespace-nowrap">
+                Limited Offer
+              </span>
+            </div>
+            <span className="text-[#D4AF37] text-xs font-bold tracking-wide">Selected: ₹{bookingDeposit.toLocaleString()}</span>
           </div>
           
-          <div className="flex items-center w-full mt-1">
+          <div className="flex items-center w-full mt-2">
             {/* Animated Clickable Razorpay Pill Button */}
             <button 
               type="button"
