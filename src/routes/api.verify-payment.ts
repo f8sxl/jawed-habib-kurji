@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import crypto from "crypto";
 import Razorpay from "razorpay";
-import { saveBooking, Booking } from "../lib/db";
+import { saveBooking, updateBooking, getBookingById, Booking } from "../lib/db";
 import { sendConfirmationEmails } from "../lib/email";
 import { sendBookingNotifications } from "../lib/notifications";
 import { sendTelegramOwnerNotification } from "../lib/telegram";
@@ -25,8 +25,9 @@ export const Route = createFileRoute("/api/verify-payment")({
             amountPaid?: number;
             total_price?: number;
             remaining_balance?: number;
+            bookingId?: string;
           };
-          const { razorpay_order_id, razorpay_payment_id, razorpay_signature, total_price, remaining_balance, amountPaid } = body;
+          const { razorpay_order_id, razorpay_payment_id, razorpay_signature, total_price, remaining_balance, amountPaid, bookingId } = body;
 
           if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
             return new Response(
@@ -42,12 +43,10 @@ export const Route = createFileRoute("/api/verify-payment")({
           let booking: Booking;
 
           if (isMock) {
-            // Generate unique Booking ID: JHKB-XXXXXX (6 random uppercase alphanumeric)
-            const randomChars = Math.random().toString(36).substring(2, 8).toUpperCase();
-            const bookingId = `JHKB-${randomChars}`;
+            const bId = bookingId || `JHKB-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
             booking = {
-              id: bookingId,
+              id: bId,
               customerName: body.customer_name || "Mock Customer",
               mobileNumber: body.customer_phone || "9572194458",
               emailAddress: body.customer_email || "jawedhabib.kurji@gmail.com",
@@ -61,7 +60,14 @@ export const Route = createFileRoute("/api/verify-payment")({
               paymentId: razorpay_payment_id,
               orderId: razorpay_order_id,
               bookingTime: new Date().toISOString(),
+              status: "CONFIRMED",
             };
+
+            if (bookingId) {
+                await updateBooking(bookingId, booking);
+            } else {
+                await saveBooking(booking);
+            }
           } else {
             const keyId =
               process.env.RAZORPAY_KEY_ID ||
@@ -102,22 +108,28 @@ export const Route = createFileRoute("/api/verify-payment")({
               );
             }
 
-            // Payment signature is valid. Let's fetch details from Razorpay to build the booking record.
             const razorpay = new Razorpay({
               key_id: keyId,
               key_secret: keySecret,
             });
 
-            const order = await razorpay.orders.fetch(razorpay_order_id);
-            const notes = (order.notes as any) || {};
+            let order;
+            try {
+              order = await razorpay.orders.fetch(razorpay_order_id);
+            } catch (err) {
+              console.error("Failed to fetch Razorpay order:", err);
+              return new Response(
+                JSON.stringify({ error: "Could not fetch order details for verification" }),
+                { status: 500, headers: { "Content-Type": "application/json" } }
+              );
+            }
 
-            // Generate unique Booking ID: JHKB-XXXXXX (6 random uppercase alphanumeric)
-            const randomChars = Math.random().toString(36).substring(2, 8).toUpperCase();
-            const bookingId = `JHKB-${randomChars}`;
+            const notes = (order.notes as any) || {};
+            const bId = bookingId || `JHKB-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
             booking = {
-              id: bookingId,
-              customerName: notes.customer_name || "",
+              id: bId,
+              customerName: notes.customer_name || "Unknown",
               mobileNumber: notes.customer_phone || "",
               emailAddress: notes.customer_email || "",
               city: notes.customer_city || "",
@@ -130,19 +142,20 @@ export const Route = createFileRoute("/api/verify-payment")({
               paymentId: razorpay_payment_id,
               orderId: razorpay_order_id,
               bookingTime: new Date().toISOString(),
+              status: "CONFIRMED",
             };
+
+            if (bookingId) {
+                await updateBooking(bookingId, booking);
+            } else {
+                await saveBooking(booking);
+            }
           }
 
-          // Save to database
-          const dbSaved = await saveBooking(booking);
-          if (!dbSaved) {
-            console.error(`Failed to save booking ${bookingId} to database.`);
-          }
-
-          // Send email notifications (owner and customer)
+          // Send email notifications
           const emailResult = await sendConfirmationEmails(booking);
           if (!emailResult.success) {
-            console.error(`Email sending failed for booking ${bookingId}:`, emailResult.error);
+            console.error(`Email sending failed for booking ${booking.id}:`, emailResult.error);
           }
 
           // Send owner alert via Telegram

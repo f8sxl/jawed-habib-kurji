@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Razorpay from "razorpay";
+import { updateBooking } from "../lib/db";
 
 export const Route = createFileRoute("/api/create-order")({
   server: {
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/api/create-order")({
             bookingDate?: string;
             total_price?: number;
             remaining_balance?: number;
+            bookingId?: string;
           };
           const {
             amount,
@@ -33,6 +35,7 @@ export const Route = createFileRoute("/api/create-order")({
             bookingDate,
             total_price,
             remaining_balance,
+            bookingId,
           } = body;
 
           if (!amount || amount < 100) {
@@ -83,6 +86,13 @@ export const Route = createFileRoute("/api/create-order")({
               remaining_balance: remaining_balance ? String(remaining_balance) : "0",
             },
           });
+
+          if (bookingId) {
+            await updateBooking(bookingId, {
+              orderId: order.id,
+              status: "PENDING",
+            });
+          }
 
           return new Response(
             JSON.stringify({

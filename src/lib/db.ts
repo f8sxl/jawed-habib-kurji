@@ -14,12 +14,13 @@ export interface Booking {
   totalPrice?: number;
   amountPaid: number; // in INR (e.g. 2000)
   remainingBalance?: number;
-  paymentId: string;
-  orderId: string;
+  paymentId?: string;
+  orderId?: string;
   bookingTime: string;
+  status?: "LEAD" | "PENDING" | "CONFIRMED";
 }
 
-const DB_DIR = process.env.VERCEL ? "/tmp/data" : path.resolve(process.cwd(), "src/data");
+const DB_DIR = process.env.VERCEL ? "/tmp/data" : path.resolve(process.cwd(), ".data");
 const DB_FILE = path.join(DB_DIR, "bookings.json");
 
 // Ensure database directory and file exist (for fallback)
@@ -99,6 +100,38 @@ export async function saveBooking(booking: Booking): Promise<boolean> {
     return supabaseSaved || !supabase; // return success true if either Supabase succeeded, or local succeeded when Supabase is not configured
   } catch (error) {
     console.error("[Local DB] Error saving booking:", error);
+    return false;
+  }
+}
+
+export async function updateBooking(id: string, updates: Partial<Booking>): Promise<boolean> {
+  if (supabase) {
+    try {
+      const { error } = await supabase.from("bookings").update(updates).eq("id", id);
+      if (error) {
+        console.error("[Supabase] Error updating booking:", error.message);
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error("[Supabase] Unknown error updating booking:", error);
+      return false;
+    }
+  }
+
+  // Local JSON fallback update
+  ensureDb();
+  try {
+    const bookings = getLocalBookings();
+    const index = bookings.findIndex((b) => b.id === id);
+    if (index !== -1) {
+      bookings[index] = { ...bookings[index], ...updates };
+      fs.writeFileSync(DB_FILE, JSON.stringify(bookings, null, 2), "utf-8");
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("[Local DB] Error updating booking:", error);
     return false;
   }
 }

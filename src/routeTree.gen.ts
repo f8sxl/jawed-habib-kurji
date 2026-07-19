@@ -13,6 +13,7 @@ import { Route as BookingConfirmationRouteImport } from './routes/booking-confir
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiVerifyPaymentRouteImport } from './routes/api.verify-payment'
 import { Route as ApiCreateOrderRouteImport } from './routes/api.create-order'
+import { Route as ApiCreateLeadRouteImport } from './routes/api.create-lead'
 import { Route as ApiChatLeadRouteImport } from './routes/api.chat-lead'
 import { Route as ApiBookingRouteImport } from './routes/api.booking'
 
@@ -36,6 +37,11 @@ const ApiCreateOrderRoute = ApiCreateOrderRouteImport.update({
   path: '/api/create-order',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCreateLeadRoute = ApiCreateLeadRouteImport.update({
+  id: '/api/create-lead',
+  path: '/api/create-lead',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiChatLeadRoute = ApiChatLeadRouteImport.update({
   id: '/api/chat-lead',
   path: '/api/chat-lead',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/booking-confirmation': typeof BookingConfirmationRoute
   '/api/booking': typeof ApiBookingRoute
   '/api/chat-lead': typeof ApiChatLeadRoute
+  '/api/create-lead': typeof ApiCreateLeadRoute
   '/api/create-order': typeof ApiCreateOrderRoute
   '/api/verify-payment': typeof ApiVerifyPaymentRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/booking-confirmation': typeof BookingConfirmationRoute
   '/api/booking': typeof ApiBookingRoute
   '/api/chat-lead': typeof ApiChatLeadRoute
+  '/api/create-lead': typeof ApiCreateLeadRoute
   '/api/create-order': typeof ApiCreateOrderRoute
   '/api/verify-payment': typeof ApiVerifyPaymentRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/booking-confirmation': typeof BookingConfirmationRoute
   '/api/booking': typeof ApiBookingRoute
   '/api/chat-lead': typeof ApiChatLeadRoute
+  '/api/create-lead': typeof ApiCreateLeadRoute
   '/api/create-order': typeof ApiCreateOrderRoute
   '/api/verify-payment': typeof ApiVerifyPaymentRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/booking-confirmation'
     | '/api/booking'
     | '/api/chat-lead'
+    | '/api/create-lead'
     | '/api/create-order'
     | '/api/verify-payment'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/booking-confirmation'
     | '/api/booking'
     | '/api/chat-lead'
+    | '/api/create-lead'
     | '/api/create-order'
     | '/api/verify-payment'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/booking-confirmation'
     | '/api/booking'
     | '/api/chat-lead'
+    | '/api/create-lead'
     | '/api/create-order'
     | '/api/verify-payment'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   BookingConfirmationRoute: typeof BookingConfirmationRoute
   ApiBookingRoute: typeof ApiBookingRoute
   ApiChatLeadRoute: typeof ApiChatLeadRoute
+  ApiCreateLeadRoute: typeof ApiCreateLeadRoute
   ApiCreateOrderRoute: typeof ApiCreateOrderRoute
   ApiVerifyPaymentRoute: typeof ApiVerifyPaymentRoute
 }
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCreateOrderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/create-lead': {
+      id: '/api/create-lead'
+      path: '/api/create-lead'
+      fullPath: '/api/create-lead'
+      preLoaderRoute: typeof ApiCreateLeadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/chat-lead': {
       id: '/api/chat-lead'
       path: '/api/chat-lead'
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookingConfirmationRoute: BookingConfirmationRoute,
   ApiBookingRoute: ApiBookingRoute,
   ApiChatLeadRoute: ApiChatLeadRoute,
+  ApiCreateLeadRoute: ApiCreateLeadRoute,
   ApiCreateOrderRoute: ApiCreateOrderRoute,
   ApiVerifyPaymentRoute: ApiVerifyPaymentRoute,
 }

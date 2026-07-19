@@ -114,7 +114,7 @@ function BookingFormSection({
     <Section id="booking-form-section" eyebrow="Booking Details" title="Fill the form.">
       <div className="mx-auto mt-10 max-w-2xl">
         <div className="glass-card rounded-3xl border border-white/10 bg-surface/40 p-6 md:p-10 shadow-2xl backdrop-blur-md">
-          <form onSubmit={onSubmit} className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6">
             <div className="grid gap-6 md:grid-cols-2">
               <Field label="Full Name (Required)">
                 <input
@@ -204,32 +204,21 @@ function BookingFormSection({
               </Field>
             </div>
 
-            <div className="mt-6 mb-2">
-              <AnimatedDepositSlider bookingDeposit={bookingDeposit} setBookingDeposit={setBookingDeposit} />
-            </div>
-
             <div className="mt-4 flex flex-col items-center gap-3">
               <button
-                type="submit"
-                disabled={bookingDeposit === 0}
-                className={`group relative flex justify-center overflow-hidden rounded-[2rem] py-4 text-base font-bold tracking-widest transition-all duration-500 ${
-                  bookingDeposit === 0 
-                    ? "bg-white/5 text-white/40 border border-white/10 cursor-not-allowed w-full" 
-                    : "w-full cursor-pointer bg-[#d4af37]/15 backdrop-blur-2xl border border-[#d4af37]/30 text-[#f9e596] shadow-[0_8px_32px_rgba(212,175,55,0.2),inset_0_1px_2px_rgba(249,229,150,0.3)] hover:bg-[#d4af37]/25 hover:border-[#d4af37]/50 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(212,175,55,0.35),inset_0_1px_2px_rgba(249,229,150,0.5)]"
-                }`}
+                type="button"
+                onClick={(e) => {
+                  // Custom validation since we removed <form>
+                  if (!formData.name || !formData.phone || !formData.email || !formData.city) {
+                    alert("Please fill in all required fields (Name, Phone, Email, City)");
+                    return;
+                  }
+                  onSubmit(e as any);
+                }}
+                className="btn-cream mt-2 w-full justify-center text-[11px] md:text-sm tracking-[0.2em] cursor-pointer"
               >
-                {bookingDeposit !== 0 && (
-                  <>
-                    <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-[#f9e596]/20 to-transparent opacity-50 rounded-t-[2rem]" />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-[#f9e596]/0 via-[#f9e596]/15 to-[#f9e596]/0 opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:translate-x-full -translate-x-full" />
-                  </>
-                )}
-                <span className="relative z-10 flex items-center justify-center gap-2 drop-shadow-md">
-                  {bookingDeposit === 0 ? (
-                    <span className="text-[13px]">SELECT DEPOSIT TO PROCEED</span>
-                  ) : (
-                    <span className="tracking-[0.2em] font-extrabold text-[15px] pt-0.5">CHOOSE PACKAGE</span>
-                  )}
+                <span className="relative z-10 flex items-center justify-center gap-1.5 uppercase font-bold">
+                  Check Availability <ChevronDown className="w-4 h-4 ml-1" />
                 </span>
               </button>
               {isFormSubmitted && (
@@ -238,7 +227,7 @@ function BookingFormSection({
                 </span>
               )}
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </Section>
@@ -388,6 +377,65 @@ export function IndexComponent() {
       document.body.appendChild(script);
     });
   };
+  const [leadBookingId, setLeadBookingId] = useState<string | null>(null);
+
+  const handleFormSubmit = async (e: any) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+
+    if (!selectedDate || !selectedTime) {
+      alert("Please select your wedding date and time from the calendar first!");
+      document.getElementById("availability")?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      // Step 1: Track Lead event
+      if (typeof window !== "undefined" && (window as any).fbq) {
+        try {
+          (window as any).fbq("track", "Lead");
+        } catch (e) {}
+      }
+
+      // Step 2: Save Lead to Backend
+      const res = await fetch("/api/create-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          city: formData.city,
+          venue: formData.venue,
+          bookingDate: selectedDate ? `${selectedDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} at ${selectedTime}` : "TBD",
+          packageName: "Undecided", // They select it in the next step
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.leadId) {
+          setLeadBookingId(data.leadId);
+        }
+      } else {
+        console.error("Backend returned an error:", await res.text());
+      }
+    } catch (err) {
+      console.error("Error capturing lead:", err);
+    } finally {
+      setIsProcessing(false);
+      setIsFormSubmitted(true);
+      setTimeout(() => {
+        const pkgSection = document.getElementById("packages");
+        if (pkgSection) {
+          pkgSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    }
+  };
 
   const handlePayment = async (packageName: string) => {
     if (!selectedDate || !selectedTime) {
@@ -413,6 +461,11 @@ export function IndexComponent() {
     }
 
     setIsProcessing(true);
+
+    // Track InitiateCheckout when they click a package to pay
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq("track", "InitiateCheckout");
+    }
 
     const scriptLoaded = await loadRazorpayScript();
     if (!scriptLoaded) {
@@ -442,6 +495,7 @@ export function IndexComponent() {
           bookingDate: `${selectedDate.toLocaleDateString()} at ${selectedTime}`,
           total_price,
           remaining_balance,
+          bookingId: leadBookingId, // Attach the lead ID so it updates the same record
         }),
       });
 
@@ -487,6 +541,7 @@ export function IndexComponent() {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
+                bookingId: leadBookingId, // Use the existing lead ID
               }),
             });
 
@@ -502,7 +557,7 @@ export function IndexComponent() {
                 (window as any).fbq('track', 'Purchase', { currency: 'INR', value: orderData.amount / 100 });
               }
               setPaymentSuccessData({
-                bookingId: verifyData.booking.id,
+                bookingId: verifyData.booking?.id || leadBookingId || "Unknown",
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id,
                 package: packageName,
@@ -584,6 +639,7 @@ export function IndexComponent() {
           amountPaid: bookingDeposit,
           total_price,
           remaining_balance,
+          bookingId: leadBookingId, // Pass the lead ID
         }),
       });
 
@@ -598,36 +654,26 @@ export function IndexComponent() {
         if (typeof window !== "undefined" && (window as any).fbq) {
           (window as any).fbq('track', 'Purchase', { currency: 'INR', value: 2000 });
         }
-        setPaymentSuccessData({
-          bookingId: verifyData.booking.id,
-          paymentId: `pay_MOCK_${Date.now()}`,
-          orderId: `order_MOCK_${Date.now()}`,
-          package: packageName,
-          date: `${selectedDate.toLocaleDateString()} at ${selectedTime}`,
-          name: formData.name,
-        });
+        setTimeout(() => {
+          setIsProcessing(false);
+          setPaymentSuccessData({
+            bookingId: verifyData.booking?.id || leadBookingId || "Unknown",
+            paymentId: `pay_MOCK_${Date.now()}`,
+            orderId: `order_MOCK_${Date.now()}`,
+            package: packageName,
+            date: `${selectedDate.toLocaleDateString()} at ${selectedTime}`,
+            name: formData.name,
+          });
+        }, 1500);
       } else {
         alert(`Mock payment failed: ${verifyData.error || "Please contact support"}`);
+        setIsProcessing(false);
       }
     } catch (err: any) {
       console.error("Mock verification error:", err);
       alert("An error occurred while verifying the mock payment.");
-    } finally {
       setIsProcessing(false);
     }
-  };
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedDate || !selectedTime) {
-      alert("Please select your wedding date and time from the calendar first!");
-      document.getElementById("availability")?.scrollIntoView({ behavior: "smooth" });
-      return;
-    }
-    setIsFormSubmitted(true);
-    setTimeout(() => {
-      document.getElementById("packages")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
   };
 
   const handleDateInputClick = () => {
@@ -664,15 +710,18 @@ export function IndexComponent() {
           bookingDeposit={bookingDeposit}
           setBookingDeposit={setBookingDeposit}
         />
-        <Gallery />
-        <Transformations />
+        {/* Step 2: Package Selection (Blurred until form is captured) */}
         <Packages
           selectedDate={selectedDate}
           handlePayment={handlePayment}
           handleMockPayment={handleMockPayment}
           isProcessing={isProcessing}
           bookingDeposit={bookingDeposit}
+          setBookingDeposit={setBookingDeposit}
+          isFormSubmitted={isFormSubmitted}
         />
+        <Gallery />
+        <Transformations />
         <WhyUs />
         <BeforeAfter />
         <Testimonials />
@@ -684,6 +733,7 @@ export function IndexComponent() {
         <MapSection />
 
         <ReserveCTA />
+        <Footer />
       </main>
 
       <Footer />
@@ -1864,16 +1914,76 @@ function Packages({
   handleMockPayment,
   isProcessing,
   bookingDeposit,
+  setBookingDeposit,
+  isFormSubmitted,
 }: {
   selectedDate: Date | null;
   handlePayment: (pkgName: string) => Promise<void>;
   handleMockPayment: (pkgName: string) => Promise<void>;
   isProcessing: boolean;
   bookingDeposit: number;
+  setBookingDeposit: (val: number) => void;
+  isFormSubmitted: boolean;
 }) {
+  const [showDepositMessage, setShowDepositMessage] = useState(false);
+
+  useEffect(() => {
+    setShowDepositMessage(true);
+    const timer = setTimeout(() => {
+      setShowDepositMessage(false);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [bookingDeposit]);
+
   return (
-    <Section id="packages" eyebrow="Bridal Packages" title="Six ways to be adorned.">
-      <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+    <Section id="packages" eyebrow="Secure Your Package" title="Begin your bridal journey.">
+      <div className="relative">
+        <div className="transition-all duration-1000">
+          <div className="mx-auto max-w-2xl mb-12">
+            <AnimatedDepositSlider bookingDeposit={bookingDeposit} setBookingDeposit={setBookingDeposit} />
+          </div>
+
+          {/* Premium Partition for Packages */}
+          <div className="w-full flex flex-col items-center justify-center my-20">
+            <div className="h-[1px] w-full max-w-md bg-gradient-to-r from-transparent via-white/20 to-transparent mb-10"></div>
+            <div className="flex flex-col items-center text-center min-h-[100px] justify-center">
+              <AnimatePresence mode="wait">
+                {showDepositMessage ? (
+                  <motion.div 
+                    key="deposit-message"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="flex flex-col items-center"
+                  >
+                    <span className="text-gold text-xs uppercase tracking-[0.3em] font-bold mb-3">Booking Initialized</span>
+                    <h4 className="font-serif text-2xl md:text-3xl text-ivory tracking-wide">
+                      You have selected <span className="text-gold">₹{bookingDeposit.toLocaleString()}</span>
+                    </h4>
+                    <p className="text-white/50 text-sm mt-3 max-w-sm">
+                      Now, choose your package below to complete the booking.
+                    </p>
+                  </motion.div>
+                ) : (
+                  <motion.div 
+                    key="standard-message"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="flex flex-col items-center"
+                  >
+                    <h4 className="font-serif text-3xl md:text-4xl text-ivory tracking-wide">Choose Your Experience</h4>
+                    <p className="text-white/50 text-sm mt-3 max-w-sm">
+                      Explore our curated bridal packages to find the perfect match for your big day.
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-gold/50 to-transparent mt-10"></div>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {BRIDAL_PACKAGES.map((p, i) => (
           <motion.article
             key={p.name}
@@ -1881,9 +1991,13 @@ function Packages({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ delay: i * 0.08, duration: 0.9 }}
-            className={`group relative flex flex-col overflow-hidden rounded-3xl border transition-all duration-500 hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] hover:-translate-y-1 ${
-              p.featured ? "border-gold/50" : "border-white/[0.08] hover:border-gold/30"
-            } bg-gradient-to-b from-surface to-black`}
+            className={`group relative flex flex-col overflow-hidden rounded-3xl border transition-all duration-500 hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] hover:-translate-y-1 min-h-[600px] ${
+              p.featured ? "border-gold/70 border-[2px]" : "border-white/30 hover:border-gold/50"
+            } ${
+              i % 3 === 0 ? "bg-gradient-to-b from-[#151515] to-black" :
+              i % 3 === 1 ? "bg-gradient-to-b from-[#1a1814] to-black" :
+              "bg-gradient-to-b from-[#10141a] to-black"
+            }`}
           >
             <div className="relative aspect-[4/5] overflow-hidden">
               {p.featured && (
@@ -1899,9 +2013,9 @@ function Packages({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
             </div>
-            <div className="relative z-10 flex flex-1 flex-col p-8 pt-0 -mt-10">
-              <h3 className="font-serif text-3xl text-gold drop-shadow-md mb-2">{p.name}</h3>
-              <p className="text-[13px] leading-relaxed text-ivory/80 font-light">{p.desc}</p>
+            <div className="relative z-10 flex flex-1 flex-col p-8 pt-0 -mt-6 gap-2">
+              <h3 className="font-serif text-3xl text-gold drop-shadow-md">{p.name}</h3>
+              <p className="text-[13px] leading-relaxed text-ivory/90 font-light tracking-wide">{p.desc}</p>
               
               <div className="flex flex-col border-t border-white/[0.08] pt-6 w-full mt-auto">
                 <div className="flex justify-between items-end mb-5">
@@ -1921,7 +2035,7 @@ function Packages({
                     <motion.div 
                       initial={{ opacity: 0, height: 0 }} 
                       animate={{ opacity: 1, height: "auto" }} 
-                      className="flex flex-col gap-2 p-4 rounded-xl bg-white/[0.02] border border-white/[0.08] mb-5 shadow-inner"
+                      className="flex flex-col gap-2 p-4 rounded-xl bg-white/[0.02] border border-white/[0.08] mb-4 shadow-inner"
                     >
                       <div className="flex justify-between items-center text-xs text-ivory/70 font-medium">
                         <span>Total Package Price</span>
@@ -1941,12 +2055,16 @@ function Packages({
                 </AnimatePresence>
 
                 <button
-                  disabled={isProcessing}
+                  disabled={isProcessing || bookingDeposit === 0}
                   onClick={() => handlePayment(p.name)}
-                  className="group flex w-full items-center justify-center gap-3 rounded-full border border-blue-500/30 bg-white py-3.5 transition-all duration-300 hover:bg-gray-50 hover:shadow-[0_0_25px_rgba(59,130,246,0.25)] disabled:opacity-50 cursor-pointer"
+                  className={`group flex w-full items-center justify-center gap-3 rounded-full border border-blue-500/30 py-3.5 transition-all duration-300 ${
+                    isProcessing || bookingDeposit === 0
+                      ? "bg-white/50 opacity-50 cursor-not-allowed"
+                      : "bg-white hover:bg-gray-50 hover:shadow-[0_0_25px_rgba(59,130,246,0.25)] cursor-pointer"
+                  }`}
                 >
                   <span className="text-[11px] font-extrabold tracking-[0.15em] uppercase text-black mt-0.5">
-                    Secure My Date
+                    {bookingDeposit === 0 ? "Select Deposit Above" : "Secure My Date"}
                   </span>
 
                   <div className="flex items-center -space-x-1.5 opacity-100 transition-transform duration-300 group-hover:scale-110">
@@ -1976,10 +2094,27 @@ function Packages({
                     </div>
                   </div>
                 </button>
+
+                {/* WhatsApp Inquire Button */}
+                <a
+                  href={`https://wa.me/919572194458?text=${encodeURIComponent(`Hi Jawed Habib team! I am interested in booking the ${p.name}. Is it available?`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 group flex w-full items-center justify-center gap-2 rounded-full border border-[#25D366]/40 bg-[#25D366]/10 hover:bg-[#25D366]/20 hover:border-[#25D366]/80 py-3 transition-all duration-300 cursor-pointer shadow-[0_0_15px_rgba(37,211,102,0.1)] hover:shadow-[0_0_20px_rgba(37,211,102,0.2)]"
+                >
+                  <svg className="w-4 h-4 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.031 0C5.385 0 0 5.384 0 12.029c0 2.115.552 4.17 1.6 5.986L.027 24l6.155-1.55c1.765.98 3.75 1.5 5.845 1.5 6.645 0 12.028-5.385 12.028-12.03 0-6.645-5.384-12.029-12.024-12.02zm0 22.06c-1.802 0-3.565-.484-5.112-1.402l-.367-.217-3.799.957 1.01-3.69-.238-.378a10.134 10.134 0 0 1-1.558-5.302c0-5.611 4.562-10.17 10.168-10.17 5.606 0 10.166 4.56 10.166 10.17 0 5.611-4.56 10.171-10.17 10.171h-.1zm5.578-7.614c-.307-.153-1.812-.894-2.094-1-.283-.105-.489-.153-.695.153-.205.306-.79 1-.968 1.205-.178.204-.356.23-.663.076-1.748-.887-3.045-2.003-4.137-4.148-.225-.44 0-.422.302-.727.152-.152.306-.356.459-.535.152-.178.203-.306.305-.509.102-.204.051-.383-.025-.536-.076-.153-.695-1.677-.951-2.296-.252-.601-.509-.52-.695-.53-.178-.01-.383-.01-.588-.01-.205 0-.537.076-.819.382-.283.306-1.077 1.053-1.077 2.569 0 1.516 1.1 2.981 1.254 3.185.154.204 2.168 3.327 5.253 4.654 2.181.939 2.981 1.01 4.149.882 1.341-.148 3.109-1.272 3.543-2.502.433-1.23.433-2.285.304-2.502-.128-.217-.486-.345-.792-.498z"/>
+                  </svg>
+                  <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-ivory">
+                    Inquire on WhatsApp
+                  </span>
+                </a>
               </div>
             </div>
           </motion.article>
         ))}
+      </div>
+      </div>
       </div>
     </Section>
   );
