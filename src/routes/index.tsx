@@ -16,6 +16,7 @@ import bride6 from "@/assets/brides/wmremove-transformed (1).jpeg";
 import bride7 from "@/assets/brides/wmremove-transformed (2).jpeg";
 import bride8 from "@/assets/brides/wmremove-transformed.jpeg";
 import logoImg from "@/assets/logo/jh_logo_new.png";
+import logoBlackImg from "@/assets/logo/jh_logo_black.png";
 
 /* -------------------------------- HELPERS --------------------------------- */
 
@@ -736,8 +737,6 @@ export function IndexComponent() {
         <Footer />
       </main>
 
-      <Footer />
-
       <ChatWidget />
 
       {/* Success Modal with auto-redirect countdown */}
@@ -793,10 +792,10 @@ function Nav() {
         className="absolute inset-x-0 top-4 z-50 flex justify-center px-4 md:top-6"
       >
         <div
-          className={`flex w-full max-w-6xl items-center justify-between rounded-full border border-white/10 px-4 backdrop-blur-xl transition-all duration-500 md:px-5 ${
+          className={`flex w-full max-w-6xl items-center justify-between rounded-full border px-4 backdrop-blur-2xl backdrop-saturate-[1.8] transition-all duration-500 md:px-5 ${
             scrolled
-              ? "h-14 bg-black/70 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.9)]"
-              : "h-16 bg-black/40 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] md:h-[70px]"
+              ? "h-14 bg-white/10 border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.15)]"
+              : "h-16 bg-white/5 border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.1)] md:h-[70px]"
           }`}
         >
           <a href="#top" className="flex items-center gap-2 pl-1">
@@ -805,9 +804,6 @@ function Nav() {
               alt="Jawed Habib Kurji Logo"
               className="h-8 md:h-10 w-auto object-contain"
             />
-            <span className="font-serif text-lg tracking-wide text-ivory hidden sm:inline-block">
-              Jawed Habib
-            </span>
           </a>
 
           <nav className="hidden items-center gap-7 lg:flex">
@@ -815,27 +811,33 @@ function Nav() {
               <a
                 key={n.href}
                 href={n.href}
-                className="group relative text-[12px] tracking-[0.14em] text-ivory/80 uppercase transition-colors hover:text-ivory"
+                className="group relative text-[12px] tracking-[0.14em] text-white opacity-90 uppercase transition-all hover:opacity-100"
               >
                 {n.label}
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold transition-all duration-500 group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 h-px w-0 bg-white transition-all duration-500 group-hover:w-full" />
               </a>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
-            <TranslateToggle />
-            <ThemeToggle />
             <a
-              href="#availability"
-              className="hidden md:inline-flex btn-cream !py-2.5 !px-5 !text-[11px]"
+              href="https://www.instagram.com/jawedhabib_kurji_patna/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="flex items-center justify-center text-white opacity-80 hover:opacity-100 transition-all hover:scale-110 p-2"
             >
-              Reserve <span className="arrow">→</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
             </a>
+
             <button
               onClick={() => setOpen(true)}
               aria-label="Open menu"
-              className="lg:hidden flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-ivory"
+              className="lg:hidden flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white"
             >
               <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
                 <path d="M0 1h16M0 9h10" stroke="currentColor" strokeWidth="1.2" />
@@ -981,7 +983,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
               <button
                 onClick={onClose}
                 aria-label="Close menu"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-ivory"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.2" />
@@ -998,7 +1000,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + i * 0.07, duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
-                  className="font-serif text-5xl text-ivory leading-none"
+                  className="font-serif text-5xl text-white leading-none"
                 >
                   {n.label}
                   <span className="ml-2 align-super text-[10px] tracking-[0.3em] text-gold">
@@ -1020,19 +1022,19 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
               <div className="grid grid-cols-3 gap-3 text-[11px] tracking-[0.16em] uppercase">
                 <a
                   href={WHATSAPP}
-                  className="rounded-full border border-white/10 py-3 text-center text-ivory/80"
+                  className="rounded-full border border-white/10 py-3 text-center text-white opacity-80"
                 >
                   WhatsApp
                 </a>
                 <a
                   href={PHONE}
-                  className="rounded-full border border-white/10 py-3 text-center text-ivory/80"
+                  className="rounded-full border border-white/10 py-3 text-center text-white opacity-80"
                 >
                   Call
                 </a>
                 <a
                   href="https://instagram.com"
-                  className="rounded-full border border-white/10 py-3 text-center text-ivory/80"
+                  className="rounded-full border border-white/10 py-3 text-center text-white opacity-80"
                 >
                   Instagram
                 </a>
@@ -1099,8 +1101,8 @@ function Hero() {
         )}
         {/* Subtle black overlay to make it look premium and improve text readability */}
         <div className="absolute inset-0 bg-black/30 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent" />
       </motion.div>
 
       <motion.div
@@ -1114,24 +1116,24 @@ function Hero() {
             transition={{ duration: 1, delay: 0.6 }}
             className="flex flex-col items-start gap-4"
           >
-            <p className="eyebrow">Jawed Habib · Kurji, Patna</p>
+            <p className="eyebrow !text-white/90">Jawed Habib · Kurji, Patna</p>
             <div className="flex items-center gap-3">
-              <div className="flex text-gold">
+              <div className="flex text-[#FFDF73]">
                 {"★★★★★".split("").map((s, i) => (
                   <span key={i} className="text-sm">
                     {s}
                   </span>
                 ))}
               </div>
-              <div className="text-[11px] tracking-[0.14em] uppercase text-muted-foreground">
+              <div className="text-[11px] tracking-[0.14em] uppercase text-white">
                 4.9 · 400+ Google reviews
               </div>
             </div>
           </motion.div>
 
           <WordReveal
-            text="The bride you will always remember being."
-            className="mt-6 max-w-4xl font-serif text-[clamp(2.2rem,8vw,6rem)] leading-[0.98] tracking-[-0.02em] text-ivory"
+            text="Be the bride everyone can't stop looking at."
+            className="mt-6 max-w-4xl font-serif text-[clamp(2.2rem,8vw,6rem)] leading-[0.98] tracking-[-0.02em] text-[#f5f5f0]"
           />
 
           <motion.div
@@ -1140,7 +1142,7 @@ function Hero() {
             transition={{ duration: 1, delay: 1.9 }}
             className="mt-10 flex flex-wrap items-center gap-4"
           >
-            <a href="#packages" className="btn-cream">
+            <a href="#packages" className="btn-cream !bg-white/10 !text-white !border-white/20 backdrop-blur-2xl backdrop-saturate-[1.8] !shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.15)] hover:!bg-white/20">
               Claim Your Look <span className="arrow">→</span>
             </a>
           </motion.div>
@@ -1153,7 +1155,7 @@ function Hero() {
           transition={{ duration: 1, delay: 2.2 }}
           className="w-full max-w-sm shrink-0 rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-xl"
         >
-          <div className="mb-6 inline-flex animate-pulse items-center gap-2 rounded-full bg-red-500/20 px-3 py-1 text-[10px] font-medium tracking-wider text-red-200 uppercase">
+          <div className="mb-6 inline-flex animate-pulse items-center gap-2 rounded-full bg-red-500/20 px-3 py-1 text-[10px] font-medium tracking-wider text-red-500 uppercase">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500"></span>
@@ -1183,7 +1185,7 @@ function Hero() {
 
           <a
             href="#availability"
-            className="flex w-full items-center justify-center rounded-full bg-ivory px-6 py-3 text-sm font-medium tracking-wide text-background transition-colors hover:bg-white"
+            className="flex w-full items-center justify-center rounded-full bg-ivory px-6 py-3 text-sm font-medium tracking-wide text-background transition-colors hover:bg-white hover:text-black"
           >
             Check Available Dates <span className="ml-2">→</span>
           </a>
@@ -1685,7 +1687,7 @@ function Transformations() {
 
               <div className="absolute inset-x-0 bottom-0 p-5 text-left">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-ivory/15 text-ivory backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#f5f5f0]/15 text-[#f5f5f0] backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
                     <svg
                       width="10"
                       height="12"
@@ -1697,8 +1699,8 @@ function Transformations() {
                     </svg>
                   </span>
                   <div>
-                    <div className="font-serif text-2xl text-ivory">{it.title}</div>
-                    <div className="text-[11px] tracking-[0.2em] uppercase text-ivory/60">
+                    <div className="font-serif text-2xl text-[#f5f5f0] drop-shadow-sm">{it.title}</div>
+                    <div className="text-[11px] tracking-[0.2em] uppercase text-[#f5f5f0]/70">
                       {it.duration} · Bridal reel
                     </div>
                   </div>
@@ -1976,19 +1978,19 @@ function Packages({
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/40 to-transparent opacity-90" />
             </div>
             <div className="relative z-10 flex flex-1 flex-col p-8 pt-0 -mt-6 gap-2">
               <h3 className="font-serif text-3xl text-gold drop-shadow-md">{p.name}</h3>
-              <p className="text-[13px] leading-relaxed text-ivory/90 font-light tracking-wide">{p.desc}</p>
+              <p className="text-[13px] leading-relaxed text-[#f5f5f0]/90 font-medium tracking-wide">{p.desc}</p>
               
               <div className="flex flex-col border-t border-white/[0.08] pt-6 w-full mt-auto">
                 <div className="flex justify-between items-end mb-5">
                   <div className="flex flex-col">
-                    <del className="text-[11px] text-ivory/40 mb-1 tracking-widest font-light">VALUE: ₹{(parseInt(p.price.replace(/\D/g, "")) + 10000).toLocaleString("en-IN")}</del>
-                    <div className="font-serif text-[32px] leading-none text-gold">{p.price}</div>
+                    <del className="text-[11px] text-[#f5f5f0]/40 mb-1 tracking-widest font-light">VALUE: ₹{(parseInt(p.price.replace(/\D/g, "")) + 10000).toLocaleString("en-IN")}</del>
+                    <div className="font-serif text-[32px] leading-none text-[#D4AF37]">{p.price}</div>
                     {p.onward && (
-                      <div className="text-[10px] tracking-[0.24em] uppercase text-muted-foreground mt-1.5">
+                      <div className="text-[10px] tracking-[0.24em] uppercase text-[#f5f5f0]/50 mt-1.5">
                         {p.onward}
                       </div>
                     )}
@@ -2002,18 +2004,18 @@ function Packages({
                       animate={{ opacity: 1, height: "auto" }} 
                       className="flex flex-col gap-2 p-4 rounded-xl bg-white/[0.02] border border-white/[0.08] mb-4 shadow-inner"
                     >
-                      <div className="flex justify-between items-center text-xs text-ivory/70 font-medium">
+                      <div className="flex justify-between items-center text-xs text-[#f5f5f0]/70 font-medium">
                         <span>Total Package Price</span>
-                        <span>₹{parseInt(p.price.replace(/\D/g, "")).toLocaleString("en-IN")}</span>
+                        <span className="text-[#f5f5f0] font-bold">₹{parseInt(p.price.replace(/\D/g, "")).toLocaleString("en-IN")}</span>
                       </div>
-                      <div className="flex justify-between items-center text-[11px] font-medium text-ivory/70">
+                      <div className="flex justify-between items-center text-[11px] font-medium text-[#f5f5f0]/70">
                         <span>Booking Deposit (Paying Now)</span>
                         <span className="text-emerald-400 font-bold tracking-wide">- ₹{bookingDeposit.toLocaleString("en-IN")}</span>
                       </div>
-                      <div className="h-px w-full border-t border-dashed border-white/15 my-1" />
-                      <div className="flex justify-between items-center text-sm font-bold text-ivory tracking-wide">
+                      <div className="h-px w-full border-t border-dashed border-white/15 my-2" />
+                      <div className="flex justify-between items-center text-base font-bold text-[#f5f5f0] tracking-wide">
                         <span>Due at Venue</span>
-                        <span className="text-gold">₹{(parseInt(p.price.replace(/\D/g, "")) - bookingDeposit).toLocaleString("en-IN")}</span>
+                        <span className="text-[#D4AF37]">₹{(parseInt(p.price.replace(/\D/g, "")) - bookingDeposit).toLocaleString("en-IN")}</span>
                       </div>
                     </motion.div>
                   )}
@@ -2070,7 +2072,7 @@ function Packages({
                   <svg className="w-4 h-4 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12.031 0C5.385 0 0 5.384 0 12.029c0 2.115.552 4.17 1.6 5.986L.027 24l6.155-1.55c1.765.98 3.75 1.5 5.845 1.5 6.645 0 12.028-5.385 12.028-12.03 0-6.645-5.384-12.029-12.024-12.02zm0 22.06c-1.802 0-3.565-.484-5.112-1.402l-.367-.217-3.799.957 1.01-3.69-.238-.378a10.134 10.134 0 0 1-1.558-5.302c0-5.611 4.562-10.17 10.168-10.17 5.606 0 10.166 4.56 10.166 10.17 0 5.611-4.56 10.171-10.17 10.171h-.1zm5.578-7.614c-.307-.153-1.812-.894-2.094-1-.283-.105-.489-.153-.695.153-.205.306-.79 1-.968 1.205-.178.204-.356.23-.663.076-1.748-.887-3.045-2.003-4.137-4.148-.225-.44 0-.422.302-.727.152-.152.306-.356.459-.535.152-.178.203-.306.305-.509.102-.204.051-.383-.025-.536-.076-.153-.695-1.677-.951-2.296-.252-.601-.509-.52-.695-.53-.178-.01-.383-.01-.588-.01-.205 0-.537.076-.819.382-.283.306-1.077 1.053-1.077 2.569 0 1.516 1.1 2.981 1.254 3.185.154.204 2.168 3.327 5.253 4.654 2.181.939 2.981 1.01 4.149.882 1.341-.148 3.109-1.272 3.543-2.502.433-1.23.433-2.285.304-2.502-.128-.217-.486-.345-.792-.498z"/>
                   </svg>
-                  <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-ivory">
+                  <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#f5f5f0]">
                     Inquire on WhatsApp
                   </span>
                 </a>
@@ -2122,10 +2124,10 @@ function BeforeAfter() {
             </svg>
           </div>
         </div>
-        <span className="pointer-events-none absolute left-4 top-4 text-[10px] tracking-[0.24em] uppercase text-ivory/80">
+        <span className="pointer-events-none absolute left-4 top-4 text-[10px] tracking-[0.24em] uppercase text-[#f5f5f0]/80">
           After
         </span>
-        <span className="pointer-events-none absolute right-4 top-4 text-[10px] tracking-[0.24em] uppercase text-ivory/80">
+        <span className="pointer-events-none absolute right-4 top-4 text-[10px] tracking-[0.24em] uppercase text-[#f5f5f0]/80">
           Before
         </span>
       </div>
@@ -2313,27 +2315,27 @@ function Testimonials() {
                   </span>
                 ))}
               </div>
-              <span className="text-3xl font-medium text-white">{avgRating} out of 5</span>
+              <span className="text-3xl font-medium text-black">{avgRating} out of 5</span>
             </div>
-            <p className="text-sm text-white/50 mb-8">{totalReviews} global ratings</p>
+            <p className="text-sm text-black/60 mb-8">{totalReviews} global ratings</p>
 
             <div className="space-y-3">
               {distribution.map((d) => (
                 <div
                   key={d.stars}
-                  className="flex items-center gap-3 text-sm text-white/70 group cursor-pointer"
+                  className="flex items-center gap-3 text-sm text-black/70 group cursor-pointer"
                   onClick={() => setFilter(d.stars === 5 ? "5 Stars" : "All")}
                 >
                   <span className="w-12 text-right group-hover:text-gold transition-colors whitespace-nowrap">
                     {d.stars} star
                   </span>
-                  <div className="flex-1 h-3 bg-white/5 rounded-full overflow-hidden border border-white/10 group-hover:border-gold/50 transition-colors">
+                  <div className="flex-1 h-3 bg-black/5 rounded-full overflow-hidden border border-black/10 group-hover:border-gold/50 transition-colors">
                     <div
                       className="h-full bg-gold rounded-full"
                       style={{ width: `${d.percent}%` }}
                     />
                   </div>
-                  <span className="w-9 text-right text-white/40">{d.percent}%</span>
+                  <span className="w-9 text-right text-black/50">{d.percent}%</span>
                 </div>
               ))}
             </div>
@@ -2350,8 +2352,8 @@ function Testimonials() {
                 onClick={() => setFilter(f)}
                 className={`px-4 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all border ${
                   filter === f
-                    ? "bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                    : "bg-transparent text-white/70 border-white/20 hover:border-gold hover:text-gold"
+                    ? "bg-black text-white border-black shadow-md"
+                    : "bg-transparent text-black/70 border-black/20 hover:border-gold hover:text-gold"
                 }`}
               >
                 {f}
@@ -2359,25 +2361,25 @@ function Testimonials() {
             ))}
           </div>
 
-          <div className="flex items-center justify-between pb-4 mb-8 border-b border-white/10">
-            <span className="text-sm text-white/60 font-medium">
+          <div className="flex items-center justify-between pb-4 mb-8 border-b border-black/10">
+            <span className="text-sm text-black/60 font-medium">
               Showing {filteredReviews.length} verified reviews
             </span>
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              className="bg-transparent border border-white/20 text-white/90 text-sm font-medium rounded-lg px-4 py-2 hover:border-white/40 focus:outline-none focus:border-gold outline-none cursor-pointer appearance-none pr-10 relative transition-colors"
+              className="bg-transparent border border-black/20 text-black/90 text-sm font-medium rounded-lg px-4 py-2 hover:border-black/40 focus:outline-none focus:border-gold outline-none cursor-pointer appearance-none pr-10 relative transition-colors"
               style={{
-                backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+                backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "right 0.75rem center",
                 backgroundSize: "1em",
               }}
             >
-              <option value="Top reviews" className="bg-zinc-900 text-white">
+              <option value="Top reviews" className="bg-white text-black">
                 Top reviews
               </option>
-              <option value="Most recent" className="bg-zinc-900 text-white">
+              <option value="Most recent" className="bg-white text-black">
                 Most recent
               </option>
             </select>
@@ -2504,7 +2506,7 @@ function SalonExperience() {
               loading="lazy"
               className="w-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-transparent" />
+            <div className="absolute inset-0 bg-[#000000]/10 transition-colors duration-500 group-hover:bg-transparent" />
           </motion.div>
         ))}
       </div>
@@ -3008,33 +3010,47 @@ function MapSection() {
 
 function ReserveCTA() {
   return (
-    <section id="reserve" className="relative overflow-hidden py-28 md:py-40">
-      <img src={heroBg} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/70 to-background" />
-      <div className="relative mx-auto max-w-4xl px-6 text-center">
-        <p className="eyebrow">Book Your Bridal Look</p>
+    <section id="reserve" className="w-full bg-[#f7f4ec] py-24 px-4 md:px-6 relative z-10 border-t border-b border-black/[0.03]">
+      <div className="mx-auto max-w-5xl rounded-[2.5rem] border border-[#0a0a0a]/5 bg-white/40 p-8 md:p-16 lg:p-20 shadow-sm flex flex-col items-center text-center relative overflow-hidden">
+        {/* Subtle background glow element */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 blur-[100px] rounded-full pointer-events-none -mr-20 -mt-20" />
+        
+        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold mb-6 relative z-10">SECURE YOUR SPOT</span>
+        
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="mt-6 font-serif text-[clamp(2.4rem,6vw,5rem)] leading-[1] text-ivory"
+          transition={{ duration: 0.8 }}
+          className="font-serif text-4xl md:text-6xl lg:text-[4.5rem] tracking-tight leading-[1.05] text-[#0a0a0a] mb-8 relative z-10"
         >
-          One bride. <em className="italic text-gold-soft">One date.</em>
-          <br /> Secure yours today.
+          The spotlight, <br className="md:hidden"/> <span className="italic text-gold">exclusively yours.</span>
         </motion.h2>
-        <p className="mx-auto mt-6 max-w-lg text-sm leading-relaxed text-muted-foreground md:text-base">
-          A flexible, non-refundable deposit (₹1,500 - ₹2,500) reserves the day exclusively for you. Adjusted
-          against your final bill.
+
+        <p className="text-sm md:text-base leading-relaxed text-black/60 font-light max-w-xl mb-12 relative z-10">
+          We strictly limit our daily bridal appointments to ensure absolute, uncompromising attention to detail. A fully adjustable booking amount of <span className="text-[#0a0a0a] font-medium border-b border-gold/30 pb-0.5">₹1,500 - ₹2,500</span> locks in your date and artists.
         </p>
-        <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <a href={WHATSAPP} className="btn-cream">
-            Book Now <span className="arrow">→</span>
+
+        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 w-full relative z-10">
+          <a 
+            href={WHATSAPP}
+            className="w-full sm:w-auto flex items-center justify-center gap-4 rounded-full bg-[#0a0a0a] px-10 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#f5f5f0] hover:bg-gold hover:text-[#0a0a0a] transition-all hover:-translate-y-1 shadow-[0_10px_20px_rgba(0,0,0,0.1)] group"
+          >
+            <span>Book Now</span>
+            <span className="transition-transform group-hover:translate-x-1">→</span>
           </a>
-          <a href="tel:+919572194458" className="btn-ghost-gold">
+          
+          <a 
+            href="tel:+919572194458" 
+            className="w-full sm:w-auto flex items-center justify-center rounded-full bg-white border border-[#0a0a0a]/10 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-[#0a0a0a] hover:border-gold hover:text-gold transition-all hover:-translate-y-1 shadow-sm"
+          >
             Call Studio
           </a>
-          <a href="#packages" className="btn-ghost-gold">
+          
+          <a 
+            href="#packages" 
+            className="w-full sm:w-auto flex items-center justify-center rounded-full bg-white border border-[#0a0a0a]/10 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-[#0a0a0a] hover:border-gold hover:text-gold transition-all hover:-translate-y-1 shadow-sm"
+          >
             View Packages
           </a>
         </div>
@@ -3043,110 +3059,137 @@ function ReserveCTA() {
   );
 }
 
-/* -------------------------------- FOOTER --------------------------------- */
-
 function Footer() {
   return (
-    <footer id="contact" className="border-t border-white/10 bg-black/60 backdrop-blur-xl relative z-10">
-      <div className="mx-auto max-w-7xl px-6 py-20">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-          {/* Brand */}
-          <div className="flex flex-col items-start">
-            <img src={logoImg} alt="Jawed Habib Logo" className="h-10 w-auto object-contain opacity-90" />
-            <p className="mt-6 text-[13px] text-white/50 leading-relaxed font-light max-w-[240px]">
-              Patna's premier luxury salon. Specializing in flawless bridal transformations, global
-              hair styling, and clinical aesthetics.
-            </p>
-          </div>
+    <footer id="contact" className="relative z-10 bg-[#0a0a0a] text-[#f5f5f0] overflow-hidden pt-24 pb-8 mt-4 md:mx-4 md:mb-4 md:rounded-[3rem] shadow-2xl">
+      <div className="mx-auto max-w-7xl px-6 md:px-12 relative z-10">
+        
+        {/* Top Section: Brand and Newsletter */}
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-16 mb-24 border-b border-[#f5f5f0]/10 pb-20">
           
-          {/* Visit */}
-          <div>
-            <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-6">Visit</h4>
-            <p className="text-[13px] text-white/70 leading-loose font-light">
-              Ward 22B, Circle 247B,<br />
-              Holding 817A/2, Patliputra Kurji Rd,<br />
-              above Lenskart Outlet, opposite RBI Quarter,<br />
-              Patna, Bihar 800010
+          <div className="w-full lg:w-1/2">
+            <img src={logoImg} alt="Jawed Habib Logo" className="h-16 w-auto object-contain mb-8 filter brightness-0 invert opacity-90" />
+            <h2 className="font-serif text-3xl md:text-5xl lg:text-[3.5rem] tracking-tight leading-[1.1] mb-6">
+              Flawless artistry for <br className="hidden md:block"/> the modern bride.
+            </h2>
+            <p className="text-[#f5f5f0]/50 max-w-sm text-sm leading-relaxed font-light">
+              Patna's premier luxury salon. Specializing in bespoke bridal transformations, global hair styling, and clinical aesthetics.
             </p>
           </div>
 
-          {/* Hours */}
-          <div>
-            <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-6">Hours</h4>
-            <div className="flex flex-col gap-2 text-[13px] font-light">
-              <p className="text-white/70">Mon – Sun</p>
-              <p className="text-white/50">10:00 AM – 8:30 PM</p>
-              <p className="mt-1 text-gold/80 font-medium">Open All Days</p>
+          <div className="w-full lg:w-1/2 lg:pl-16">
+            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold block mb-6">THE GLOW EDIT</span>
+            <p className="text-[#f5f5f0]/60 text-sm leading-relaxed font-light mb-8 max-w-md">
+              Join our exclusive list for curated bridal lookbooks, professional skincare secrets, and priority booking announcements.
+            </p>
+            <form onSubmit={(e) => e.preventDefault()} className="w-full max-w-md relative group">
+              <input 
+                type="email" 
+                placeholder="Enter your email address" 
+                className="w-full bg-[#f5f5f0]/5 border border-[#f5f5f0]/10 rounded-full py-4 pl-6 pr-32 text-sm font-light text-[#f5f5f0] placeholder-[#f5f5f0]/40 outline-none focus:border-gold/50 focus:bg-[#f5f5f0]/10 transition-all"
+                required
+              />
+              <button 
+                type="submit" 
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#f5f5f0] text-[#0a0a0a] px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-gold transition-colors"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+        {/* Links Grid */}
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 mb-24">
+          
+          <div className="space-y-6">
+            <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-gold">Visit Studio</h4>
+            <div className="text-sm text-[#f5f5f0]/50 leading-relaxed font-light space-y-1">
+              <p>Ward 22B, Circle 247B,</p>
+              <p>Holding 817A/2, Patliputra Kurji Rd,</p>
+              <p>above Lenskart Outlet,</p>
+              <p>Patna, Bihar 800010</p>
             </div>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-6">Contact</h4>
-            <div className="flex flex-col gap-4 text-[13px] font-light">
-              <a href="tel:+919572194458" className="text-white/70 hover:text-gold transition-colors inline-flex items-center gap-2">
-                +91 95721 94458
-              </a>
-              <a href="tel:+919709575559" className="text-white/70 hover:text-gold transition-colors inline-flex items-center gap-2">
-                +91 97095 75559
-              </a>
-              <a href="mailto:Jawedhabib.kurji@gmail.com" className="text-white/70 hover:text-gold transition-colors">
-                Jawedhabib.kurji@gmail.com
-              </a>
-              
-              <a
-                href={WHATSAPP}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 text-gold hover:text-white transition-colors flex items-center gap-2 text-sm font-medium"
-              >
-                Chat on WhatsApp <span className="text-lg leading-none">→</span>
-              </a>
+          <div className="space-y-6">
+            <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-gold">Say Hello</h4>
+            <div className="flex flex-col gap-3 text-sm font-light text-[#f5f5f0]/50">
+              <a href="tel:+919572194458" className="hover:text-gold transition-colors inline-block w-fit">+91 95721 94458</a>
+              <a href="tel:+919709575559" className="hover:text-gold transition-colors inline-block w-fit">+91 97095 75559</a>
+              <a href="mailto:Jawedhabib.kurji@gmail.com" className="hover:text-gold transition-colors inline-block w-fit">Jawedhabib.kurji@gmail.com</a>
+            </div>
+          </div>
 
-              <a
-                href="https://www.instagram.com/jawedhabib_kurji_patna/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-xs font-medium text-white/80 transition-all hover:bg-white hover:text-black hover:border-white"
-              >
+          <div className="space-y-6">
+            <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-gold">Hours</h4>
+            <div className="text-sm font-light text-[#f5f5f0]/50 space-y-2">
+              <div className="flex flex-col gap-1">
+                <span className="text-[#f5f5f0]">Monday – Sunday</span>
+                <span>10:00 AM – 8:30 PM</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-gold">Connect</h4>
+            <a href="https://www.instagram.com/jawedhabib_kurji_patna/" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 text-sm font-light text-[#f5f5f0]/50 hover:text-gold transition-colors w-fit">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f5f5f0]/5 group-hover:bg-gold/20 transition-colors border border-[#f5f5f0]/10">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                   <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
                 </svg>
-                Follow on Instagram
-              </a>
-            </div>
+              </div>
+              Instagram
+            </a>
           </div>
+
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-20 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 md:flex-row">
-          <span className="text-[10px] tracking-[0.2em] uppercase text-white/40">
-            © {new Date().getFullYear()} Jawed Habib, Kurji
-          </span>
+        {/* Footer Bottom */}
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-[#f5f5f0]/10 text-[10px] uppercase tracking-[0.2em] text-[#f5f5f0]/30 font-bold gap-6">
+          <p>© {new Date().getFullYear()} JAWED HABIB KURJI.</p>
           
-          {/* Developer Credit */}
-          <div className="flex items-center gap-6">
-            <span className="text-[11px] font-mono text-white/30 flex items-center gap-2">
-              built by <a href="https://github.com/f8sxl" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-gold transition-colors">faisal</a>
+          <div className="flex items-center">
+            <span className="text-[#f5f5f0]/30 lowercase tracking-[0.2em] font-light flex items-center">
+              Built with <span className="text-gold mx-1.5 text-xs">♥</span> by
             </span>
-            <div className="flex items-center gap-4 border-l border-white/10 pl-6">
-              <a href="https://www.instagram.com/f8sxl.qrx" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-white transition-colors" title="Instagram">
-                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" /></svg>
+            <span className="font-serif tracking-wide text-[#f5f5f0] italic capitalize text-sm ml-2 mr-4">
+              Faisal
+            </span>
+            
+            <div className="flex items-center gap-3 border-l border-[#f5f5f0]/20 pl-4">
+              <a 
+                href="https://github.com/f8sxl" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-[#f5f5f0]/40 hover:text-gold transition-all hover:-translate-y-0.5 duration-300"
+                aria-label="GitHub"
+              >
+                <svg className="h-[15px] w-[15px] fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
               </a>
-              <a href="https://www.linkedin.com/in/faisal-undefined-0a8135420" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-white transition-colors" title="LinkedIn">
-                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" /></svg>
+              <a 
+                href="https://www.linkedin.com/in/faisal-undefined-0a8135420" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-[#f5f5f0]/40 hover:text-gold transition-all hover:-translate-y-0.5 duration-300"
+                aria-label="LinkedIn"
+              >
+                <svg className="h-[15px] w-[15px] fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
               </a>
-              <a href="https://x.com/faisalarete" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-white transition-colors" title="X">
-                <svg className="h-3 w-3 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+              <a 
+                href="https://x.com/faisalarete" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-[#f5f5f0]/40 hover:text-gold transition-all hover:-translate-y-0.5 duration-300"
+                aria-label="X (Twitter)"
+              >
+                <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
               </a>
             </div>
           </div>
-
-          <span className="text-[10px] tracking-[0.2em] uppercase text-white/40">
-            Crafted for the brides of Bihar
-          </span>
         </div>
       </div>
     </footer>
