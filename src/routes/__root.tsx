@@ -176,7 +176,7 @@ function RootShell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <meta
           name="facebook-domain-verification"
@@ -184,7 +184,7 @@ function RootShell({ children }: { children: ReactNode }) {
         />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark');}}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();`,
           }}
         />
         <script
