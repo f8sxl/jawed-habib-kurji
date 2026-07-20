@@ -1214,22 +1214,27 @@ function WordReveal({ text, className }: { text: string; className?: string }) {
   const words = text.split(" ");
   return (
     <h1 className={className}>
-      {words.map((w, i) => (
-        <span key={i} className="inline-block overflow-hidden pb-[0.05em] pr-[0.28em] align-top">
-          <motion.span
-            initial={{ y: "110%", opacity: 0 }}
-            animate={{ y: "0%", opacity: 1 }}
-            transition={{
-              duration: 1.1,
-              delay: 0.7 + i * 0.08,
-              ease: [0.2, 0.8, 0.2, 1],
-            }}
-            className="inline-block"
-          >
-            {w}
-          </motion.span>
-        </span>
-      ))}
+      {words.map((w, i) => {
+        const isHighlight = w.toLowerCase() === "bride";
+        return (
+          <span key={i} className={`inline-block overflow-hidden pb-[0.05em] pr-[0.28em] align-top ${isHighlight ? "px-1" : ""}`}>
+            <motion.span
+              initial={{ y: "110%", opacity: 0 }}
+              animate={{ y: "0%", opacity: 1 }}
+              transition={{
+                duration: 1.1,
+                delay: 0.7 + i * 0.08,
+                ease: [0.2, 0.8, 0.2, 1],
+              }}
+              className={`inline-block ${
+                isHighlight ? "bg-gold text-[#0a0a0a] px-4 rounded-xl -rotate-2 shadow-lg" : ""
+              }`}
+            >
+              {w}
+            </motion.span>
+          </span>
+        );
+      })}
     </h1>
   );
 }
@@ -3078,37 +3083,33 @@ function Footer() {
           </div>
 
           <div className="w-full lg:w-1/2 lg:pl-16">
-            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold block mb-6">THE JAWED HABIB PROMISE</span>
+            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold block mb-6">OUR BRIDAL PROMISE</span>
             <p className="text-[#f5f5f0]/60 text-sm md:text-base leading-relaxed font-light mb-10 max-w-md">
               Your wedding day is the most photographed day of your life. We promise uncompromising artistry, premium products, and a flawless look that stays perfect from the first look to the final dance.
             </p>
             
-            <div className="border-t border-[#f5f5f0]/10 pt-8 mt-8">
-               <div className="relative mt-2 group w-full max-w-[260px]">
-                 {/* Image Card */}
-                 <div className="w-full h-[160px] rounded-2xl overflow-hidden relative border border-[#f5f5f0]/10 shadow-lg">
-                   <img 
-                     src={bride2} 
-                     alt="Bridal Artistry" 
-                     className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-[1.5s] ease-out" 
-                   />
-                 </div>
+            <div className="border-t border-[#f5f5f0]/10 pt-10 mt-8 flex items-center justify-between gap-6">
+               <div className="flex flex-col">
+                  <span className="font-serif text-4xl md:text-5xl italic text-[#f5f5f0] mb-2 font-light tracking-wide">
+                    Exclusive Artistry
+                  </span>
+                  <span className="text-[10px] tracking-[0.3em] uppercase text-gold font-bold">Kurji, Patna</span>
+               </div>
+               
+               <div className="relative w-24 h-24 flex shrink-0 items-center justify-center group cursor-pointer">
+                 {/* Spinning Text SVG */}
+                 <svg className="absolute w-full h-full animate-[spin_8s_linear_infinite]" viewBox="0 0 100 100">
+                   <path id="textPath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
+                   <text className="text-[10.5px] font-bold tracking-[0.2em] uppercase fill-[#f5f5f0]/50 group-hover:fill-gold transition-colors duration-500">
+                     <textPath href="#textPath" startOffset="0%">
+                       • EXCLUSIVE BRIDAL ARTISTRY 
+                     </textPath>
+                   </text>
+                 </svg>
                  
-                 {/* Spinning Animated Badge */}
-                 <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-[#0a0a0a] rounded-full border border-[#f5f5f0]/10 flex items-center justify-center shadow-2xl z-20 group-hover:border-gold/50 transition-colors duration-500">
-                   
-                   {/* Spinning Text SVG */}
-                   <svg className="absolute w-full h-full animate-[spin_8s_linear_infinite]" viewBox="0 0 100 100">
-                     <path id="textPath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
-                     <text className="text-[10.5px] font-bold tracking-[0.2em] uppercase fill-gold">
-                       <textPath href="#textPath" startOffset="0%">
-                         • EXCLUSIVE BRIDAL ARTISTRY 
-                       </textPath>
-                     </text>
-                   </svg>
-                   
-                   {/* Center Sparkle Icon */}
-                   <svg className="w-5 h-5 text-[#f5f5f0] group-hover:text-gold transition-colors duration-500 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                 {/* Center Icon */}
+                 <div className="w-12 h-12 rounded-full bg-[#f5f5f0]/5 flex items-center justify-center border border-[#f5f5f0]/10 group-hover:bg-gold/10 group-hover:border-gold/30 transition-colors duration-500">
+                   <svg className="w-5 h-5 text-gold group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
                    </svg>
                  </div>
