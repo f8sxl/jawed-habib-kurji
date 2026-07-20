@@ -1283,6 +1283,8 @@ function Availability({
   ];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const filledSlotsCutoff = new Date(today);
+  filledSlotsCutoff.setMonth(filledSlotsCutoff.getMonth() + 2);
 
   return (
     <Section id="availability" eyebrow="Wedding Date" title="Reserve before your date is taken.">
@@ -1336,10 +1338,12 @@ function Availability({
                 if (d === null) return <div key={`empty-${i}`} className="p-2" />;
                 const thisDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), d);
                 const isPast = thisDate < today;
+                const isWithinFilledSlotsWindow = thisDate <= filledSlotsCutoff;
 
                 // Pseudo-random scarcity logic (~30% of future dates are marked as 'fast filling')
                 const hash = (d * 13 + thisDate.getMonth() * 7) % 10;
-                const isFastFilling = !isPast && (hash === 2 || hash === 7 || hash === 5);
+                const isFastFilling =
+                  !isPast && isWithinFilledSlotsWindow && (hash === 2 || hash === 7 || hash === 5);
 
                 const isSelected = selectedDate?.getTime() === thisDate.getTime();
 
@@ -1393,7 +1397,9 @@ function Availability({
               <div className="grid grid-cols-2 gap-3 mb-2">
                 {["10:00 AM", "11:30 AM", "01:00 PM", "02:30 PM", "04:00 PM", "05:30 PM", "07:00 PM", "08:30 PM"].map((time, idx) => {
                   const hash = (selectedDate.getDate() * 13 + selectedDate.getMonth() * 7) % 10;
-                  const isFastFilling = (hash === 2 || hash === 7 || hash === 5);
+                  const isWithinFilledSlotsWindow = selectedDate <= filledSlotsCutoff;
+                  const isFastFilling =
+                    isWithinFilledSlotsWindow && (hash === 2 || hash === 7 || hash === 5);
                   // Make specific slots booked if fast filling (idx 1, 4, 6)
                   const isBooked = isFastFilling && (idx === 1 || idx === 4 || idx === 6 || (idx === 2 && hash === 7));
                   
