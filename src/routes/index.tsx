@@ -1952,12 +1952,8 @@ function Packages({
 
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {BRIDAL_PACKAGES.map((p, i) => (
-          <motion.article
+          <article
             key={p.name}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ delay: i * 0.08, duration: 0.9 }}
             className={`group relative flex flex-col overflow-hidden rounded-3xl border transition-all duration-500 hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] hover:-translate-y-1 min-h-[600px] ${
               p.featured ? "border-gold/70 border-[2px]" : "border-white/30 hover:border-gold/50"
             } ${
@@ -2078,7 +2074,7 @@ function Packages({
                 </a>
               </div>
             </div>
-          </motion.article>
+          </article>
         ))}
       </div>
       </div>
