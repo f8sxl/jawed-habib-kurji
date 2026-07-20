@@ -1102,7 +1102,7 @@ function Hero() {
 
       <motion.div
         style={{ opacity }}
-        className="relative z-10 mx-auto flex max-w-7xl flex-col gap-8 px-6 pb-24 pt-[50svh] lg:h-full lg:min-h-0 lg:flex-row lg:items-end lg:justify-between lg:gap-12 lg:pb-28 lg:pt-0"
+        className="relative z-10 mx-auto flex max-w-7xl flex-col gap-8 px-6 pb-24 pt-[calc(50svh+3rem)] lg:h-full lg:min-h-0 lg:flex-row lg:items-end lg:justify-between lg:gap-12 lg:pb-20 lg:pt-0"
       >
         <div className="flex flex-col">
           <motion.div

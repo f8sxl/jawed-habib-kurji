@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MessageCircle, X, ChevronRight, CheckCircle2, Phone, MessageSquare, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logoImg from "@/assets/logo/jh_logo_new.png";
@@ -25,23 +25,6 @@ export function ChatWidget() {
   const [preference, setPreference] = useState<"call" | "whatsapp" | null>(null);
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Auto open after 12 seconds only if user hasn't interacted
-  useEffect(() => {
-    const hasClosed = sessionStorage.getItem("chatWidgetClosed");
-    const hasOpened = sessionStorage.getItem("chatWidgetOpened");
-    if (hasClosed || hasOpened) return;
-
-    const timer = setTimeout(() => {
-      setIsOpen((current) => {
-        if (!sessionStorage.getItem("chatWidgetClosed")) {
-          return true;
-        }
-        return current;
-      });
-    }, 12000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleQuestionClick = (item: { q: string; a: string }) => {
     setSelectedQ(item);
