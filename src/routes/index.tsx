@@ -1520,12 +1520,12 @@ function Gallery() {
                 <img src={src} alt="Bride" className="h-full w-full object-cover" loading="lazy" />
                 {isTop && (
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/60 to-transparent p-5">
-                    <span className="text-[10px] tracking-[0.28em] uppercase text-ivory/90">
+                    <span className="text-[10px] tracking-[0.28em] uppercase text-white/90">
                       Plate {String(i + 1).padStart(2, "0")} /{" "}
                       {String(brides.length).padStart(2, "0")}
                     </span>
-                    <span className="rounded-full bg-ivory/90 px-3 py-1 text-[10px] tracking-[0.22em] uppercase text-background">
-                      Tap →
+                    <span className="rounded-full bg-white/90 px-3 py-1 text-[10px] tracking-[0.22em] uppercase text-[#0a0a0a] font-bold">
+                      Bridal Artistry
                     </span>
                   </div>
                 )}
