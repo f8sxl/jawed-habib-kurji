@@ -22,8 +22,8 @@ import logoBlackImg from "@/assets/logo/jh_logo_black.png";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <label className="block border-b border-white/10 focus-within:border-gold transition-colors">
-      <span className="eyebrow block">{label}</span>
+    <label className="block border-b border-black/10 focus-within:border-gold transition-colors">
+      <span className="eyebrow block text-black/60">{label}</span>
       {children}
     </label>
   );
@@ -125,7 +125,7 @@ function BookingFormSection({
                   autoComplete="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-white placeholder-white/20 text-sm"
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-[#0a0a0a] placeholder-[#0a0a0a]/40 text-sm font-medium"
                   placeholder="Jane Doe"
                 />
               </Field>
@@ -137,7 +137,7 @@ function BookingFormSection({
                   autoComplete="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-white placeholder-white/20 text-sm"
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-[#0a0a0a] placeholder-[#0a0a0a]/40 text-sm font-medium"
                   placeholder="+91 98765 43210"
                 />
               </Field>
@@ -152,7 +152,7 @@ function BookingFormSection({
                   autoComplete="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-white placeholder-white/20 text-sm"
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-[#0a0a0a] placeholder-[#0a0a0a]/40 text-sm font-medium"
                   placeholder="jane@example.com"
                 />
               </Field>
@@ -164,7 +164,7 @@ function BookingFormSection({
                   autoComplete="address-level2"
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-white placeholder-white/20 text-sm"
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-[#0a0a0a] placeholder-[#0a0a0a]/40 text-sm font-medium"
                   placeholder="Patna, Bihar"
                 />
               </Field>
@@ -188,7 +188,7 @@ function BookingFormSection({
                         })}${selectedTime ? ` at ${selectedTime}` : ""}`
                       : ""
                   }
-                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-gold placeholder-white/20 text-sm cursor-pointer font-medium"
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-gold placeholder-[#0a0a0a]/40 text-sm cursor-pointer font-bold"
                   placeholder="Select a date & time from calendar above"
                 />
               </Field>
@@ -199,8 +199,8 @@ function BookingFormSection({
                   autoComplete="address-line1"
                   value={formData.venue}
                   onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
-                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-white placeholder-white/20 text-sm"
-                  placeholder="e.g. Taj Hotel, Patna"
+                  className="mt-1 w-full bg-transparent py-2.5 outline-none text-[#0a0a0a] placeholder-[#0a0a0a]/40 text-sm font-medium"
+                  placeholder="e.g. Hotel Maurya"
                 />
               </Field>
             </div>
