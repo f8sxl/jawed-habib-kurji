@@ -347,6 +347,17 @@ function InAppBrowserBanner() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+
+  // Fire Meta Pixel PageView event on every route change (SPA navigation)
+  useEffect(() => {
+    const unsubscribe = router.subscribe("onResolved", () => {
+      if (typeof window !== "undefined" && (window as any).fbq) {
+        (window as any).fbq("track", "PageView");
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   return (
     <QueryClientProvider client={queryClient}>
