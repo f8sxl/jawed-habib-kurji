@@ -3078,24 +3078,42 @@ function Footer() {
           </div>
 
           <div className="w-full lg:w-1/2 lg:pl-16">
-            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold block mb-6">THE GLOW EDIT</span>
-            <p className="text-[#f5f5f0]/60 text-sm leading-relaxed font-light mb-8 max-w-md">
-              Join our exclusive list for curated bridal lookbooks, professional skincare secrets, and priority booking announcements.
+            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold block mb-6">THE JAWED HABIB PROMISE</span>
+            <p className="text-[#f5f5f0]/60 text-sm md:text-base leading-relaxed font-light mb-10 max-w-md">
+              Your wedding day is the most photographed day of your life. We promise uncompromising artistry, premium products, and a flawless look that stays perfect from the first look to the final dance.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} className="w-full max-w-md relative group">
-              <input 
-                type="email" 
-                placeholder="Enter your email address" 
-                className="w-full bg-[#f5f5f0]/5 border border-[#f5f5f0]/10 rounded-full py-4 pl-6 pr-32 text-sm font-light text-[#f5f5f0] placeholder-[#f5f5f0]/40 outline-none focus:border-gold/50 focus:bg-[#f5f5f0]/10 transition-all"
-                required
-              />
-              <button 
-                type="submit" 
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#f5f5f0] text-[#0a0a0a] px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-gold transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
+            
+            <div className="border-t border-[#f5f5f0]/10 pt-8 mt-8">
+               <div className="relative mt-2 group w-full max-w-[260px]">
+                 {/* Image Card */}
+                 <div className="w-full h-[160px] rounded-2xl overflow-hidden relative border border-[#f5f5f0]/10 shadow-lg">
+                   <img 
+                     src={bride2} 
+                     alt="Bridal Artistry" 
+                     className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-[1.5s] ease-out" 
+                   />
+                 </div>
+                 
+                 {/* Spinning Animated Badge */}
+                 <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-[#0a0a0a] rounded-full border border-[#f5f5f0]/10 flex items-center justify-center shadow-2xl z-20 group-hover:border-gold/50 transition-colors duration-500">
+                   
+                   {/* Spinning Text SVG */}
+                   <svg className="absolute w-full h-full animate-[spin_8s_linear_infinite]" viewBox="0 0 100 100">
+                     <path id="textPath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
+                     <text className="text-[10.5px] font-bold tracking-[0.2em] uppercase fill-gold">
+                       <textPath href="#textPath" startOffset="0%">
+                         • EXCLUSIVE BRIDAL ARTISTRY 
+                       </textPath>
+                     </text>
+                   </svg>
+                   
+                   {/* Center Sparkle Icon */}
+                   <svg className="w-5 h-5 text-[#f5f5f0] group-hover:text-gold transition-colors duration-500 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
+                   </svg>
+                 </div>
+               </div>
+            </div>
           </div>
 
         </div>
