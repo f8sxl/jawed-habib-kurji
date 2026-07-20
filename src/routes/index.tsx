@@ -1107,7 +1107,7 @@ function Hero() {
 
       <motion.div
         style={{ opacity }}
-        className="relative z-10 mx-auto flex max-w-7xl flex-col gap-8 px-6 pb-24 pt-28 lg:h-full lg:min-h-0 lg:flex-col lg:justify-end lg:gap-12 lg:pb-28 lg:pt-36"
+        className="relative z-10 mx-auto flex max-w-7xl flex-col gap-8 px-6 pb-24 pt-[50svh] lg:h-full lg:min-h-0 lg:flex-row lg:items-end lg:justify-between lg:gap-12 lg:pb-28 lg:pt-0"
       >
         <div className="flex flex-col">
           <motion.div
@@ -1146,14 +1146,15 @@ function Hero() {
               Claim Your Look <span className="arrow">→</span>
             </a>
           </motion.div>
+        </div>
 
-          {/* Scarcity Live Status Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 2.2 }}
-            className="mt-16 w-full max-w-sm shrink-0 rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-xl"
-          >
+        {/* Scarcity Live Status Card */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, delay: 2.2 }}
+          className="w-full max-w-sm shrink-0 rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-xl"
+        >
           <div className="mb-6 inline-flex animate-pulse items-center gap-2 rounded-full bg-red-500/20 px-3 py-1 text-[10px] font-medium tracking-wider text-red-500 uppercase">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
@@ -1188,8 +1189,7 @@ function Hero() {
           >
             Check Available Dates <span className="ml-2">→</span>
           </a>
-          </motion.div>
-        </div>
+        </motion.div>
       </motion.div>
 
       <motion.div
@@ -1227,7 +1227,7 @@ function WordReveal({ text, className }: { text: string; className?: string }) {
                 ease: [0.2, 0.8, 0.2, 1],
               }}
               className={`inline-block ${
-                isHighlight ? "bg-gold/30 text-white font-bold px-3 py-1 rounded-lg" : ""
+                isHighlight ? "bg-gold/20 text-gold font-bold px-3 py-1 rounded-lg" : ""
               }`}
             >
               {w}
