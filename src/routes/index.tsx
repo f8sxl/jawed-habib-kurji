@@ -1050,16 +1050,7 @@ function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], [0, 180]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
-
-  useEffect(() => {
-    // Defer loading the heavy background video until after critical page assets are parsed
-    const timer = setTimeout(() => {
-      setVideoSrc("/hero-bg.mov");
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <section
@@ -1068,32 +1059,33 @@ function Hero() {
       className="relative min-h-[100svh] w-full overflow-hidden lg:h-[100svh] lg:min-h-[720px]"
     >
       <motion.div style={{ y, scale }} className="absolute inset-0 overflow-hidden">
-        {/* Static blurred background poster that renders instantly */}
+        {/* Render the lightweight poster immediately while the video is buffering. */}
         <img
           src={heroBg}
-          alt="Hero background placeholder"
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover blur-[3px] scale-105"
         />
 
-        {/* Smoothly cross-fading loop video with GPU-accelerated transitions */}
-        {videoSrc && (
-          <video
-            src={videoSrc}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            onPlay={() => setVideoLoaded(true)}
-            className={`absolute inset-0 h-full w-full object-cover blur-[3px] scale-105 transition-opacity duration-1000 ease-in-out ${
-              videoLoaded ? "opacity-100" : "opacity-0"
-            }`}
-            style={{
-              backfaceVisibility: "hidden",
-              transform: "translate3d(0, 0, 0)",
-            }}
-          />
-        )}
+        {/* Include the source in the initial markup so downloading begins immediately. */}
+        <video
+          src="/hero-bg.mov"
+          poster={heroBg}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          onCanPlay={() => setVideoLoaded(true)}
+          className={`absolute inset-0 h-full w-full object-cover blur-[3px] scale-105 transition-opacity duration-500 ease-out ${
+            videoLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          style={{
+            backfaceVisibility: "hidden",
+            transform: "translate3d(0, 0, 0)",
+          }}
+        />
         {/* Subtle black overlay to make it look premium and improve text readability */}
         <div className="absolute inset-0 bg-black/30 mix-blend-multiply" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
