@@ -77,7 +77,7 @@ export async function sendTelegramOwnerNotification(
 export async function sendTelegramChatLead(
   phone: string,
   question: string,
-  preference?: "call" | "whatsapp" | null
+  preference?: "call" | "whatsapp" | null,
 ): Promise<{ success: boolean; error?: string }> {
   const token =
     process.env.TELEGRAM_BOT_TOKEN ||
@@ -94,8 +94,10 @@ export async function sendTelegramChatLead(
   let cleanPhone = phone.replace(/\D/g, "");
   if (cleanPhone.length === 10) cleanPhone = `91${cleanPhone}`;
 
-  const prefText = preference 
-    ? (preference === "call" ? "📞 Prefers Call" : "💬 Prefers WhatsApp")
+  const prefText = preference
+    ? preference === "call"
+      ? "📞 Prefers Call"
+      : "💬 Prefers WhatsApp"
     : "Not specified";
 
   const message =

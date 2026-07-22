@@ -27,7 +27,15 @@ export const Route = createFileRoute("/api/verify-payment")({
             remaining_balance?: number;
             bookingId?: string;
           };
-          const { razorpay_order_id, razorpay_payment_id, razorpay_signature, total_price, remaining_balance, amountPaid, bookingId } = body;
+          const {
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature,
+            total_price,
+            remaining_balance,
+            amountPaid,
+            bookingId,
+          } = body;
 
           if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
             return new Response(
@@ -43,7 +51,8 @@ export const Route = createFileRoute("/api/verify-payment")({
           let booking: Booking;
 
           if (isMock) {
-            const bId = bookingId || `JHKB-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+            const bId =
+              bookingId || `JHKB-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
             booking = {
               id: bId,
@@ -64,9 +73,9 @@ export const Route = createFileRoute("/api/verify-payment")({
             };
 
             if (bookingId) {
-                await updateBooking(bookingId, booking);
+              await updateBooking(bookingId, booking);
             } else {
-                await saveBooking(booking);
+              await saveBooking(booking);
             }
           } else {
             const keyId =
@@ -120,12 +129,13 @@ export const Route = createFileRoute("/api/verify-payment")({
               console.error("Failed to fetch Razorpay order:", err);
               return new Response(
                 JSON.stringify({ error: "Could not fetch order details for verification" }),
-                { status: 500, headers: { "Content-Type": "application/json" } }
+                { status: 500, headers: { "Content-Type": "application/json" } },
               );
             }
 
             const notes = (order.notes as any) || {};
-            const bId = bookingId || `JHKB-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+            const bId =
+              bookingId || `JHKB-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
             booking = {
               id: bId,
@@ -146,9 +156,9 @@ export const Route = createFileRoute("/api/verify-payment")({
             };
 
             if (bookingId) {
-                await updateBooking(bookingId, booking);
+              await updateBooking(bookingId, booking);
             } else {
-                await saveBooking(booking);
+              await saveBooking(booking);
             }
           }
 

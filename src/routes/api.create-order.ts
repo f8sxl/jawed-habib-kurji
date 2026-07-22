@@ -108,11 +108,11 @@ export const Route = createFileRoute("/api/create-order")({
           );
         } catch (error: any) {
           console.error("Error creating order:", error);
-          
+
           // Razorpay throws errors with a nested .error object
-          const errorMessage = 
-            error?.error?.description || 
-            error?.message || 
+          const errorMessage =
+            error?.error?.description ||
+            error?.message ||
             "Internal Server Error. Please check your Razorpay API keys.";
 
           return new Response(JSON.stringify({ error: errorMessage }), {

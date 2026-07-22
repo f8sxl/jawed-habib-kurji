@@ -9,37 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as BookingConfirmationRouteImport } from './routes/booking-confirmation'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiVerifyPaymentRouteImport } from './routes/api.verify-payment'
-import { Route as ApiCreateOrderRouteImport } from './routes/api.create-order'
-import { Route as ApiCreateLeadRouteImport } from './routes/api.create-lead'
-import { Route as ApiChatLeadRouteImport } from './routes/api.chat-lead'
+import { Route as BookingConfirmationRouteImport } from './routes/booking-confirmation'
 import { Route as ApiBookingRouteImport } from './routes/api.booking'
+import { Route as ApiChatLeadRouteImport } from './routes/api.chat-lead'
+import { Route as ApiCreateLeadRouteImport } from './routes/api.create-lead'
+import { Route as ApiCreateOrderRouteImport } from './routes/api.create-order'
+import { Route as ApiVerifyPaymentRouteImport } from './routes/api.verify-payment'
 
-const BookingConfirmationRoute = BookingConfirmationRouteImport.update({
-  id: '/booking-confirmation',
-  path: '/booking-confirmation',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiVerifyPaymentRoute = ApiVerifyPaymentRouteImport.update({
-  id: '/api/verify-payment',
-  path: '/api/verify-payment',
+const BookingConfirmationRoute = BookingConfirmationRouteImport.update({
+  id: '/booking-confirmation',
+  path: '/booking-confirmation',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiCreateOrderRoute = ApiCreateOrderRouteImport.update({
-  id: '/api/create-order',
-  path: '/api/create-order',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiCreateLeadRoute = ApiCreateLeadRouteImport.update({
-  id: '/api/create-lead',
-  path: '/api/create-lead',
+const ApiBookingRoute = ApiBookingRouteImport.update({
+  id: '/api/booking',
+  path: '/api/booking',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiChatLeadRoute = ApiChatLeadRouteImport.update({
@@ -47,9 +37,19 @@ const ApiChatLeadRoute = ApiChatLeadRouteImport.update({
   path: '/api/chat-lead',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiBookingRoute = ApiBookingRouteImport.update({
-  id: '/api/booking',
-  path: '/api/booking',
+const ApiCreateLeadRoute = ApiCreateLeadRouteImport.update({
+  id: '/api/create-lead',
+  path: '/api/create-lead',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCreateOrderRoute = ApiCreateOrderRouteImport.update({
+  id: '/api/create-order',
+  path: '/api/create-order',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiVerifyPaymentRoute = ApiVerifyPaymentRouteImport.update({
+  id: '/api/verify-payment',
+  path: '/api/verify-payment',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -123,13 +123,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/booking-confirmation': {
-      id: '/booking-confirmation'
-      path: '/booking-confirmation'
-      fullPath: '/booking-confirmation'
-      preLoaderRoute: typeof BookingConfirmationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -137,25 +130,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/verify-payment': {
-      id: '/api/verify-payment'
-      path: '/api/verify-payment'
-      fullPath: '/api/verify-payment'
-      preLoaderRoute: typeof ApiVerifyPaymentRouteImport
+    '/booking-confirmation': {
+      id: '/booking-confirmation'
+      path: '/booking-confirmation'
+      fullPath: '/booking-confirmation'
+      preLoaderRoute: typeof BookingConfirmationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/create-order': {
-      id: '/api/create-order'
-      path: '/api/create-order'
-      fullPath: '/api/create-order'
-      preLoaderRoute: typeof ApiCreateOrderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/create-lead': {
-      id: '/api/create-lead'
-      path: '/api/create-lead'
-      fullPath: '/api/create-lead'
-      preLoaderRoute: typeof ApiCreateLeadRouteImport
+    '/api/booking': {
+      id: '/api/booking'
+      path: '/api/booking'
+      fullPath: '/api/booking'
+      preLoaderRoute: typeof ApiBookingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/chat-lead': {
@@ -165,11 +151,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatLeadRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/booking': {
-      id: '/api/booking'
-      path: '/api/booking'
-      fullPath: '/api/booking'
-      preLoaderRoute: typeof ApiBookingRouteImport
+    '/api/create-lead': {
+      id: '/api/create-lead'
+      path: '/api/create-lead'
+      fullPath: '/api/create-lead'
+      preLoaderRoute: typeof ApiCreateLeadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/create-order': {
+      id: '/api/create-order'
+      path: '/api/create-order'
+      fullPath: '/api/create-order'
+      preLoaderRoute: typeof ApiCreateOrderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/verify-payment': {
+      id: '/api/verify-payment'
+      path: '/api/verify-payment'
+      fullPath: '/api/verify-payment'
+      preLoaderRoute: typeof ApiVerifyPaymentRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

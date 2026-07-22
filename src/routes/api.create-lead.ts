@@ -7,7 +7,17 @@ export const Route = createFileRoute("/api/create-lead")({
       POST: async ({ request }) => {
         try {
           const data = await request.json();
-          const { name, phone, email, city, venue, packageName, bookingDate, total_price, remaining_balance } = data;
+          const {
+            name,
+            phone,
+            email,
+            city,
+            venue,
+            packageName,
+            bookingDate,
+            total_price,
+            remaining_balance,
+          } = data;
 
           if (!name || !phone || !bookingDate || !packageName) {
             return new Response(JSON.stringify({ error: "Missing required lead fields" }), {
