@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "fra
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { ChatWidget } from "@/components/ChatWidget";
 import { AnimatedDepositSlider } from "@/components/AnimatedDepositSlider";
+import { WhatsAppAdStudio } from "@/components/WhatsAppAdStudio";
 
 import heroBg from "@/assets/hero-bg.jpg";
 import salonInterior from "@/assets/salon-interior.jpg";
@@ -716,6 +717,7 @@ export function IndexComponent() {
           setBookingDeposit={setBookingDeposit}
           isFormSubmitted={isFormSubmitted}
         />
+        <WhatsAppAdStudio />
         <Gallery />
         <Transformations />
         <WhyUs />
