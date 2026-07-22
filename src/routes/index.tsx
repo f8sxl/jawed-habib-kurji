@@ -411,7 +411,9 @@ export function IndexComponent() {
           email: formData.email,
           city: formData.city,
           venue: formData.venue,
-          bookingDate: selectedDate ? `${selectedDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} at ${selectedTime}` : "TBD",
+          bookingDate: selectedDate
+            ? `${selectedDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} at ${selectedTime}`
+            : "TBD",
           packageName: "Undecided", // They select it in the next step
         }),
       });
@@ -456,7 +458,7 @@ export function IndexComponent() {
     const isInAppBrowser = /Instagram|FBAN|FBAV/i.test(ua);
     if (isInAppBrowser) {
       alert(
-        "Instagram blocks secure payments.\n\nPlease tap the three dots (⋮) in the top right corner and select 'Open in Browser' to complete your booking securely."
+        "Instagram blocks secure payments.\n\nPlease tap the three dots (⋮) in the top right corner and select 'Open in Browser' to complete your booking securely.",
       );
       return;
     }
@@ -555,7 +557,10 @@ export function IndexComponent() {
             if (verifyRes.ok && verifyData.status === "success") {
               // Send Purchase event to Meta Pixel manually
               if (typeof window !== "undefined" && (window as any).fbq) {
-                (window as any).fbq('track', 'Purchase', { currency: 'INR', value: orderData.amount / 100 });
+                (window as any).fbq("track", "Purchase", {
+                  currency: "INR",
+                  value: orderData.amount / 100,
+                });
               }
               setPaymentSuccessData({
                 bookingId: verifyData.booking?.id || leadBookingId || "Unknown",
@@ -653,7 +658,7 @@ export function IndexComponent() {
       if (verifyRes.ok && verifyData.status === "success") {
         // Send Purchase event to Meta Pixel manually
         if (typeof window !== "undefined" && (window as any).fbq) {
-          (window as any).fbq('track', 'Purchase', { currency: 'INR', value: 2000 });
+          (window as any).fbq("track", "Purchase", { currency: "INR", value: 2000 });
         }
         setTimeout(() => {
           setIsProcessing(false);
@@ -683,15 +688,14 @@ export function IndexComponent() {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
-
       <Nav />
 
       <main>
         <Hero />
         {/* Availability / Calendar Section */}
-        <Availability 
-          selectedDate={selectedDate} 
-          setSelectedDate={setSelectedDate} 
+        <Availability
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
           selectedTime={selectedTime}
           setSelectedTime={setSelectedTime}
         />
@@ -822,7 +826,17 @@ function Nav() {
               aria-label="Instagram"
               className="flex items-center justify-center text-white opacity-80 hover:opacity-100 transition-all hover:scale-110 p-2"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
@@ -1129,7 +1143,10 @@ function Hero() {
             transition={{ duration: 1, delay: 1.9 }}
             className="mt-10 flex flex-wrap items-center gap-4"
           >
-            <a href="#packages" className="btn-cream !bg-white/10 !text-white !border-white/20 backdrop-blur-2xl backdrop-saturate-[1.8] !shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.15)] hover:!bg-white/20">
+            <a
+              href="#packages"
+              className="btn-cream !bg-white/10 !text-white !border-white/20 backdrop-blur-2xl backdrop-saturate-[1.8] !shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.15)] hover:!bg-white/20"
+            >
               Claim Your Look <span className="arrow">→</span>
             </a>
           </motion.div>
@@ -1204,7 +1221,10 @@ function WordReveal({ text, className }: { text: string; className?: string }) {
       {words.map((w, i) => {
         const isHighlight = w.toLowerCase() === "bride";
         return (
-          <span key={i} className={`inline-block overflow-hidden pb-[0.05em] pr-[0.28em] align-top ${isHighlight ? "px-1" : ""}`}>
+          <span
+            key={i}
+            className={`inline-block overflow-hidden pb-[0.05em] pr-[0.28em] align-top ${isHighlight ? "px-1" : ""}`}
+          >
             <motion.span
               initial={{ y: "110%", opacity: 0 }}
               animate={{ y: "0%", opacity: 1 }}
@@ -1383,22 +1403,33 @@ function Availability({
                 {selectedDate ? "Select a Time" : "Reserve Date"}
               </h3>
               <p className="text-sm leading-relaxed text-ivory/60">
-                {selectedDate 
-                  ? `Available slots for ${selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}` 
+                {selectedDate
+                  ? `Available slots for ${selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`
                   : "Pick an available date to secure your slot."}
               </p>
             </div>
 
             {selectedDate ? (
               <div className="grid grid-cols-2 gap-3 mb-2">
-                {["10:00 AM", "11:30 AM", "01:00 PM", "02:30 PM", "04:00 PM", "05:30 PM", "07:00 PM", "08:30 PM"].map((time, idx) => {
+                {[
+                  "10:00 AM",
+                  "11:30 AM",
+                  "01:00 PM",
+                  "02:30 PM",
+                  "04:00 PM",
+                  "05:30 PM",
+                  "07:00 PM",
+                  "08:30 PM",
+                ].map((time, idx) => {
                   const hash = (selectedDate.getDate() * 13 + selectedDate.getMonth() * 7) % 10;
                   const canShowFilledSlots = isWithinFilledSlotsWindow(selectedDate);
                   const isFastFilling =
                     canShowFilledSlots && (hash === 2 || hash === 7 || hash === 5);
                   // Make specific slots booked if fast filling (idx 1, 4, 6)
-                  const isBooked = isFastFilling && (idx === 1 || idx === 4 || idx === 6 || (idx === 2 && hash === 7));
-                  
+                  const isBooked =
+                    isFastFilling &&
+                    (idx === 1 || idx === 4 || idx === 6 || (idx === 2 && hash === 7));
+
                   return (
                     <button
                       key={time}
@@ -1406,7 +1437,9 @@ function Availability({
                       onClick={() => {
                         setSelectedTime(time);
                         setTimeout(() => {
-                          document.getElementById("booking-form-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                          document
+                            .getElementById("booking-form-section")
+                            ?.scrollIntoView({ behavior: "smooth", block: "start" });
                         }, 100);
                       }}
                       className={`relative flex items-center justify-center rounded-xl border py-3 text-sm font-medium transition-all ${
@@ -1424,10 +1457,24 @@ function Availability({
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center rounded-2xl border border-white/5 bg-white/5 p-10 text-center">
-                <svg className="mb-3 h-8 w-8 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  className="mb-3 h-8 w-8 text-white/20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
-                <p className="text-sm text-white/40">Select a date on the calendar<br/>to view available times</p>
+                <p className="text-sm text-white/40">
+                  Select a date on the calendar
+                  <br />
+                  to view available times
+                </p>
               </div>
             )}
 
@@ -1482,7 +1529,8 @@ function Availability({
               disabled={!selectedDate || !selectedTime}
               className={`btn-cream mt-2 w-full justify-center text-[11px] md:text-sm tracking-[0.2em] cursor-pointer ${(!selectedDate || !selectedTime) && "pointer-events-none opacity-50"}`}
             >
-              {selectedDate && selectedTime ? "ENTER DETAILS" : "SELECT DATE & TIME"} <span className="arrow">↓</span>
+              {selectedDate && selectedTime ? "ENTER DETAILS" : "SELECT DATE & TIME"}{" "}
+              <span className="arrow">↓</span>
             </button>
           </div>
         </div>
@@ -1659,7 +1707,7 @@ function Transformations() {
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
               />
-              
+
               {/* Autoplaying background video */}
               <div className="absolute inset-0 pointer-events-none z-0">
                 <iframe
@@ -1701,7 +1749,9 @@ function Transformations() {
                     </svg>
                   </span>
                   <div>
-                    <div className="font-serif text-2xl text-[#f5f5f0] drop-shadow-sm">{it.title}</div>
+                    <div className="font-serif text-2xl text-[#f5f5f0] drop-shadow-sm">
+                      {it.title}
+                    </div>
                     <div className="text-[11px] tracking-[0.2em] uppercase text-[#f5f5f0]/70">
                       {it.duration} · Bridal reel
                     </div>
@@ -1936,150 +1986,199 @@ function Packages({
       <div className="relative">
         <div className="transition-all duration-1000">
           <div className="mx-auto max-w-2xl mb-12">
-            <AnimatedDepositSlider bookingDeposit={bookingDeposit} setBookingDeposit={setBookingDeposit} />
+            <AnimatedDepositSlider
+              bookingDeposit={bookingDeposit}
+              setBookingDeposit={setBookingDeposit}
+            />
           </div>
 
           {/* Premium Partition for Packages */}
           <div className="w-full flex flex-col items-center justify-center my-20">
             <div className="h-[1px] w-full max-w-md bg-gradient-to-r from-transparent via-white/20 to-transparent mb-10"></div>
             <div className="flex flex-col items-center text-center">
-              <span className="text-gold text-xs uppercase tracking-[0.3em] font-bold mb-3">Final Step</span>
-              <h4 className="font-serif text-3xl md:text-4xl text-ivory tracking-wide">Choose Your Experience</h4>
+              <span className="text-gold text-xs uppercase tracking-[0.3em] font-bold mb-3">
+                Final Step
+              </span>
+              <h4 className="font-serif text-3xl md:text-4xl text-ivory tracking-wide">
+                Choose Your Experience
+              </h4>
               <p className="text-white/50 text-sm mt-3 max-w-sm">
-                You have selected a deposit of <span className="text-gold font-bold">₹{bookingDeposit.toLocaleString()}</span>. Now pick your perfect match below.
+                You have selected a deposit of{" "}
+                <span className="text-gold font-bold">₹{bookingDeposit.toLocaleString()}</span>. Now
+                pick your perfect match below.
               </p>
             </div>
             <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-gold/50 to-transparent mt-10"></div>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {BRIDAL_PACKAGES.map((p, i) => (
-          <article
-            key={p.name}
-            className={`group relative flex flex-col overflow-hidden rounded-3xl border transition-all duration-500 hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] hover:-translate-y-1 min-h-[600px] ${
-              p.featured ? "border-gold/70 border-[2px]" : "border-white/30 hover:border-gold/50"
-            } ${
-              i % 3 === 0 ? "bg-gradient-to-b from-[#151515] to-black" :
-              i % 3 === 1 ? "bg-gradient-to-b from-[#1a1814] to-black" :
-              "bg-gradient-to-b from-[#10141a] to-black"
-            }`}
-          >
-            <div className="relative aspect-[4/5] overflow-hidden">
-              {p.featured && (
-                <div className="absolute right-4 top-4 z-10 rounded-full border border-gold/40 bg-black/70 px-4 py-1.5 text-[10px] uppercase tracking-[0.2em] text-gold backdrop-blur-md shadow-[0_0_15px_rgba(212,175,55,0.2)]">
-                  MOST POPULAR
-                </div>
-              )}
-              <img
-                src={p.img}
-                alt={p.name}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/40 to-transparent opacity-90" />
-            </div>
-            <div className="relative z-10 flex flex-1 flex-col p-8 pt-0 -mt-6 gap-2">
-              <h3 className="font-serif text-3xl text-gold drop-shadow-md">{p.name}</h3>
-              <p className="text-[13px] leading-relaxed text-[#f5f5f0]/90 font-medium tracking-wide">{p.desc}</p>
-              
-              <div className="flex flex-col border-t border-white/[0.08] pt-6 w-full mt-auto">
-                <div className="flex justify-between items-end mb-5">
-                  <div className="flex flex-col">
-                    <del className="text-[11px] text-[#f5f5f0]/40 mb-1 tracking-widest font-light">VALUE: ₹{(parseInt(p.price.replace(/\D/g, "")) + 10000).toLocaleString("en-IN")}</del>
-                    <div className="font-serif text-[32px] leading-none text-[#D4AF37]">{p.price}</div>
-                    {p.onward && (
-                      <div className="text-[10px] tracking-[0.24em] uppercase text-[#f5f5f0]/50 mt-1.5">
-                        {p.onward}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <AnimatePresence>
-                  {bookingDeposit > 0 && (
-                    <motion.div 
-                      initial={{ opacity: 0, height: 0 }} 
-                      animate={{ opacity: 1, height: "auto" }} 
-                      className="flex flex-col gap-2 p-4 rounded-xl bg-white/[0.02] border border-white/[0.08] mb-4 shadow-inner"
-                    >
-                      <div className="flex justify-between items-center text-xs text-[#f5f5f0]/70 font-medium">
-                        <span>Total Package Price</span>
-                        <span className="text-[#f5f5f0] font-bold">₹{parseInt(p.price.replace(/\D/g, "")).toLocaleString("en-IN")}</span>
-                      </div>
-                      <div className="flex justify-between items-center text-[11px] font-medium text-[#f5f5f0]/70">
-                        <span>Booking Deposit (Paying Now)</span>
-                        <span className="text-emerald-400 font-bold tracking-wide">- ₹{bookingDeposit.toLocaleString("en-IN")}</span>
-                      </div>
-                      <div className="h-px w-full border-t border-dashed border-white/15 my-2" />
-                      <div className="flex justify-between items-center text-base font-bold text-[#f5f5f0] tracking-wide">
-                        <span>Due at Venue</span>
-                        <span className="text-[#D4AF37]">₹{(parseInt(p.price.replace(/\D/g, "")) - bookingDeposit).toLocaleString("en-IN")}</span>
-                      </div>
-                    </motion.div>
+            {BRIDAL_PACKAGES.map((p, i) => (
+              <article
+                key={p.name}
+                className={`group relative flex flex-col overflow-hidden rounded-3xl border transition-all duration-500 hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] hover:-translate-y-1 min-h-[600px] ${
+                  p.featured
+                    ? "border-gold/70 border-[2px]"
+                    : "border-white/30 hover:border-gold/50"
+                } ${
+                  i % 3 === 0
+                    ? "bg-gradient-to-b from-[#151515] to-black"
+                    : i % 3 === 1
+                      ? "bg-gradient-to-b from-[#1a1814] to-black"
+                      : "bg-gradient-to-b from-[#10141a] to-black"
+                }`}
+              >
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  {p.featured && (
+                    <div className="absolute right-4 top-4 z-10 rounded-full border border-gold/40 bg-black/70 px-4 py-1.5 text-[10px] uppercase tracking-[0.2em] text-gold backdrop-blur-md shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                      MOST POPULAR
+                    </div>
                   )}
-                </AnimatePresence>
+                  <img
+                    src={p.img}
+                    alt={p.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/40 to-transparent opacity-90" />
+                </div>
+                <div className="relative z-10 flex flex-1 flex-col p-8 pt-0 -mt-6 gap-2">
+                  <h3 className="font-serif text-3xl text-gold drop-shadow-md">{p.name}</h3>
+                  <p className="text-[13px] leading-relaxed text-[#f5f5f0]/90 font-medium tracking-wide">
+                    {p.desc}
+                  </p>
 
-                <button
-                  disabled={isProcessing || bookingDeposit === 0}
-                  onClick={() => handlePayment(p.name)}
-                  className={`group flex w-full items-center justify-center gap-3 rounded-full border border-blue-500/30 py-3.5 transition-all duration-300 ${
-                    isProcessing || bookingDeposit === 0
-                      ? "bg-white/50 opacity-50 cursor-not-allowed"
-                      : "bg-white hover:bg-gray-50 hover:shadow-[0_0_25px_rgba(59,130,246,0.25)] cursor-pointer"
-                  }`}
-                >
-                  <span className="text-[11px] font-extrabold tracking-[0.15em] uppercase text-black mt-0.5">
-                    {bookingDeposit === 0 ? "Select Deposit Above" : "Secure My Date"}
-                  </span>
+                  <div className="flex flex-col border-t border-white/[0.08] pt-6 w-full mt-auto">
+                    <div className="flex justify-between items-end mb-5">
+                      <div className="flex flex-col">
+                        <del className="text-[11px] text-[#f5f5f0]/40 mb-1 tracking-widest font-light">
+                          VALUE: ₹
+                          {(parseInt(p.price.replace(/\D/g, "")) + 10000).toLocaleString("en-IN")}
+                        </del>
+                        <div className="font-serif text-[32px] leading-none text-[#D4AF37]">
+                          {p.price}
+                        </div>
+                        {p.onward && (
+                          <div className="text-[10px] tracking-[0.24em] uppercase text-[#f5f5f0]/50 mt-1.5">
+                            {p.onward}
+                          </div>
+                        )}
+                      </div>
+                    </div>
 
-                  <div className="flex items-center -space-x-1.5 opacity-100 transition-transform duration-300 group-hover:scale-110">
-                    {/* GPay */}
-                    <div className="w-[20px] h-[20px] rounded-full bg-white flex items-center justify-center relative z-[4] shadow-sm border border-gray-200 shrink-0">
-                      <svg viewBox="0 0 48 48" className="w-[10px] h-[10px]">
-                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.7 17.74 9.5 24 9.5z" />
-                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                    <AnimatePresence>
+                      {bookingDeposit > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          className="flex flex-col gap-2 p-4 rounded-xl bg-white/[0.02] border border-white/[0.08] mb-4 shadow-inner"
+                        >
+                          <div className="flex justify-between items-center text-xs text-[#f5f5f0]/70 font-medium">
+                            <span>Total Package Price</span>
+                            <span className="text-[#f5f5f0] font-bold">
+                              ₹{parseInt(p.price.replace(/\D/g, "")).toLocaleString("en-IN")}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center text-[11px] font-medium text-[#f5f5f0]/70">
+                            <span>Booking Deposit (Paying Now)</span>
+                            <span className="text-emerald-400 font-bold tracking-wide">
+                              - ₹{bookingDeposit.toLocaleString("en-IN")}
+                            </span>
+                          </div>
+                          <div className="h-px w-full border-t border-dashed border-white/15 my-2" />
+                          <div className="flex justify-between items-center text-base font-bold text-[#f5f5f0] tracking-wide">
+                            <span>Due at Venue</span>
+                            <span className="text-[#D4AF37]">
+                              ₹
+                              {(
+                                parseInt(p.price.replace(/\D/g, "")) - bookingDeposit
+                              ).toLocaleString("en-IN")}
+                            </span>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    <button
+                      disabled={isProcessing || bookingDeposit === 0}
+                      onClick={() => handlePayment(p.name)}
+                      className={`group flex w-full items-center justify-center gap-3 rounded-full border border-blue-500/30 py-3.5 transition-all duration-300 ${
+                        isProcessing || bookingDeposit === 0
+                          ? "bg-white/50 opacity-50 cursor-not-allowed"
+                          : "bg-white hover:bg-gray-50 hover:shadow-[0_0_25px_rgba(59,130,246,0.25)] cursor-pointer"
+                      }`}
+                    >
+                      <span className="text-[11px] font-extrabold tracking-[0.15em] uppercase text-black mt-0.5">
+                        {bookingDeposit === 0 ? "Select Deposit Above" : "Secure My Date"}
+                      </span>
+
+                      <div className="flex items-center -space-x-1.5 opacity-100 transition-transform duration-300 group-hover:scale-110">
+                        {/* GPay */}
+                        <div className="w-[20px] h-[20px] rounded-full bg-white flex items-center justify-center relative z-[4] shadow-sm border border-gray-200 shrink-0">
+                          <svg viewBox="0 0 48 48" className="w-[10px] h-[10px]">
+                            <path
+                              fill="#EA4335"
+                              d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.7 17.74 9.5 24 9.5z"
+                            />
+                            <path
+                              fill="#4285F4"
+                              d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                            />
+                            <path
+                              fill="#FBBC05"
+                              d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                            />
+                            <path
+                              fill="#34A853"
+                              d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                            />
+                          </svg>
+                        </div>
+                        {/* PhonePe */}
+                        <div className="w-[20px] h-[20px] rounded-full bg-[#5f259f] flex items-center justify-center relative z-[3] shadow-sm border border-gray-200 shrink-0">
+                          <span className="text-[7px] font-bold text-white tracking-tighter">
+                            पे
+                          </span>
+                        </div>
+                        {/* UPI */}
+                        <div className="w-[20px] h-[20px] rounded-full bg-white flex items-center justify-center relative z-[2] shadow-sm border border-gray-200 shrink-0">
+                          <span className="text-[6px] font-bold text-black tracking-tighter italic">
+                            UPI
+                          </span>
+                        </div>
+                        {/* Mastercard */}
+                        <div className="w-[20px] h-[20px] rounded-full bg-white flex items-center justify-center relative z-[1] shadow-sm border border-gray-200 shrink-0">
+                          <svg viewBox="0 0 24 24" className="w-[12px] h-[12px]">
+                            <circle cx="8" cy="12" r="6" fill="#EB001B" />
+                            <circle cx="16" cy="12" r="6" fill="#F79E1B" />
+                          </svg>
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* WhatsApp Inquire Button */}
+                    <a
+                      href={`https://wa.me/919572194458?text=${encodeURIComponent(`Hi Jawed Habib team! I am interested in booking the ${p.name}. Is it available?`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 group flex w-full items-center justify-center gap-2 rounded-full border border-[#25D366]/40 bg-[#25D366]/10 hover:bg-[#25D366]/20 hover:border-[#25D366]/80 py-3 transition-all duration-300 cursor-pointer shadow-[0_0_15px_rgba(37,211,102,0.1)] hover:shadow-[0_0_20px_rgba(37,211,102,0.2)]"
+                    >
+                      <svg
+                        className="w-4 h-4 text-[#25D366]"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M12.031 0C5.385 0 0 5.384 0 12.029c0 2.115.552 4.17 1.6 5.986L.027 24l6.155-1.55c1.765.98 3.75 1.5 5.845 1.5 6.645 0 12.028-5.385 12.028-12.03 0-6.645-5.384-12.029-12.024-12.02zm0 22.06c-1.802 0-3.565-.484-5.112-1.402l-.367-.217-3.799.957 1.01-3.69-.238-.378a10.134 10.134 0 0 1-1.558-5.302c0-5.611 4.562-10.17 10.168-10.17 5.606 0 10.166 4.56 10.166 10.17 0 5.611-4.56 10.171-10.17 10.171h-.1zm5.578-7.614c-.307-.153-1.812-.894-2.094-1-.283-.105-.489-.153-.695.153-.205.306-.79 1-.968 1.205-.178.204-.356.23-.663.076-1.748-.887-3.045-2.003-4.137-4.148-.225-.44 0-.422.302-.727.152-.152.306-.356.459-.535.152-.178.203-.306.305-.509.102-.204.051-.383-.025-.536-.076-.153-.695-1.677-.951-2.296-.252-.601-.509-.52-.695-.53-.178-.01-.383-.01-.588-.01-.205 0-.537.076-.819.382-.283.306-1.077 1.053-1.077 2.569 0 1.516 1.1 2.981 1.254 3.185.154.204 2.168 3.327 5.253 4.654 2.181.939 2.981 1.01 4.149.882 1.341-.148 3.109-1.272 3.543-2.502.433-1.23.433-2.285.304-2.502-.128-.217-.486-.345-.792-.498z" />
                       </svg>
-                    </div>
-                    {/* PhonePe */}
-                    <div className="w-[20px] h-[20px] rounded-full bg-[#5f259f] flex items-center justify-center relative z-[3] shadow-sm border border-gray-200 shrink-0">
-                      <span className="text-[7px] font-bold text-white tracking-tighter">पे</span>
-                    </div>
-                    {/* UPI */}
-                    <div className="w-[20px] h-[20px] rounded-full bg-white flex items-center justify-center relative z-[2] shadow-sm border border-gray-200 shrink-0">
-                      <span className="text-[6px] font-bold text-black tracking-tighter italic">UPI</span>
-                    </div>
-                    {/* Mastercard */}
-                    <div className="w-[20px] h-[20px] rounded-full bg-white flex items-center justify-center relative z-[1] shadow-sm border border-gray-200 shrink-0">
-                      <svg viewBox="0 0 24 24" className="w-[12px] h-[12px]">
-                        <circle cx="8" cy="12" r="6" fill="#EB001B" />
-                        <circle cx="16" cy="12" r="6" fill="#F79E1B" />
-                      </svg>
-                    </div>
+                      <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#f5f5f0]">
+                        Inquire on WhatsApp
+                      </span>
+                    </a>
                   </div>
-                </button>
-
-                {/* WhatsApp Inquire Button */}
-                <a
-                  href={`https://wa.me/919572194458?text=${encodeURIComponent(`Hi Jawed Habib team! I am interested in booking the ${p.name}. Is it available?`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 group flex w-full items-center justify-center gap-2 rounded-full border border-[#25D366]/40 bg-[#25D366]/10 hover:bg-[#25D366]/20 hover:border-[#25D366]/80 py-3 transition-all duration-300 cursor-pointer shadow-[0_0_15px_rgba(37,211,102,0.1)] hover:shadow-[0_0_20px_rgba(37,211,102,0.2)]"
-                >
-                  <svg className="w-4 h-4 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12.031 0C5.385 0 0 5.384 0 12.029c0 2.115.552 4.17 1.6 5.986L.027 24l6.155-1.55c1.765.98 3.75 1.5 5.845 1.5 6.645 0 12.028-5.385 12.028-12.03 0-6.645-5.384-12.029-12.024-12.02zm0 22.06c-1.802 0-3.565-.484-5.112-1.402l-.367-.217-3.799.957 1.01-3.69-.238-.378a10.134 10.134 0 0 1-1.558-5.302c0-5.611 4.562-10.17 10.168-10.17 5.606 0 10.166 4.56 10.166 10.17 0 5.611-4.56 10.171-10.17 10.171h-.1zm5.578-7.614c-.307-.153-1.812-.894-2.094-1-.283-.105-.489-.153-.695.153-.205.306-.79 1-.968 1.205-.178.204-.356.23-.663.076-1.748-.887-3.045-2.003-4.137-4.148-.225-.44 0-.422.302-.727.152-.152.306-.356.459-.535.152-.178.203-.306.305-.509.102-.204.051-.383-.025-.536-.076-.153-.695-1.677-.951-2.296-.252-.601-.509-.52-.695-.53-.178-.01-.383-.01-.588-.01-.205 0-.537.076-.819.382-.283.306-1.077 1.053-1.077 2.569 0 1.516 1.1 2.981 1.254 3.185.154.204 2.168 3.327 5.253 4.654 2.181.939 2.981 1.01 4.149.882 1.341-.148 3.109-1.272 3.543-2.502.433-1.23.433-2.285.304-2.502-.128-.217-.486-.345-.792-.498z"/>
-                  </svg>
-                  <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#f5f5f0]">
-                    Inquire on WhatsApp
-                  </span>
-                </a>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-      </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
     </Section>
   );
@@ -2736,9 +2835,15 @@ function Brands() {
 
 function Process() {
   const processSteps = [
-    { t: "Consultation", d: "A detailed discussion over WhatsApp or Phone about your vision and styling preferences." },
+    {
+      t: "Consultation",
+      d: "A detailed discussion over WhatsApp or Phone about your vision and styling preferences.",
+    },
     { t: "Choose Package", d: "Select your signature bridal makeup and styling look." },
-    { t: "Booking Deposit", d: "Choose a non-refundable deposit between ₹1,500 and ₹2,500 to confirm the date exclusively for you." },
+    {
+      t: "Booking Deposit",
+      d: "Choose a non-refundable deposit between ₹1,500 and ₹2,500 to confirm the date exclusively for you.",
+    },
     {
       t: "The Big Day",
       d: "Undivided attention from your artist, trial, and draping rehearsals.",
@@ -2885,7 +2990,8 @@ function FAQ() {
             transition={{ delay: 0.1 }}
             className="mb-6 font-serif text-4xl text-ivory md:text-5xl lg:text-6xl lg:leading-[1.1]"
           >
-            Frequently <br className="hidden lg:block" /> Asked <br className="hidden lg:block" /> Questions.
+            Frequently <br className="hidden lg:block" /> Asked <br className="hidden lg:block" />{" "}
+            Questions.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -2894,7 +3000,8 @@ function FAQ() {
             transition={{ delay: 0.2 }}
             className="mb-8 text-white/60 text-lg leading-relaxed max-w-md"
           >
-            Everything you need to know before you make the booking amount in your selected package type.
+            Everything you need to know before you make the booking amount in your selected package
+            type.
           </motion.p>
         </div>
 
@@ -2903,19 +3010,21 @@ function FAQ() {
           {faqs.map((f, i) => {
             const active = open === i;
             return (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                key={i} 
+                key={i}
                 className={`rounded-2xl border transition-all duration-300 ${active ? "border-gold/30 bg-gold/5 shadow-[0_4px_30px_rgba(212,175,55,0.05)]" : "border-white/10 bg-black/40 hover:border-white/20 hover:bg-white/5"} backdrop-blur-md overflow-hidden`}
               >
                 <button
                   onClick={() => setOpen(active ? null : i)}
                   className="flex w-full items-center justify-between gap-6 p-6 md:p-8 text-left"
                 >
-                  <span className={`font-serif text-xl md:text-2xl transition-colors ${active ? "text-gold" : "text-ivory"}`}>
+                  <span
+                    className={`font-serif text-xl md:text-2xl transition-colors ${active ? "text-gold" : "text-ivory"}`}
+                  >
                     {f.q}
                   </span>
                   <span
@@ -2934,9 +3043,7 @@ function FAQ() {
                     >
                       <div className="px-6 pb-8 md:px-8 pt-0">
                         <div className="h-px w-full bg-white/10 mb-6" />
-                        <p className="text-base md:text-lg leading-relaxed text-white/70">
-                          {f.a}
-                        </p>
+                        <p className="text-base md:text-lg leading-relaxed text-white/70">{f.a}</p>
                       </div>
                     </motion.div>
                   )}
@@ -3008,13 +3115,18 @@ function MapSection() {
 
 function ReserveCTA() {
   return (
-    <section id="reserve" className="w-full bg-[#f7f4ec] py-24 px-4 md:px-6 relative z-10 border-t border-b border-black/[0.03]">
+    <section
+      id="reserve"
+      className="w-full bg-[#f7f4ec] py-24 px-4 md:px-6 relative z-10 border-t border-b border-black/[0.03]"
+    >
       <div className="mx-auto max-w-5xl rounded-[2.5rem] border border-[#0a0a0a]/5 bg-white/40 p-8 md:p-16 lg:p-20 shadow-sm flex flex-col items-center text-center relative overflow-hidden">
         {/* Subtle background glow element */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 blur-[100px] rounded-full pointer-events-none -mr-20 -mt-20" />
-        
-        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold mb-6 relative z-10">SECURE YOUR SPOT</span>
-        
+
+        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold mb-6 relative z-10">
+          SECURE YOUR SPOT
+        </span>
+
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -3022,31 +3134,37 @@ function ReserveCTA() {
           transition={{ duration: 0.8 }}
           className="font-serif text-4xl md:text-6xl lg:text-[4.5rem] tracking-tight leading-[1.05] text-[#0a0a0a] mb-8 relative z-10"
         >
-          The spotlight, <br className="md:hidden"/> <span className="italic text-gold">exclusively yours.</span>
+          The spotlight, <br className="md:hidden" />{" "}
+          <span className="italic text-gold">exclusively yours.</span>
         </motion.h2>
 
         <p className="text-sm md:text-base leading-relaxed text-black/60 font-light max-w-xl mb-12 relative z-10">
-          We strictly limit our daily bridal appointments to ensure absolute, uncompromising attention to detail. A fully adjustable booking amount of <span className="text-[#0a0a0a] font-medium border-b border-gold/30 pb-0.5">₹1,500 - ₹2,500</span> locks in your date and artists.
+          We strictly limit our daily bridal appointments to ensure absolute, uncompromising
+          attention to detail. A fully adjustable booking amount of{" "}
+          <span className="text-[#0a0a0a] font-medium border-b border-gold/30 pb-0.5">
+            ₹1,500 - ₹2,500
+          </span>{" "}
+          locks in your date and artists.
         </p>
 
         <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 w-full relative z-10">
-          <a 
+          <a
             href={WHATSAPP}
             className="w-full sm:w-auto flex items-center justify-center gap-4 rounded-full bg-[#0a0a0a] px-10 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#f5f5f0] hover:bg-gold hover:text-[#0a0a0a] transition-all hover:-translate-y-1 shadow-[0_10px_20px_rgba(0,0,0,0.1)] group"
           >
             <span>Book Now</span>
             <span className="transition-transform group-hover:translate-x-1">→</span>
           </a>
-          
-          <a 
-            href="tel:+919572194458" 
+
+          <a
+            href="tel:+919572194458"
             className="w-full sm:w-auto flex items-center justify-center rounded-full bg-white border border-[#0a0a0a]/10 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-[#0a0a0a] hover:border-gold hover:text-gold transition-all hover:-translate-y-1 shadow-sm"
           >
             Call Studio
           </a>
-          
-          <a 
-            href="#packages" 
+
+          <a
+            href="#packages"
             className="w-full sm:w-auto flex items-center justify-center rounded-full bg-white border border-[#0a0a0a]/10 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-[#0a0a0a] hover:border-gold hover:text-gold transition-all hover:-translate-y-1 shadow-sm"
           >
             View Packages
@@ -3059,64 +3177,93 @@ function ReserveCTA() {
 
 function Footer() {
   return (
-    <footer id="contact" className="relative z-10 bg-[#0a0a0a] text-[#f5f5f0] overflow-hidden pt-24 pb-8 mt-4 md:mx-4 md:mb-4 md:rounded-[3rem] shadow-2xl">
+    <footer
+      id="contact"
+      className="relative z-10 bg-[#0a0a0a] text-[#f5f5f0] overflow-hidden pt-24 pb-8 mt-4 md:mx-4 md:mb-4 md:rounded-[3rem] shadow-2xl"
+    >
       <div className="mx-auto max-w-7xl px-6 md:px-12 relative z-10">
-        
         {/* Top Section: Brand and Newsletter */}
         <div className="flex flex-col lg:flex-row justify-between items-start gap-16 mb-24 border-b border-[#f5f5f0]/10 pb-20">
-          
           <div className="w-full lg:w-1/2">
-            <img src={logoImg} alt="Jawed Habib Logo" className="h-16 w-auto object-contain mb-8 filter brightness-0 invert opacity-90" />
+            <img
+              src={logoImg}
+              alt="Jawed Habib Logo"
+              className="h-16 w-auto object-contain mb-8 filter brightness-0 invert opacity-90"
+            />
             <h2 className="font-serif text-3xl md:text-5xl lg:text-[3.5rem] tracking-tight leading-[1.1] mb-6">
-              Flawless artistry for <br className="hidden md:block"/> the modern bride.
+              Flawless artistry for <br className="hidden md:block" /> the modern bride.
             </h2>
             <p className="text-[#f5f5f0]/50 max-w-sm text-sm leading-relaxed font-light">
-              Patna's premier luxury salon. Specializing in bespoke bridal transformations, global hair styling, and clinical aesthetics.
+              Patna's premier luxury salon. Specializing in bespoke bridal transformations, global
+              hair styling, and clinical aesthetics.
             </p>
           </div>
 
           <div className="w-full lg:w-1/2 lg:pl-16">
-            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold block mb-6">OUR BRIDAL PROMISE</span>
+            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gold block mb-6">
+              OUR BRIDAL PROMISE
+            </span>
             <p className="text-[#f5f5f0]/60 text-sm md:text-base leading-relaxed font-light mb-10 max-w-md">
-              Your wedding day is the most photographed day of your life. We promise uncompromising artistry, premium products, and a flawless look that stays perfect from the first look to the final dance.
+              Your wedding day is the most photographed day of your life. We promise uncompromising
+              artistry, premium products, and a flawless look that stays perfect from the first look
+              to the final dance.
             </p>
-            
+
             <div className="border-t border-[#f5f5f0]/10 pt-10 mt-8 flex items-center justify-between gap-6">
-               <div className="flex flex-col">
-                  <span className="font-serif text-4xl md:text-5xl italic text-[#f5f5f0] mb-2 font-light tracking-wide">
-                    Exclusive Artistry
-                  </span>
-                  <span className="text-[10px] tracking-[0.3em] uppercase text-gold font-bold">Kurji, Patna</span>
-               </div>
-               
-               <div className="relative w-24 h-24 flex shrink-0 items-center justify-center group cursor-pointer">
-                 {/* Spinning Text SVG */}
-                 <svg className="absolute w-full h-full animate-[spin_8s_linear_infinite]" viewBox="0 0 100 100">
-                   <path id="textPath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
-                   <text className="text-[10.5px] font-bold tracking-[0.2em] uppercase fill-[#f5f5f0]/50 group-hover:fill-gold transition-colors duration-500">
-                     <textPath href="#textPath" startOffset="0%">
-                       • EXCLUSIVE BRIDAL ARTISTRY 
-                     </textPath>
-                   </text>
-                 </svg>
-                 
-                 {/* Center Icon */}
-                 <div className="w-12 h-12 rounded-full bg-[#f5f5f0]/5 flex items-center justify-center border border-[#f5f5f0]/10 group-hover:bg-gold/10 group-hover:border-gold/30 transition-colors duration-500">
-                   <svg className="w-5 h-5 text-gold group-hover:scale-110 transition-transform duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
-                   </svg>
-                 </div>
-               </div>
+              <div className="flex flex-col">
+                <span className="font-serif text-4xl md:text-5xl italic text-[#f5f5f0] mb-2 font-light tracking-wide">
+                  Exclusive Artistry
+                </span>
+                <span className="text-[10px] tracking-[0.3em] uppercase text-gold font-bold">
+                  Kurji, Patna
+                </span>
+              </div>
+
+              <div className="relative w-24 h-24 flex shrink-0 items-center justify-center group cursor-pointer">
+                {/* Spinning Text SVG */}
+                <svg
+                  className="absolute w-full h-full animate-[spin_8s_linear_infinite]"
+                  viewBox="0 0 100 100"
+                >
+                  <path
+                    id="textPath"
+                    d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"
+                    fill="transparent"
+                  />
+                  <text className="text-[10.5px] font-bold tracking-[0.2em] uppercase fill-[#f5f5f0]/50 group-hover:fill-gold transition-colors duration-500">
+                    <textPath href="#textPath" startOffset="0%">
+                      • EXCLUSIVE BRIDAL ARTISTRY
+                    </textPath>
+                  </text>
+                </svg>
+
+                {/* Center Icon */}
+                <div className="w-12 h-12 rounded-full bg-[#f5f5f0]/5 flex items-center justify-center border border-[#f5f5f0]/10 group-hover:bg-gold/10 group-hover:border-gold/30 transition-colors duration-500">
+                  <svg
+                    className="w-5 h-5 text-gold group-hover:scale-110 transition-transform duration-500"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"
+                    />
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
-
         </div>
 
         {/* Links Grid */}
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 mb-24">
-          
           <div className="space-y-4 md:space-y-6">
-            <h4 className="font-serif text-2xl md:text-3xl text-gold/90 tracking-wide">Visit Studio</h4>
+            <h4 className="font-serif text-2xl md:text-3xl text-gold/90 tracking-wide">
+              Visit Studio
+            </h4>
             <div className="text-sm text-[#f5f5f0]/50 leading-relaxed font-light space-y-1">
               <p>Ward 22B, Circle 247B</p>
               <p>Holding 817A/2, Patliputra Kurji Rd</p>
@@ -3126,11 +3273,22 @@ function Footer() {
           </div>
 
           <div className="space-y-4 md:space-y-6">
-            <h4 className="font-serif text-2xl md:text-3xl text-gold/90 tracking-wide">Say Hello</h4>
+            <h4 className="font-serif text-2xl md:text-3xl text-gold/90 tracking-wide">
+              Say Hello
+            </h4>
             <div className="flex flex-col gap-3 text-sm font-light text-[#f5f5f0]/50">
-              <a href="tel:+919572194458" className="hover:text-gold transition-colors w-fit">+91 95721 94458</a>
-              <a href="tel:+919234444558" className="hover:text-gold transition-colors w-fit">+91 92344 44558</a>
-              <a href="mailto:contact@jawedhabibkurji.com" className="hover:text-gold transition-colors w-fit">hello@jawedhabibkurji.com</a>
+              <a href="tel:+919572194458" className="hover:text-gold transition-colors w-fit">
+                +91 95721 94458
+              </a>
+              <a href="tel:+919234444558" className="hover:text-gold transition-colors w-fit">
+                +91 92344 44558
+              </a>
+              <a
+                href="mailto:contact@jawedhabibkurji.com"
+                className="hover:text-gold transition-colors w-fit"
+              >
+                hello@jawedhabibkurji.com
+              </a>
             </div>
           </div>
 
@@ -3141,26 +3299,34 @@ function Footer() {
                 <span>Mon - Sun</span>
                 <span className="text-[#f5f5f0]">10:00 AM - 8:30 PM</span>
               </p>
-              <p className="pt-1 italic text-xs">Available for early bridal bookings upon request.</p>
+              <p className="pt-1 italic text-xs">
+                Available for early bridal bookings upon request.
+              </p>
             </div>
           </div>
 
           <div className="space-y-4 md:space-y-6">
             <h4 className="font-serif text-2xl md:text-3xl text-gold/90 tracking-wide">Connect</h4>
-            <a href="https://www.instagram.com/jawedhabib_kurji_patna/" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 text-sm font-light text-[#f5f5f0]/50 hover:text-gold transition-colors w-fit">
+            <a
+              href="https://www.instagram.com/jawedhabib_kurji_patna/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 text-sm font-light text-[#f5f5f0]/50 hover:text-gold transition-colors w-fit"
+            >
               <div className="w-10 h-10 rounded-full border border-[#f5f5f0]/10 flex items-center justify-center group-hover:border-gold/30 transition-colors">
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                </svg>
               </div>
               <span className="group-hover:translate-x-1 transition-transform">Instagram</span>
             </a>
           </div>
-
         </div>
 
         {/* Footer Bottom */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-[#f5f5f0]/10 text-[10px] uppercase tracking-[0.2em] text-[#f5f5f0]/30 font-bold gap-6">
           <p>© {new Date().getFullYear()} JAWED HABIB KURJI.</p>
-          
+
           <div className="flex items-center">
             <span className="text-[#f5f5f0]/30 lowercase tracking-[0.2em] font-light flex items-center">
               Built with <span className="text-gold mx-1.5 text-xs">♥</span> by
@@ -3168,34 +3334,40 @@ function Footer() {
             <span className="font-serif tracking-wide text-[#f5f5f0] italic capitalize text-sm ml-2 mr-4">
               Faisal
             </span>
-            
+
             <div className="flex items-center gap-3 border-l border-[#f5f5f0]/20 pl-4">
-              <a 
-                href="https://github.com/f8sxl" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://github.com/f8sxl"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-[#f5f5f0]/40 hover:text-gold transition-all hover:-translate-y-0.5 duration-300"
                 aria-label="GitHub"
               >
-                <svg className="h-[15px] w-[15px] fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <svg className="h-[15px] w-[15px] fill-current" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
               </a>
-              <a 
-                href="https://www.linkedin.com/in/faisal-undefined-0a8135420" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://www.linkedin.com/in/faisal-undefined-0a8135420"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-[#f5f5f0]/40 hover:text-gold transition-all hover:-translate-y-0.5 duration-300"
                 aria-label="LinkedIn"
               >
-                <svg className="h-[15px] w-[15px] fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                <svg className="h-[15px] w-[15px] fill-current" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                </svg>
               </a>
-              <a 
-                href="https://x.com/faisalarete" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://x.com/faisalarete"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-[#f5f5f0]/40 hover:text-gold transition-all hover:-translate-y-0.5 duration-300"
                 aria-label="X (Twitter)"
               >
-                <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
               </a>
             </div>
           </div>

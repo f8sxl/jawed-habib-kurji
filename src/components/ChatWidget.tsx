@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { MessageCircle, X, ChevronRight, CheckCircle2, Phone, MessageSquare, ChevronDown } from "lucide-react";
+import {
+  MessageCircle,
+  X,
+  ChevronRight,
+  CheckCircle2,
+  Phone,
+  MessageSquare,
+  ChevronDown,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logoImg from "@/assets/logo/jh_logo_new.png";
 
@@ -20,7 +28,9 @@ const PREFILLED_QUESTIONS = [
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState<"menu" | "answer" | "consultMethod" | "phone" | "success">("menu");
+  const [step, setStep] = useState<"menu" | "answer" | "consultMethod" | "phone" | "success">(
+    "menu",
+  );
   const [selectedQ, setSelectedQ] = useState<{ q: string; a: string } | null>(null);
   const [preference, setPreference] = useState<"call" | "whatsapp" | null>(null);
   const [phone, setPhone] = useState("");
@@ -43,23 +53,23 @@ export function ChatWidget() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone || phone.length < 10) return;
-    
+
     setIsSubmitting(true);
     try {
       await fetch("/api/chat-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          phone, 
+        body: JSON.stringify({
+          phone,
           question: selectedQ?.q || "General Inquiry",
-          preference 
+          preference,
         }),
       });
       setStep("success");
     } catch (err) {
       console.error(err);
       // Fail gracefully
-      setStep("success"); 
+      setStep("success");
     } finally {
       setIsSubmitting(false);
     }
@@ -89,18 +99,21 @@ export function ChatWidget() {
           >
             {/* White Bubble with Green Drop Shadow matching image */}
             <div className="relative z-10 overflow-hidden rounded-3xl bg-white shadow-[6px_6px_0px_#25D366] border border-gray-100">
-              
               {/* Header */}
               <div className="bg-white p-5 pb-3 flex flex-col relative">
-                <button 
-                  onClick={handleClose} 
+                <button
+                  onClick={handleClose}
                   className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors p-1 rounded-full hover:bg-gray-100"
                 >
                   <X className="h-5 w-5" />
                 </button>
                 <div className="flex items-center gap-4 mb-2">
                   <div className="h-14 w-14 overflow-hidden rounded-full border border-gray-200 bg-white p-1">
-                    <img src={logoImg} alt="JH" className="h-full w-full object-contain filter invert" />
+                    <img
+                      src={logoImg}
+                      alt="JH"
+                      className="h-full w-full object-contain filter invert"
+                    />
                   </div>
                 </div>
                 <h3 className="font-bold text-gray-900 text-xl tracking-tight">Chat with Us</h3>
@@ -108,7 +121,6 @@ export function ChatWidget() {
 
               {/* Body */}
               <div className="px-5 pb-4 h-[340px] bg-white overflow-y-auto flex flex-col gap-4 relative scrollbar-hide">
-                
                 {/* Menu Step */}
                 {step === "menu" && (
                   <div className="flex flex-col gap-3">
@@ -136,7 +148,7 @@ export function ChatWidget() {
                     <div className="bg-[#25D366] text-white p-3 px-4 rounded-2xl rounded-tr-sm text-sm self-end max-w-[85%] shadow-sm">
                       {selectedQ.q}
                     </div>
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="bg-gray-50 p-3 px-4 rounded-2xl rounded-tl-sm text-sm text-gray-800 self-start max-w-[90%]"
@@ -148,7 +160,7 @@ export function ChatWidget() {
 
                 {/* Consult Method Step */}
                 {["consultMethod", "phone"].includes(step) && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="flex flex-col gap-2 mt-1 w-full"
@@ -158,13 +170,13 @@ export function ChatWidget() {
                     </div>
                     {step === "consultMethod" && (
                       <div className="flex gap-2 w-full mt-2">
-                        <button 
+                        <button
                           onClick={() => handlePreferenceClick("call")}
                           className="flex-1 bg-black text-white py-2.5 rounded-xl text-sm font-medium hover:bg-gray-800 transition flex items-center justify-center gap-2"
                         >
                           <Phone className="h-4 w-4" /> Call Me
                         </button>
-                        <button 
+                        <button
                           onClick={() => handlePreferenceClick("whatsapp")}
                           className="flex-1 bg-[#25D366] text-white py-2.5 rounded-xl text-sm font-medium hover:bg-[#20b858] transition flex items-center justify-center gap-2"
                         >
@@ -177,7 +189,7 @@ export function ChatWidget() {
 
                 {/* Phone Step */}
                 {step === "phone" && preference && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="w-full mt-2"
@@ -210,7 +222,7 @@ export function ChatWidget() {
 
                 {/* Success Step */}
                 {step === "success" && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="flex flex-col items-center justify-center h-full text-center px-4 mt-6"
@@ -220,13 +232,13 @@ export function ChatWidget() {
                     </div>
                     <h4 className="font-bold text-gray-900 mb-2 text-lg">Request Received!</h4>
                     <p className="text-sm text-gray-500">
-                      Thank you. Our bridal specialist has been notified and will {preference === "call" ? "call you" : "message you on WhatsApp"} shortly.
+                      Thank you. Our bridal specialist has been notified and will{" "}
+                      {preference === "call" ? "call you" : "message you on WhatsApp"} shortly.
                     </p>
                   </motion.div>
                 )}
-
               </div>
-              
+
               {/* Footer */}
               <div className="bg-white pb-3 pt-1 text-center flex justify-center">
                 <span className="text-[11px] text-gray-400 font-medium tracking-wide flex items-center gap-1.5">
@@ -247,7 +259,6 @@ export function ChatWidget() {
                 <path d="M24 0L0 0L24 24V0Z" />
               </svg>
             </div>
-
           </motion.div>
         )}
       </AnimatePresence>

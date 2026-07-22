@@ -9,12 +9,13 @@ export function AnimatedDepositSlider({
 }) {
   return (
     <div className="w-full relative mt-16 pt-16 border-t border-white/10">
-      
       {/* Top Section with Design Element */}
       <div className="flex flex-col items-center justify-center text-center mb-10">
         <div className="flex items-center justify-center gap-4 mb-4">
           <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-gold/60" />
-          <h4 className="font-serif text-3xl md:text-4xl text-ivory tracking-wide">Select Deposit</h4>
+          <h4 className="font-serif text-3xl md:text-4xl text-ivory tracking-wide">
+            Select Deposit
+          </h4>
           <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-gold/60" />
         </div>
         <p className="text-sm md:text-base text-white/50 max-w-xs md:max-w-none">
@@ -24,7 +25,6 @@ export function AnimatedDepositSlider({
 
       {/* Combined Unified Deposit Card */}
       <div className="relative max-w-md mx-auto flex flex-col px-6 py-8 md:px-8 md:py-10 rounded-[28px] border border-black/5 bg-white shadow-2xl overflow-hidden">
-        
         {/* Glow effect */}
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05)_0%,transparent_70%)] opacity-50 pointer-events-none" />
 
@@ -33,7 +33,7 @@ export function AnimatedDepositSlider({
           <span className="text-[10px] uppercase tracking-[0.3em] text-black/40 mb-2 font-bold text-center">
             Initial Deposit
           </span>
-          <motion.div 
+          <motion.div
             key={bookingDeposit}
             initial={{ scale: 1.1, opacity: 0.8 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -47,8 +47,10 @@ export function AnimatedDepositSlider({
         {/* Horizontal Slider Wrapper */}
         <div className="relative w-full max-w-[200px] md:max-w-[280px] mx-auto shrink-0 z-10 flex items-center justify-center mt-2 mb-10">
           {/* Left Label */}
-          <span className="absolute -left-12 md:-left-16 top-1/2 -translate-y-1/2 text-[10px] text-black/40 font-bold tracking-widest">₹1,500</span>
-          
+          <span className="absolute -left-12 md:-left-16 top-1/2 -translate-y-1/2 text-[10px] text-black/40 font-bold tracking-widest">
+            ₹1,500
+          </span>
+
           <input
             type="range"
             min="1500"
@@ -57,15 +59,19 @@ export function AnimatedDepositSlider({
             value={bookingDeposit}
             onChange={(e) => setBookingDeposit(parseInt(e.target.value))}
             className="w-full h-3 bg-gray-100 rounded-full appearance-none outline-none border border-black/5 shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)] cursor-pointer"
-            style={{ 
-              background: `linear-gradient(to right, #D4AF37 0%, #D4AF37 ${((bookingDeposit - 1500) / 1000) * 100}%, rgba(0,0,0,0.05) ${((bookingDeposit - 1500) / 1000) * 100}%, rgba(0,0,0,0.05) 100%)`
+            style={{
+              background: `linear-gradient(to right, #D4AF37 0%, #D4AF37 ${((bookingDeposit - 1500) / 1000) * 100}%, rgba(0,0,0,0.05) ${((bookingDeposit - 1500) / 1000) * 100}%, rgba(0,0,0,0.05) 100%)`,
             }}
           />
-          
-          {/* Right Label */}
-          <span className="absolute -right-12 md:-right-16 top-1/2 -translate-y-1/2 text-[10px] text-black/40 font-bold tracking-widest">₹2,500</span>
 
-          <style dangerouslySetInnerHTML={{__html: `
+          {/* Right Label */}
+          <span className="absolute -right-12 md:-right-16 top-1/2 -translate-y-1/2 text-[10px] text-black/40 font-bold tracking-widest">
+            ₹2,500
+          </span>
+
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
             input[type=range]::-webkit-slider-thumb {
               -webkit-appearance: none;
               height: 28px;
@@ -86,7 +92,9 @@ export function AnimatedDepositSlider({
               transform: scale(0.95);
               box-shadow: 0 2px 8px rgba(212, 175, 55, 0.8);
             }
-          `}} />
+          `,
+            }}
+          />
         </div>
 
         {/* Divider inside the combined card */}
@@ -102,15 +110,23 @@ export function AnimatedDepositSlider({
                   Limited Offer
                 </span>
               </div>
-              
+
               {/* Animated Clickable Razorpay Pill Button */}
-              <button 
+              <button
                 type="button"
-                onClick={() => document.getElementById("packages")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                onClick={() =>
+                  document
+                    .getElementById("packages")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
                 className="relative flex w-fit items-center justify-center gap-2 rounded-full px-3 py-1.5 shadow-[0_0_15px_rgba(59,130,246,0.2)] overflow-hidden border border-blue-300/60 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:-translate-y-0.5 transition-all cursor-pointer group"
-                style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)' }}
+                style={{
+                  background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)",
+                }}
               >
-                <style dangerouslySetInnerHTML={{__html: `
+                <style
+                  dangerouslySetInnerHTML={{
+                    __html: `
                   @keyframes shimmerSweep {
                     0% { background-position: 200% 0; }
                     100% { background-position: -200% 0; }
@@ -118,29 +134,34 @@ export function AnimatedDepositSlider({
                   .animate-shimmer {
                     animation: shimmerSweep 3s infinite linear;
                   }
-                `}} />
-                <div 
-                  className="absolute inset-0 pointer-events-none animate-shimmer" 
-                  style={{ 
-                    background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.7) 45%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.7) 55%, transparent 70%)', 
-                    backgroundSize: '200% 100%' 
-                  }} 
+                `,
+                  }}
                 />
-                
+                <div
+                  className="absolute inset-0 pointer-events-none animate-shimmer"
+                  style={{
+                    background:
+                      "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.7) 45%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.7) 55%, transparent 70%)",
+                    backgroundSize: "200% 100%",
+                  }}
+                />
+
                 <div className="relative z-10 flex items-center gap-1.5">
                   <span className="text-[#0c2e60] text-[9px] md:text-[10px] font-extrabold tracking-[0.15em] uppercase whitespace-nowrap">
                     Save ₹199 via
                   </span>
-                  <img 
-                    src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" 
-                    alt="Razorpay" 
-                    className="h-[9px] md:h-[10px] object-contain translate-y-[0.5px]" 
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg"
+                    alt="Razorpay"
+                    className="h-[9px] md:h-[10px] object-contain translate-y-[0.5px]"
                   />
                 </div>
               </button>
             </div>
-            
-            <span className="text-[#D4AF37] text-xs font-bold tracking-wide mt-1">Selected: ₹{bookingDeposit.toLocaleString()}</span>
+
+            <span className="text-[#D4AF37] text-xs font-bold tracking-wide mt-1">
+              Selected: ₹{bookingDeposit.toLocaleString()}
+            </span>
           </div>
         </div>
       </div>

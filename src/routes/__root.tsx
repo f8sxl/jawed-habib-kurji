@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 import appCss from "../styles.css?url";
 import { reportError } from "../lib/error-reporting";
@@ -112,13 +113,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         property: "og:image",
-        content:
-          "/og-image.png",
+        content: "/og-image.png",
       },
       {
         name: "twitter:image",
-        content:
-          "/og-image.png",
+        content: "/og-image.png",
       },
     ],
     links: [
@@ -178,10 +177,7 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <meta
-          name="facebook-domain-verification"
-          content="5f6f7w6rgjy79tcpv4o94sdvoebetk"
-        />
+        <meta name="facebook-domain-verification" content="5f6f7w6rgjy79tcpv4o94sdvoebetk" />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();`,
@@ -267,7 +263,7 @@ function InAppBrowserBanner() {
       // iOS: Try to break out to Safari automatically
       if (/iPhone|iPad|iPod/i.test(ua)) {
         window.location.href = `x-safari-https://${cleanUrl}`;
-        
+
         // Show popup because iOS heavily restricts automatic breakouts
         setTimeout(() => {
           setShow(true);
@@ -323,8 +319,17 @@ function InAppBrowserBanner() {
         >
           Open in Browser
         </div>
-        <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", lineHeight: 1.5, marginBottom: "20px" }}>
-          For the best experience, please tap the <strong>three dots (⋮)</strong> in the top right corner and select <strong>"Open in Browser"</strong> or <strong>"Open in Chrome/Safari"</strong>.
+        <div
+          style={{
+            color: "rgba(255,255,255,0.8)",
+            fontSize: "14px",
+            lineHeight: 1.5,
+            marginBottom: "20px",
+          }}
+        >
+          For the best experience, please tap the <strong>three dots (⋮)</strong> in the top right
+          corner and select <strong>"Open in Browser"</strong> or{" "}
+          <strong>"Open in Chrome/Safari"</strong>.
         </div>
         <button
           onClick={() => setShow(false)}
@@ -364,6 +369,7 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <InAppBrowserBanner />
+      <Analytics />
     </QueryClientProvider>
   );
 }
