@@ -1059,16 +1059,16 @@ function Hero() {
       className="relative min-h-[100svh] w-full overflow-hidden lg:h-[100svh] lg:min-h-[720px]"
     >
       <motion.div style={{ y, scale }} className="absolute inset-0 overflow-hidden">
-        {/* Render the lightweight poster immediately while the video is buffering. */}
+        {/* High-res crisp poster rendered immediately so hero background loads instantly without delay */}
         <img
           src={heroBg}
           alt=""
           aria-hidden="true"
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover blur-[3px] scale-105"
+          className="absolute inset-0 h-full w-full object-cover scale-105"
         />
 
-        {/* Include the source in the initial markup so downloading begins immediately. */}
+        {/* Video stream layer: plays smoothly as soon as first frame arrives */}
         <video
           src="/hero-bg.mov"
           poster={heroBg}
@@ -1077,8 +1077,10 @@ function Hero() {
           loop
           playsInline
           preload="auto"
+          onLoadedData={() => setVideoLoaded(true)}
           onCanPlay={() => setVideoLoaded(true)}
-          className={`absolute inset-0 h-full w-full object-cover blur-[3px] scale-105 transition-opacity duration-500 ease-out ${
+          onPlay={() => setVideoLoaded(true)}
+          className={`absolute inset-0 h-full w-full object-cover scale-105 transition-opacity duration-700 ease-out ${
             videoLoaded ? "opacity-100" : "opacity-0"
           }`}
           style={{
@@ -1526,8 +1528,8 @@ function Gallery() {
                       Plate {String(i + 1).padStart(2, "0")} /{" "}
                       {String(brides.length).padStart(2, "0")}
                     </span>
-                    <span className="rounded-full bg-white/90 px-3 py-1 text-[10px] tracking-[0.22em] uppercase text-[#0a0a0a] font-bold">
-                      Bridal Artistry
+                    <span className="pointer-events-auto inline-flex items-center gap-1.5 rounded-full bg-white/95 hover:bg-white px-3.5 py-1.5 text-[10px] tracking-[0.2em] uppercase text-[#0a0a0a] font-bold shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                      Next Plate →
                     </span>
                   </div>
                 )}
@@ -1561,7 +1563,7 @@ function Gallery() {
               ← Prev
             </button>
             <button onClick={() => setActive((active + 1) % brides.length)} className="btn-cream">
-              Next Plate <span className="arrow">→</span>
+              Next Bride <span className="arrow">→</span>
             </button>
           </div>
         </div>

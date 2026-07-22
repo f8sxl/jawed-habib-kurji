@@ -29,7 +29,6 @@ export function ChatWidget() {
   const handleQuestionClick = (item: { q: string; a: string }) => {
     setSelectedQ(item);
     setStep("answer");
-    // Auto proceed to consult method step after reading answer
     setTimeout(() => {
       setStep("consultMethod");
     }, 1500);
@@ -58,7 +57,6 @@ export function ChatWidget() {
       setStep("success");
     } catch (err) {
       console.error(err);
-      // Fail gracefully
       setStep("success"); 
     } finally {
       setIsSubmitting(false);
@@ -77,7 +75,7 @@ export function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end font-sans">
+    <div className="fixed top-[62%] -translate-y-1/2 right-6 z-[100] flex flex-col items-end font-sans">
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -235,7 +233,7 @@ export function ChatWidget() {
               </div>
             </div>
 
-            {/* Chat Tail Pointer (matching the image) */}
+            {/* Chat Tail Pointer */}
             <div className="absolute -bottom-4 right-8 text-white z-0">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M24 0L0 0L24 24V0Z" />
