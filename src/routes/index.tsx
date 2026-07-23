@@ -1990,37 +1990,39 @@ function Packages({
 
             {/* Category Filter & Sort Control Bar */}
             <div className="mt-8 flex flex-col md:flex-row items-center justify-between w-full max-w-5xl gap-4 px-2">
-              {/* Category Pills */}
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                {categories.map((cat) => {
-                  const isActive = activeTab === cat.category;
-                  const count = getCategoryCount(cat.category);
-                  return (
-                    <button
-                      key={cat.category}
-                      onClick={() => setActiveTab(cat.category)}
-                      className={`relative rounded-full px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${
-                        isActive
-                          ? "bg-gold text-black shadow-[0_0_20px_rgba(212,175,55,0.35)] scale-105"
-                          : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10"
-                      }`}
-                    >
-                      <span>{cat.label}</span>
-                      <span
-                        className={`px-1.5 py-0.5 rounded-full text-[10px] ${
-                          isActive ? "bg-black/20 text-black font-bold" : "bg-white/10 text-white/60"
+              {/* Category Pills: Horizontal scroll on mobile, flex-wrap centered on desktop */}
+              <div className="w-full md:w-auto overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden py-1 px-1">
+                <div className="flex items-center justify-start md:justify-center gap-2 whitespace-nowrap min-w-max md:min-w-0">
+                  {categories.map((cat) => {
+                    const isActive = activeTab === cat.category;
+                    const count = getCategoryCount(cat.category);
+                    return (
+                      <button
+                        key={cat.category}
+                        onClick={() => setActiveTab(cat.category)}
+                        className={`shrink-0 rounded-full px-4 py-2.5 text-[11px] font-bold tracking-wider uppercase transition-all duration-300 cursor-pointer flex items-center gap-2 ${
+                          isActive
+                            ? "bg-gold text-black shadow-[0_0_20px_rgba(212,175,55,0.35)] scale-105"
+                            : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10"
                         }`}
                       >
-                        {count}
-                      </span>
-                    </button>
-                  );
-                })}
+                        <span>{cat.label}</span>
+                        <span
+                          className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+                            isActive ? "bg-black/20 text-black font-bold" : "bg-white/10 text-white/60"
+                          }`}
+                        >
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Sort By Dropdown */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-white/50 font-medium uppercase tracking-wider">Sort:</span>
+              <div className="flex items-center justify-center md:justify-end w-full md:w-auto gap-2 shrink-0 mt-1 md:mt-0">
+                <span className="text-xs text-white/50 font-medium uppercase tracking-wider whitespace-nowrap">Sort:</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
