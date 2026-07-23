@@ -1876,6 +1876,7 @@ export const BRIDAL_PACKAGES = [
     img: "/haldi.jpg",
     price: "₹10,199",
     onward: "",
+    category: "Pre-Wedding",
     desc: "Luminous, sweat-proof, and vibrant makeup designed for daytime rituals and energetic evenings.",
   },
   {
@@ -1883,6 +1884,7 @@ export const BRIDAL_PACKAGES = [
     img: "/engagement.jpg",
     price: "₹12,199",
     onward: "",
+    category: "Pre-Wedding",
     desc: "Soft, glamorous, and photogenic look perfectly tailored for your ring ceremony.",
   },
   {
@@ -1890,6 +1892,7 @@ export const BRIDAL_PACKAGES = [
     img: "/hd-bridal.jpg",
     price: "₹15,199",
     onward: "",
+    category: "Bridal Ceremonies",
     desc: "High-Definition bridal makeup and elegant styling.",
   },
   {
@@ -1897,6 +1900,7 @@ export const BRIDAL_PACKAGES = [
     img: "/ultra-hd.jpg",
     price: "₹17,199",
     onward: "",
+    category: "Bridal Ceremonies",
     desc: "Flawless base, long-lasting wear, and a stunning glass skin finish.",
   },
   {
@@ -1904,6 +1908,7 @@ export const BRIDAL_PACKAGES = [
     img: "/premium-hd.jpg",
     price: "₹22,199",
     onward: "",
+    category: "Bridal Ceremonies",
     desc: "Flawless application, long-lasting, completely tearproof and dragproof.",
     featured: true,
   },
@@ -1912,6 +1917,7 @@ export const BRIDAL_PACKAGES = [
     img: "/luxe.jpg",
     price: "₹24,199",
     onward: "",
+    category: "Reception & Party",
     desc: "Flawless, tearproof, dragproof, and engineered for 24-hour long-lasting endurance.",
   },
 ];
@@ -1933,7 +1939,13 @@ function Packages({
   setBookingDeposit: (val: number) => void;
   isFormSubmitted: boolean;
 }) {
-  // Removed temporary deposit message state in favor of unified static message
+  const [activeTab, setActiveTab] = useState("All Packages");
+  const categories = ["All Packages", "Bridal Ceremonies", "Pre-Wedding", "Reception & Party"];
+
+  const filteredPackages = BRIDAL_PACKAGES.filter((p) => {
+    if (activeTab === "All Packages") return true;
+    return p.category === activeTab;
+  });
 
   return (
     <Section id="packages" eyebrow="Secure Your Package" title="Begin your bridal journey.">
@@ -1944,20 +1956,41 @@ function Packages({
           </div>
 
           {/* Premium Partition for Packages */}
-          <div className="w-full flex flex-col items-center justify-center my-20">
+          <div className="w-full flex flex-col items-center justify-center my-16">
             <div className="h-[1px] w-full max-w-md bg-gradient-to-r from-transparent via-white/20 to-transparent mb-10"></div>
             <div className="flex flex-col items-center text-center">
               <span className="text-gold text-xs uppercase tracking-[0.3em] font-bold mb-3">Final Step</span>
               <h4 className="font-serif text-3xl md:text-4xl text-ivory tracking-wide">Choose Your Experience</h4>
               <p className="text-white/50 text-sm mt-3 max-w-sm">
-                You have selected a deposit of <span className="text-gold font-bold">₹{bookingDeposit.toLocaleString()}</span>. Now pick your perfect match below.
+                You have selected a deposit of <span className="text-gold font-bold">₹{bookingDeposit.toLocaleString()}</span>. Pick your category or view all options below.
               </p>
             </div>
+
+            {/* Category Switcher Tabs */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 px-4">
+              {categories.map((cat) => {
+                const isActive = activeTab === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveTab(cat)}
+                    className={`relative rounded-full px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer ${
+                      isActive
+                        ? "bg-gold text-black shadow-[0_0_25px_rgba(212,175,55,0.35)] scale-105"
+                        : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+
             <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-gold/50 to-transparent mt-10"></div>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {BRIDAL_PACKAGES.map((p, i) => (
+        {filteredPackages.map((p, i) => (
           <article
             key={p.name}
             className={`group relative flex flex-col overflow-hidden rounded-3xl border transition-all duration-500 hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] hover:-translate-y-1 min-h-[600px] ${
