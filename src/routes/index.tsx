@@ -1940,12 +1940,34 @@ function Packages({
   isFormSubmitted: boolean;
 }) {
   const [activeTab, setActiveTab] = useState("All Packages");
-  const categories = ["All Packages", "Bridal Ceremonies", "Pre-Wedding", "Reception & Party"];
+  const [sortBy, setSortBy] = useState("featured");
 
-  const filteredPackages = BRIDAL_PACKAGES.filter((p) => {
-    if (activeTab === "All Packages") return true;
-    return p.category === activeTab;
-  });
+  const categories = [
+    { label: "All Packages", category: "All Packages" },
+    { label: "Bridal Ceremonies", category: "Bridal Ceremonies" },
+    { label: "Pre-Wedding", category: "Pre-Wedding" },
+    { label: "Reception & Party", category: "Reception & Party" },
+  ];
+
+  const getCategoryCount = (catName: string) => {
+    if (catName === "All Packages") return BRIDAL_PACKAGES.length;
+    return BRIDAL_PACKAGES.filter((p) => p.category === catName).length;
+  };
+
+  const processedPackages = [...BRIDAL_PACKAGES]
+    .filter((p) => {
+      if (activeTab === "All Packages") return true;
+      return p.category === activeTab;
+    })
+    .sort((a, b) => {
+      const priceA = parseInt(a.price.replace(/\D/g, ""));
+      const priceB = parseInt(b.price.replace(/\D/g, ""));
+      if (sortBy === "price-low") return priceA - priceB;
+      if (sortBy === "price-high") return priceB - priceA;
+      if (a.featured) return -1;
+      if (b.featured) return 1;
+      return 0;
+    });
 
   return (
     <Section id="packages" eyebrow="Secure Your Package" title="Begin your bridal journey.">
@@ -1962,45 +1984,76 @@ function Packages({
               <span className="text-gold text-xs uppercase tracking-[0.3em] font-bold mb-3">Final Step</span>
               <h4 className="font-serif text-3xl md:text-4xl text-ivory tracking-wide">Choose Your Experience</h4>
               <p className="text-white/50 text-sm mt-3 max-w-sm">
-                You have selected a deposit of <span className="text-gold font-bold">₹{bookingDeposit.toLocaleString()}</span>. Pick your category or view all options below.
+                You have selected a deposit of <span className="text-gold font-bold">₹{bookingDeposit.toLocaleString()}</span>. Pick your category or sort options below.
               </p>
             </div>
 
-            {/* Category Switcher Tabs */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 px-4">
-              {categories.map((cat) => {
-                const isActive = activeTab === cat;
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveTab(cat)}
-                    className={`relative rounded-full px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer ${
-                      isActive
-                        ? "bg-gold text-black shadow-[0_0_25px_rgba(212,175,55,0.35)] scale-105"
-                        : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
+            {/* Category Filter & Sort Control Bar */}
+            <div className="mt-8 flex flex-col md:flex-row items-center justify-between w-full max-w-5xl gap-4 px-2">
+              {/* Category Pills */}
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                {categories.map((cat) => {
+                  const isActive = activeTab === cat.category;
+                  const count = getCategoryCount(cat.category);
+                  return (
+                    <button
+                      key={cat.category}
+                      onClick={() => setActiveTab(cat.category)}
+                      className={`relative rounded-full px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${
+                        isActive
+                          ? "bg-gold text-black shadow-[0_0_20px_rgba(212,175,55,0.35)] scale-105"
+                          : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10"
+                      }`}
+                    >
+                      <span>{cat.label}</span>
+                      <span
+                        className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+                          isActive ? "bg-black/20 text-black font-bold" : "bg-white/10 text-white/60"
+                        }`}
+                      >
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Sort By Dropdown */}
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-white/50 font-medium uppercase tracking-wider">Sort:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-black/60 border border-white/20 text-ivory text-xs font-medium rounded-full px-4 py-2 hover:border-gold focus:outline-none focus:border-gold cursor-pointer transition-colors"
+                >
+                  <option value="featured" className="bg-[#121212] text-ivory">Most Popular & Featured</option>
+                  <option value="price-low" className="bg-[#121212] text-ivory">Price: Low to High</option>
+                  <option value="price-high" className="bg-[#121212] text-ivory">Price: High to Low</option>
+                </select>
+              </div>
             </div>
 
             <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-gold/50 to-transparent mt-10"></div>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {filteredPackages.map((p, i) => (
-          <article
-            key={p.name}
-            className={`group relative flex flex-col overflow-hidden rounded-3xl border transition-all duration-500 hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] hover:-translate-y-1 min-h-[600px] ${
-              p.featured ? "border-gold/70 border-[2px]" : "border-white/30 hover:border-gold/50"
-            } ${
-              i % 3 === 0 ? "bg-gradient-to-b from-[#151515] to-black" :
-              i % 3 === 1 ? "bg-gradient-to-b from-[#1a1814] to-black" :
-              "bg-gradient-to-b from-[#10141a] to-black"
-            }`}
-          >
+          <motion.div layout className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <AnimatePresence mode="popLayout">
+              {processedPackages.map((p, i) => (
+                <motion.article
+                  layout
+                  key={p.name}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className={`group relative flex flex-col overflow-hidden rounded-3xl border transition-all duration-500 hover:shadow-[0_0_40px_rgba(212,175,55,0.15)] hover:-translate-y-1 min-h-[600px] ${
+                    p.featured ? "border-gold/70 border-[2px]" : "border-white/30 hover:border-gold/50"
+                  } ${
+                    i % 3 === 0 ? "bg-gradient-to-b from-[#151515] to-black" :
+                    i % 3 === 1 ? "bg-gradient-to-b from-[#1a1814] to-black" :
+                    "bg-gradient-to-b from-[#10141a] to-black"
+                  }`}
+                >
             <div className="relative aspect-[4/5] overflow-hidden">
               {p.featured && (
                 <div className="absolute right-4 top-4 z-10 rounded-full border border-gold/40 bg-black/70 px-4 py-1.5 text-[10px] uppercase tracking-[0.2em] text-gold backdrop-blur-md shadow-[0_0_15px_rgba(212,175,55,0.2)]">
@@ -2113,10 +2166,11 @@ function Packages({
                 </a>
               </div>
             </div>
-          </article>
+          </motion.article>
         ))}
-      </div>
-      </div>
+            </AnimatePresence>
+          </motion.div>
+        </div>
       </div>
     </Section>
   );
