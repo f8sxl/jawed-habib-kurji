@@ -2153,6 +2153,22 @@ function Testimonials() {
 
   const reviews = [
     {
+      n: "Vanshika Roy",
+      date: "July 21, 2026",
+      stars: 5,
+      title: "Royal Bridal Transformation",
+      tag: "Bridal",
+      q: "Got married in July 2026 and Jawed Habib Kurji team made me look like royalty. Eyes, base, and jewellery setting were 10/10!",
+    },
+    {
+      n: "Tanvi Kulkarni",
+      date: "July 18, 2026",
+      stars: 5,
+      title: "Tearproof & Sweatproof",
+      tag: "Airbrush",
+      q: "Humidity and tears during vidai couldn't ruin my airbrush makeup. The spray finish stayed velvety till 4 AM!",
+    },
+    {
       n: "Neha Sharma",
       date: "July 14, 2026",
       stars: 5,
@@ -2161,12 +2177,44 @@ function Testimonials() {
       q: "Got my bridal makeup done here last week and the team was exceptional! The HD makeup stayed put through all the crying and sweating during the pheras.",
     },
     {
+      n: "Divya Verma",
+      date: "July 10, 2026",
+      stars: 5,
+      title: "Sister of the Bride Look",
+      tag: "Party",
+      q: "Booked party makeup for myself and mom. We both got endless compliments! Super prompt & professional staff.",
+    },
+    {
+      n: "Shreya Sinha",
+      date: "June 30, 2026",
+      stars: 5,
+      title: "Exquisite Hair & Extensions",
+      tag: "Hair",
+      q: "Their senior hair artist did my dupatta setting and floral gajra hairdo so securely. Didn't shift even 1 inch!",
+    },
+    {
       n: "Aarushi P.",
       date: "June 28, 2026",
       stars: 5,
       title: "Best Airbrush in Patna",
       tag: "Airbrush",
       q: "Booked them for my engagement in June 2026. The airbrush finish was so glass-like, literally everyone asked me where I got it done.",
+    },
+    {
+      n: "Richa Saxena",
+      date: "June 15, 2026",
+      stars: 5,
+      title: "Best Decision for My Wedding",
+      tag: "Bridal",
+      q: "I was so nervous about my dry skin, but their pre-makeup skin prep with d'Alba serum and MAC made my skin glow naturally!",
+    },
+    {
+      n: "Ritika Anand",
+      date: "May 29, 2026",
+      stars: 5,
+      title: "Flawless Sangeet Glow",
+      tag: "Airbrush",
+      q: "Sangeet night look was ultra-glam and lightweight. Photographers loved how HD it looked on 4K camera!",
     },
     {
       n: "Ananya S.",

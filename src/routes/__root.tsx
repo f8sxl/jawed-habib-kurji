@@ -89,36 +89,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "best bridal makeup artist in patna, best salon in patna, jawed habib kurji patna, bridal makeup price in patna, bridal studio patna, makeup artist in patna, best bridal makeup in patna, hydrafacial in patna, hair smoothening patna, keratin treatment patna",
       },
       { name: "author", content: "Jawed Habib Kurji" },
+      { property: "og:site_name", content: "Jawed Habib Kurji Patna" },
       {
         property: "og:title",
-        content: "Best Bridal Makeup Artist & Luxury Salon in Patna | Jawed Habib Kurji",
+        content: "Jawed Habib Kurji | Luxury Bridal Makeup Studio in Patna",
       },
       {
         property: "og:description",
         content:
-          "Jawed Habib Kurji is the best bridal makeup artist and luxury salon in Patna. Book premium HD, Ultra HD, Airbrush, Haldi & Sangeet, and Reception makeup packages.",
+          "Patna's premier luxury bridal makeup studio. Book HD & Airbrush bridal packages, consult directly via WhatsApp, and reserve your wedding date.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "/og-image.jpg" },
+      { property: "og:image:secure_url", content: "/og-image.jpg" },
+      { property: "og:image:type", content: "image/jpeg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0D0D0D" },
       {
         name: "twitter:title",
-        content: "Best Bridal Makeup Artist & Luxury Salon in Patna | Jawed Habib Kurji",
+        content: "Jawed Habib Kurji | Luxury Bridal Makeup Studio in Patna",
       },
       {
         name: "twitter:description",
         content:
-          "Jawed Habib Kurji is the best bridal makeup artist and luxury salon in Patna. Book premium HD, Ultra HD, Airbrush, Haldi & Sangeet, and Reception makeup packages.",
-      },
-      {
-        property: "og:image",
-        content:
-          "/og-image.png",
+          "Patna's premier luxury bridal makeup studio. Book HD & Airbrush bridal packages, consult directly via WhatsApp, and reserve your wedding date.",
       },
       {
         name: "twitter:image",
-        content:
-          "/og-image.png",
+        content: "/og-image.jpg",
       },
     ],
     links: [
